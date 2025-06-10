@@ -1,0 +1,11 @@
+# Task ID: 5
+# Title: Implement Blog Post List Page with Infinite Scroll
+# Status: pending
+# Dependencies: 3, 4
+# Priority: high
+# Description: Create the main page displaying a list of blog posts with infinite scroll functionality.
+# Details:
+Use Next.js API routes to serve post data. Implement client-side fetching with SWR (version 2.1.5) for efficient data loading. Use Intersection Observer API for infinite scroll. Display post title, date, summary, and tags in each PostCard component.
+
+# Test Strategy:
+Test the API route for correct data return. Write integration tests for the list page, mocking API calls. Test infinite scroll behavior using React Testing Library and jest-dom.

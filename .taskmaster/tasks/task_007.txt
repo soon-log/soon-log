@@ -1,0 +1,11 @@
+# Task ID: 7
+# Title: Implement Code Syntax Highlighting
+# Status: pending
+# Dependencies: 6
+# Priority: medium
+# Description: Add syntax highlighting for code blocks in blog posts.
+# Details:
+Integrate Prism.js (version 1.29.0) for syntax highlighting. Create a custom React component to wrap Prism.js functionality. Ensure highlighting works for all languages specified in code blocks.
+
+# Test Strategy:
+Write unit tests for the syntax highlighting component. Create integration tests with sample code blocks to ensure correct highlighting across different languages.

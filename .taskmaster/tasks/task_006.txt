@@ -1,0 +1,11 @@
+# Task ID: 6
+# Title: Implement Individual Blog Post Page
+# Status: pending
+# Dependencies: 3, 4
+# Priority: high
+# Description: Create a detailed view page for individual blog posts.
+# Details:
+Use Next.js dynamic routing to create pages for each post. Implement server-side rendering (getServerSideProps) to fetch post data. Render Markdown content as HTML. Display metadata (title, date, tags) prominently.
+
+# Test Strategy:
+Write unit tests for the Markdown to HTML conversion. Create integration tests for the post page, checking correct rendering of content and metadata.

@@ -1,0 +1,11 @@
+# Task ID: 4
+# Title: Design and Implement Basic UI Components
+# Status: pending
+# Dependencies: 1
+# Priority: medium
+# Description: Create reusable UI components using Tailwind CSS with a responsive design.
+# Details:
+Set up Tailwind CSS (version 3.3.2). Create basic components: Header, Footer, Layout, PostCard (for list view), and PostContent (for detailed view). Implement responsive designs using Tailwind's responsive classes. Use Flexbox or Grid for layouts.
+
+# Test Strategy:
+Write snapshot tests for each component. Test responsiveness by rendering components at different viewport sizes using Jest and React Testing Library.

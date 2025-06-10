@@ -1,0 +1,197 @@
+# Overview
+soon-log는 개인 개발 블로그로, 사용자가 post 폴더에 저장된 마크다운 파일을 자동으로 읽어들여 블로그 글로 게시하는 서비스입니다. 개발자(사용자 본인)를 주요 타겟으로 하며, 기술 문서, 학습 기록, 프로젝트 로그 등을 간편하게 공유할 수 있는 플랫폼을 제공합니다. 이 서비스는 간단한 설정으로 고품질의 블로그를 운영하고자 하는 개인 개발자에게 가치를 제공하며, 마크다운 기반의 간결한 워크플로우와 깔끔한 사용자 경험을 목표로 합니다.
+
+# Core Features
+## 마크다운 파일 파싱 및 게시
+- What it does: post 폴더에 저장된 마크다운 파일을 읽어 HTML로 변환하여 블로그 글로 게시
+- Why it's important: 사용자가 별도의 코딩 없이 마크다운 파일만 작성하면 블로그 글이 자동으로 게시되므로 생산성이 향상됨
+- How it works: post 폴더의 마크다운 파일을 파싱하여 HTML로 렌더링. 메타데이터(제목, 작성일 등)를 추출해 글 정보를 동적으로 표시
+
+## 블로그 글 목록 페이지 (무한 스크롤 포함)
+- What it does: 모든 블로그 글의 제목, 작성일, 요약, 태그를 표시하며, 무한 스크롤로 추가 글을 동적으로 로드
+- Why it's important: 사용자가 모든 글을 한눈에 탐색할 수 있으며, 무한 스크롤로 부드러운 탐색 경험 제공
+- How it works: 페이지네이션 대신 스크롤 위치에 따라 다음 글 목록을 API 호출로 동적 로드. 각 글은 제목, 작성일, 태그, 첫 문단 요약 표시
+
+## 개별 글 상세 페이지
+- What it does: 선택한 블로그 글의 전체 내용을 표시
+- Why it's important: 사용자가 특정 글의 세부 내용을 읽을 수 있는 핵심 페이지
+- How it works: 마크다운 파일을 HTML로 변환하여 렌더링. 메타데이터(제목, 태그 등)를 기반으로 상세 페이지 구성
+
+## 기본 스타일링 및 반응형 디자인
+- What it does: 깔끔한 UI와 모바일/데스크톱 호환 반응형 디자인 제공
+- Why it's important: 다양한 디바이스에서 일관된 사용자 경험을 보장
+- How it works: Tailwind CSS와 미디어 쿼리를 사용해 반응형 레이아웃 구현. 최소한의 디자인으로 가독성 최적화
+
+## 마크다운 메타데이터 지원
+- What it does: 마크다운 파일 상단에 YAML/JSON 형식 메타데이터(제목, 작성일, 태그 등)를 포함하여 동적으로 처리
+- Why it's important: 글의 구조화된 정보를 제공하여 검색, 필터링, RSS 피드 생성 가능
+
+## 검색 기능
+- What it does: 제목 또는 태그로 블로그 글을 검색
+- Why it's important: 사용자가 원하는 콘텐츠를 빠르게 찾을 수 있음
+- How it works: NextJS에서 클라이언트 측 검색(예: JavaScript 기반) 또는 서버 측 검색 엔진을 사용해 메타데이터와 글 내용 검색
+
+## 카테고리/태그 필터링
+- What it does: 태그나 카테고리로 글을 필터링하여 표시
+- Why it's important: 주제별로 글을 쉽게 탐색할 수 있음
+- How it works: 메타데이터의 태그를 기반으로 필터링 UI 제공. 클릭 시 해당 태그의 글만 동적으로 표시
+
+## RSS 피드 생성
+- What it does: 블로그 글을 RSS 피드로 제공
+- Why it's important: 사용자가 RSS 리더를 통해 블로그 업데이트를 구독 가능
+- How it works: 메타데이터와 글 내용을 기반으로 XML 형식의 RSS 피드 자동 생성
+
+## 코드 하이라이팅
+- What it does: 마크다운 내 코드 블록에 구문 강조 적용
+- Why it's important: 개발 블로그의 핵심 독자인 개발자에게 코드 가독성을 높여줌
+- How it works: Prism.js 또는 Highlight.js와 같은 라이브러리를 사용해 코드 블록에 언어별 하이라이팅 적용
+
+## 다크 모드 지원
+- What it does: 사용자 선호도에 따라 다크/라이트 모드 전환
+- Why it's important: 현대적인 사용자 경험과 시각적 편안함 제공
+- How it works: Tailwind CSS를 사용해 테마 전환. 브라우저 설정 또는 사용자 선택에 따라 적용.
+
+## User Experience
+
+### User Personas
+- 개발자 (Soon): 본 블로그의 소유자이자 주요 콘텐츠 작성자. 마크다운으로 기술 문서와 학습 로그를 작성하며, 간편한 게시 워크플로우를 원함
+- 독자 (개발자 커뮤니티): Soon의 기술 글을 읽고 학습하거나 프로젝트에 참고하려는 개발자. 직관적인 UI와 빠른 탐색을 선호
+
+### Key User Flows
+1. 블로그 탐색:
+    - 사용자가 soon-log에 접속 → 메인 페이지에서 글 목록 확인 → 무한 스크롤로 추가 글 로드 → 검색 또는 태그 필터링으로 원하는 글 탐색 → 개별 글 상세 페이지로 이동
+2. 글 읽기:
+    - 상세 페이지에서 마크다운 기반 글과 코드 하이라이팅 확인 → 다크/라이트 모드 전환으로 편안한 읽기 경험
+3. 구독:
+    - RSS 피드를 RSS 리더에 추가하여 새 글 알림 수신
+
+### UI/UX Considerations
+- 심플한 디자인: 깔끔하고 미니멀한 UI로 콘텐츠에 집중
+- 빠른 로딩: 정적 사이트 생성(SSG) 또는 서버 사이드 렌더링(SSR)으로 빠른 페이지 로드 보장
+- 모바일 최적화: 반응형 디자인으로 작은 화면에서도 가독성 유지
+- 테마 전환: 다크/라이트 모드 전환 버튼을 헤더에 배치
+
+## Technical Architecture
+
+### System Components
+- Frontend: Next.js를 사용한 정적 사이트 생성(SSG) 또는 서버 사이드 렌더링(SSR)
+- Backend (선택적): 검색 및 동적 필터링을 위해 최소한의 Node.js 서버 또는 서버리스 함수
+- 마크다운 파서: Markdown-it 또는 Remark로 마크다운을 HTML로 변환
+- 코드 하이라이팅: Prism.js 또는 Highlight.js
+- 파일 시스템: post 폴더에서 마크다운 파일을 읽음
+- RSS 생성: 메타데이터 기반으로 RSS XML 생성
+
+### Testing Framework
+- **Jest**: JavaScript 테스트 프레임워크로 단위 테스트 및 통합 테스트 실행
+- **React Testing Library**: React 컴포넌트 테스트를 위한 유틸리티 라이브러리
+- **TDD 방법론**: Test-Driven Development 접근법으로 테스트 작성 후 구현
+- **테스트 커버리지**: 코드 커버리지 80% 이상 목표
+- **CI/CD 통합**: GitHub Actions를 통한 자동화된 테스트 실행
+
+### Data Models
+- **Post**:
+    - title: 글 제목 (문자열)
+    - date: 작성일 (날짜)
+    - tags: 태그 목록 (문자열 배열)
+    - summary: 요약 (첫 문단 또는 별도 필드, 문자열)
+    - content: 마크다운 본문 (문자열)
+    - slug: URL에 사용할 고유 식별자 (문자열)
+
+### APIs and Integrations
+- 내부 API (선택적): 글 목록, 검색, 태그 필터링을 위한 RESTful 또는 GraphQL API.
+- 외부 라이브러리:
+    - Markdown-it/Remark: 마크다운 파싱
+    - Prism.js/Highlight.js: 코드 하이라이팅
+    - RSS 라이브러리: RSS 피드 생성
+
+### Infrastructure Requirements
+- 호스팅: Vercel, Netlify 등 정적 사이트 호스팅 플랫폼
+- 스토리지: post 폴더는 Git 리포지토리 또는 로컬 파일 시스템에 저장
+- CDN: 빠른 정적 자산 제공을 위해 Cloudflare 또는 Vercel의 기본 CDN 활용
+
+## Development Roadmap
+### MVP Requirements
+- 마크다운 파일 파싱 및 게시: post 폴더에서 마크다운 파일을 읽어 HTML로 렌더링
+- 블로그 글 목록 페이지: 제목, 작성일, 요약, 태그 표시. 무한 스크롤 구현
+- 개별 글 상세 페이지: 마크다운 콘텐츠를 HTML로 렌더링
+- 기본 스타일링 및 반응형 디자인: Tailwind CSS로 최소한의 스타일링
+- 마크다운 메타데이터 지원: 제목, 작성일, 태그 파싱
+- 검색 기능: 제목과 태그 기반 클라이언트 측 검색
+- 카테고리/태그 필터링: 태그 클릭 시 필터링 UI
+- RSS 피드 생성: 메타데이터 기반 RSS XML 생성
+- 코드 하이라이팅: Prism.js로 코드 블록 하이라이팅
+- 다크 모드 지원: CSS 변수로 다크/라이트 모드 구현
+- **Jest TDD 테스트 환경 구축**: 단위 테스트 및 통합 테스트 프레임워크 설정
+- **핵심 기능 테스트 작성**: 마크다운 파싱, 글 목록, 검색 기능에 대한 테스트 케이스 구현
+- **개발 환경 설정**:
+  - TypeScript 설정: 타입 안정성을 위한 엄격한 tsconfig.json 구성
+  - ESLint 설정: 코드 품질과 일관성을 위한 규칙 설정
+  - Prettier 설정: 코드 포맷팅 자동화를 위한 설정
+  - 에디터 설정: VS Code 설정 및 추천 확장 프로그램 구성
+
+### Future Enhancements
+- 관리자 페이지: 마크다운 파일 업로드 및 편집 UI.
+- 댓글 시스템: Disqus 또는 Utterances 통합.
+- 분석 도구: Google Analytics 또는 Plausible로 방문자 통계 추적.
+- SEO 최적화: 메타 태그 및 오픈 그래프 태그 추가.
+
+## Logical Dependency Chain
+1. 기초 작업:
+    - 개발 환경 설정: TypeScript, ESLint, Prettier 설정으로 코드 품질 기반 마련
+    - Jest TDD 테스트 환경 구축: 개발 시작 전 테스트 프레임워크 설정
+    - 마크다운 파싱 및 메타데이터 처리: 모든 기능의 기반 (TDD로 구현)
+    - 기본 스타일링 및 반응형 디자인: UI의 기본 틀
+2. 핵심 UI (TDD 접근):
+    - 블로그 글 목록 페이지: 메인 엔트리 포인트로, 무한 스크롤 포함
+    - 개별 글 상세 페이지: 콘텐츠 렌더링의 핵심
+3. 부가 기능:
+    - 코드 하이라이팅: 상세 페이지 렌더링 후 추가
+    - 다크 모드 지원: 스타일링 완료 후 구현
+    - 검색 및 태그 필터링: 메타데이터 처리 후 UI에 통합 (TDD로 구현)
+    - RSS 피드: 메타데이터와 콘텐츠 준비 후 생성
+4. 최적화 및 품질 보증:
+    - 성능 최적화(예: 이미지 지연 로딩, 캐싱)
+    - SEO 및 접근성 개선
+    - 테스트 커버리지 80% 달성 및 CI/CD 통합
+
+## Appendix
+### Research Findings
+- 유사 서비스 참고:
+    - Gatsby/Next.js 블로그: 마크다운 기반 정적 사이트 생성 예시
+    - DEV.to: 코드 하이라이팅과 태그 기반 필터링 참고
+
+### Technical Specifications
+- 마크다운 형식: YAML Front Matter로 메타데이터 정의
+```
+---
+title: "Sample Post"
+date: 2025-06-10
+tags: ["javascript", "react"]
+summary: "This is a sample post about JavaScript."
+---
+# Content
+```
+- 기술 스택:
+    - 프론트엔드: Next.js, Tailwind CSS, TypeScript
+    - 마크다운 파싱: Markdown-it 또는 Remark
+    - 코드 하이라이팅: Prism.js
+    - 테스트 프레임워크: Jest, React Testing Library
+    - 코드 품질 도구: ESLint, Prettier
+    - 타입 시스템: TypeScript (strict 모드)
+
+### Jest TDD 워크플로우
+- Red-Green-Refactor 사이클: 실패하는 테스트 작성 → 테스트 통과를 위한 최소 코드 구현 → 리팩토링
+- 테스트 구조:
+```
+__tests__/
+├── components/         # React 컴포넌트 테스트
+├── utils/             # 유틸리티 함수 테스트  
+├── pages/             # 페이지 컴포넌트 테스트
+└── integration/       # 통합 테스트
+```
+- 테스트 카테고리:
+    - 단위 테스트: 마크다운 파싱 함수, 메타데이터 추출, 검색 로직
+    - 컴포넌트 테스트: 글 목록, 상세 페이지, 검색 UI 컴포넌트
+    - 통합 테스트: API 엔드포인트, 파일 시스템 연동, RSS 피드 생성
+- 모킹 전략: 파일 시스템, 외부 라이브러리, Next.js 라우터 모킹
+- 테스트 자동화: GitHub Actions에서 PR 시 자동 테스트 실행 및 커버리지 리포트 생성

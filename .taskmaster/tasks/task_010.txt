@@ -1,0 +1,11 @@
+# Task ID: 10
+# Title: Implement Category/Tag Filtering
+# Status: pending
+# Dependencies: 5
+# Priority: medium
+# Description: Add functionality to filter posts by tags or categories.
+# Details:
+Create a tag cloud or category list component. Implement filtering logic to update post list based on selected tags/categories. Use URL parameters to make filtered views shareable.
+
+# Test Strategy:
+Write unit tests for the filtering logic. Create integration tests for the tag/category selection and filtering process. Test URL parameter handling and state management.

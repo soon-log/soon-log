@@ -1,0 +1,11 @@
+# Task ID: 2
+# Title: Implement Jest TDD Environment
+# Status: pending
+# Dependencies: 1
+# Priority: high
+# Description: Set up Jest and React Testing Library for test-driven development.
+# Details:
+Install Jest (version 29.5.0), React Testing Library (version 14.0.0), and related dependencies. Configure Jest in package.json or jest.config.js, ensuring it works with TypeScript and Next.js. Set up test file structure (__tests__ folders). Create sample test to verify setup.
+
+# Test Strategy:
+Write a simple test for a dummy component to ensure the testing environment is correctly set up. Verify that `npm test` runs without errors and reports correct coverage.

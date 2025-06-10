@@ -1,0 +1,11 @@
+# Task ID: 11
+# Title: Generate RSS Feed
+# Status: pending
+# Dependencies: 3
+# Priority: low
+# Description: Implement RSS feed generation for the blog.
+# Details:
+Use the feed package (version 4.2.2) to generate RSS XML. Create a Next.js API route to serve the RSS feed. Include post title, date, summary, and link in the feed items.
+
+# Test Strategy:
+Write unit tests for RSS generation function. Test the API route for correct RSS XML output. Validate the generated RSS against RSS 2.0 specification.
