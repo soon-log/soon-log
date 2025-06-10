@@ -1,11 +1,43 @@
 # Task ID: 15
-# Title: Setup CI/CD and Deployment
+# Title: 지속적 통합 및 배포 설정
 # Status: pending
-# Dependencies: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
+# Dependencies: 1, 2
 # Priority: high
-# Description: Set up continuous integration, continuous deployment, and production deployment.
+# Description: Implement CI/CD pipeline for automated testing and deployment.
 # Details:
-Set up GitHub Actions for CI/CD. Configure automated testing and linting on pull requests. Set up deployment to Vercel or Netlify. Implement environment-based configuration for development, staging, and production.
+Set up GitHub Actions for CI/CD. Configure workflow to run tests, lint code, and check types on every pull request. Set up automatic deployment to Vercel or Netlify. Implement branch protection rules. Generate and display test coverage reports.
 
 # Test Strategy:
-Test the CI pipeline by intentionally introducing linting errors and failed tests. Verify automatic deployment by making a small change and ensuring it reflects in the staging environment. Test production build locally before deployment.
+Verify successful pipeline execution for various scenarios (push to main, pull requests). Test deployment process. Ensure proper reporting of test results and coverage.
+
+# Subtasks:
+## 1. GitHub Actions 워크플로우 설정 [pending]
+### Dependencies: None
+### Description: Create the basic GitHub Actions workflow structure in your repository
+### Details:
+Create a .github/workflows directory in your repository root and add a YAML file (e.g., ci-cd.yml) that defines the workflow name, triggers (push to main branch and pull requests), and basic job structure
+
+## 2. 테스트 및 린트 자동화 [pending]
+### Dependencies: 15.1
+### Description: Configure automated testing and linting in the CI pipeline
+### Details:
+Add jobs to the workflow that install dependencies, run linters (ESLint, Prettier, etc.), and execute test suites. Configure caching to improve workflow speed and set up appropriate fail conditions
+
+## 3. 배포 설정 [pending]
+### Dependencies: 15.2
+### Description: Set up automated deployment to Vercel/Netlify
+### Details:
+Configure deployment job that triggers after successful tests, using the appropriate GitHub Action for Vercel or Netlify. Set up environment variables, deployment contexts (preview/production), and deployment conditions based on branch
+
+## 4. 브랜치 보호 규칙 구현 [pending]
+### Dependencies: 15.1, 15.2
+### Description: Implement branch protection rules to enforce CI checks
+### Details:
+Configure branch protection rules for the main branch that require status checks to pass before merging, require pull request reviews, and prevent force pushes to ensure code quality and stability
+
+## 5. 테스트 커버리지 보고서 구현 [pending]
+### Dependencies: 15.2
+### Description: Implement test coverage reporting and visualization
+### Details:
+Add a job to generate test coverage reports, configure a coverage threshold, and set up a reporting tool (like Codecov or Coveralls) to visualize coverage trends and display badges in the repository README
+

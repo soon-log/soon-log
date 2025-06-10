@@ -1,11 +1,11 @@
 # Task ID: 8
-# Title: Implement Dark Mode Support
+# Title: 다크 모드 지원 개발
 # Status: pending
 # Dependencies: 4
 # Priority: low
-# Description: Add a dark mode option with easy switching between light and dark themes.
+# Description: Implement a dark mode option with user preference persistence.
 # Details:
-Use Tailwind CSS dark mode utility classes. Implement a theme toggle component. Use localStorage to persist user's theme preference. Ensure all components and pages support both themes.
+Use Tailwind CSS dark mode utility. Create a toggle component for switching between light and dark modes. Implement local storage to persist user preference. Ensure smooth transition between modes. Consider system preference detection using matchMedia API.
 
 # Test Strategy:
-Write unit tests for the theme toggle component. Create integration tests to verify correct theme application across the application. Test theme persistence across page reloads.
+Test toggle functionality. Verify persistence of user preference. Test system preference detection. Ensure all components render correctly in both modes.

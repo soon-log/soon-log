@@ -1,5 +1,5 @@
 # Task ID: 1
-# Title: Setup Development Environment
+# Title: 개발 환경 설정
 # Status: pending
 # Dependencies: None
 # Priority: high
@@ -8,4 +8,4 @@
 Initialize a new Next.js project with TypeScript support. Configure ESLint for code quality and Prettier for code formatting. Set up a strict tsconfig.json for enhanced type safety. Use the latest stable versions: Next.js 13.4.3, TypeScript 5.0.4, ESLint 8.41.0, and Prettier 2.8.8. Include recommended VS Code extensions in .vscode/extensions.json.
 
 # Test Strategy:
-Verify correct installation and configuration of all tools. Run `npm run dev` to ensure the development server starts without errors. Check that ESLint and Prettier are working by intentionally introducing style violations and verifying they are caught.
+Verify correct installation and configuration of all tools. Run `npm run lint` and `npm run format` to ensure ESLint and Prettier are working. Check TypeScript compilation with `npm run build`.

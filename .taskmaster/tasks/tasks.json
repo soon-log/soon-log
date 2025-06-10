@@ -1,0 +1,564 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "title": "개발 환경 설정",
+      "description": "Set up the initial project structure with Next.js, TypeScript, ESLint, and Prettier.",
+      "status": "pending",
+      "dependencies": [],
+      "priority": "high",
+      "details": "Initialize a new Next.js project with TypeScript support. Configure ESLint for code quality and Prettier for code formatting. Set up a strict tsconfig.json for enhanced type safety. Use the latest stable versions: Next.js 13.4.3, TypeScript 5.0.4, ESLint 8.41.0, and Prettier 2.8.8. Include recommended VS Code extensions in .vscode/extensions.json.",
+      "testStrategy": "Verify correct installation and configuration of all tools. Run `npm run lint` and `npm run format` to ensure ESLint and Prettier are working. Check TypeScript compilation with `npm run build`.",
+      "subtasks": []
+    },
+    {
+      "id": 2,
+      "title": "Jest TDD 환경 구축",
+      "description": "Set up Jest and React Testing Library for test-driven development.",
+      "status": "pending",
+      "dependencies": [
+        1
+      ],
+      "priority": "high",
+      "details": "Install Jest 29.5.0, React Testing Library 14.0.0, and related dependencies. Configure Jest in package.json or jest.config.js. Set up test file structure (__tests__/ directory). Create sample test to verify setup. Integrate with TypeScript for type-safe testing.",
+      "testStrategy": "Write a simple test case to ensure Jest is correctly set up. Verify that the test runner can execute tests and report results accurately.",
+      "subtasks": []
+    },
+    {
+      "id": 3,
+      "title": "마크다운 파싱 및 메타데이터 추출 구현",
+      "description": "Develop functionality to parse Markdown files and extract metadata using the YAML Front Matter format.",
+      "status": "pending",
+      "dependencies": [
+        2
+      ],
+      "priority": "high",
+      "details": "Use gray-matter 4.0.3 for parsing YAML Front Matter. Implement a function to read Markdown files from the 'post' folder, extract metadata (title, date, tags, summary), and parse the content. Handle potential errors in file reading or parsing. Use the latest version of fs-extra (11.1.1) for enhanced file system operations.",
+      "testStrategy": "Write unit tests for the parsing function. Test with various Markdown files, including edge cases like missing metadata or malformed YAML. Ensure correct extraction of all metadata fields and content.",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "파일 시스템 유틸리티 설정",
+          "description": "Configure the necessary file system utilities to read and write Markdown files",
+          "dependencies": [],
+          "details": "Set up the file system module (fs/promises) for asynchronous file operations. Create utility functions for reading Markdown files, checking if files exist, and writing processed content back to the file system. Include path resolution functionality to handle relative and absolute paths correctly.",
+          "status": "pending"
+        },
+        {
+          "id": 2,
+          "title": "gray-matter를 이용한 YAML Front Matter 파싱",
+          "description": "Implement the parsing of YAML Front Matter from Markdown files using the gray-matter library",
+          "dependencies": [
+            1
+          ],
+          "details": "Install and configure the gray-matter package. Create a function that takes file content as input and uses gray-matter to separate the YAML Front Matter from the Markdown content. Handle edge cases like missing or malformed Front Matter gracefully.",
+          "status": "pending"
+        },
+        {
+          "id": 3,
+          "title": "메타데이터 추출 함수",
+          "description": "Create a function to extract and validate metadata from the parsed YAML Front Matter",
+          "dependencies": [
+            2
+          ],
+          "details": "Develop a function that processes the data object returned by gray-matter. Implement validation for required metadata fields. Create a standardized metadata object structure with default values for missing optional fields. Add type checking and data normalization as needed.",
+          "status": "pending"
+        },
+        {
+          "id": 4,
+          "title": "콘텐츠 파싱 함수",
+          "description": "Implement Markdown content parsing using a Markdown parser library",
+          "dependencies": [
+            2
+          ],
+          "details": "Select and integrate a Markdown parser library (like markdig, markdown-it, or similar). Create a function that processes the Markdown content separated from the Front Matter. Configure the parser with appropriate extensions and options. Implement any custom syntax handling or transformations needed for the specific use case.",
+          "status": "pending"
+        },
+        {
+          "id": 5,
+          "title": "에러 핸들링 구현",
+          "description": "Implement comprehensive error handling throughout the Markdown parsing process",
+          "dependencies": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "details": "Create custom error classes for different types of failures (file system errors, parsing errors, validation errors). Implement try/catch blocks around critical operations. Add detailed error messages with context information. Create a logging mechanism for errors and warnings. Implement graceful fallbacks for non-critical failures.",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "기본 스타일링 및 반응형 디자인 개발",
+      "description": "Implement a basic styling system using Tailwind CSS with responsive design principles.",
+      "status": "pending",
+      "dependencies": [
+        1
+      ],
+      "priority": "medium",
+      "details": "Install and configure Tailwind CSS 3.3.2. Set up a base layout component with responsive breakpoints. Create utility classes for typography, spacing, and colors. Implement a simple grid system for responsive layouts. Use Tailwind's built-in dark mode utility for future dark mode support.",
+      "testStrategy": "Create visual regression tests using Jest-image-snapshot. Test responsive behavior across different viewport sizes. Ensure consistent styling across different browsers.",
+      "subtasks": []
+    },
+    {
+      "id": 5,
+      "title": "무한 스크롤 기능이 있는 블로그 포스트 목록 페이지 구현",
+      "description": "Create the main blog post list page with infinite scroll functionality.",
+      "status": "pending",
+      "dependencies": [
+        3,
+        4
+      ],
+      "priority": "high",
+      "details": "Develop a React component for the blog post list. Implement infinite scroll using Intersection Observer API or a library like react-infinite-scroll-component 6.1.0. Display post title, date, summary, and tags. Sort posts by date. Use Next.js Image component for optimized image loading. Implement skeleton loading for better UX.",
+      "testStrategy": "Write unit tests for the list component. Test infinite scroll behavior. Verify correct display of post metadata. Test edge cases like no posts or network errors.",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "포스트 목록 컴포넌트 구조 설계",
+          "description": "Create the main container component that will house the blog post cards and handle the overall layout",
+          "dependencies": [],
+          "details": "Design a responsive container component that will hold all blog post cards. Include a grid or flex layout system to arrange posts appropriately across different screen sizes. Set up the initial state management for posts array, loading state, and pagination variables.",
+          "status": "pending"
+        },
+        {
+          "id": 2,
+          "title": "데이터 페칭 로직 구현",
+          "description": "Implement the API service and hooks to fetch paginated blog post data",
+          "dependencies": [
+            1
+          ],
+          "details": "Create a data fetching service that handles API calls with pagination parameters. Implement custom hooks for fetching initial posts and subsequent pages. Set up state management for tracking current page, total pages, and whether more posts are available. Include caching mechanisms to prevent redundant API calls.",
+          "status": "pending"
+        },
+        {
+          "id": 3,
+          "title": "인터섹션 옵저버를 활용한 무한 스크롤 구현",
+          "description": "Set up the Intersection Observer API to detect when user scrolls to the bottom of the list",
+          "dependencies": [
+            1,
+            2
+          ],
+          "details": "Implement the Intersection Observer API to monitor when the last post card or a sentinel element becomes visible. Create the logic to trigger the next page load when the observer fires. Handle debouncing to prevent multiple simultaneous requests. Ensure the observer is properly connected and disconnected during component lifecycle.",
+          "status": "pending"
+        },
+        {
+          "id": 4,
+          "title": "포스트 카드 컴포넌트",
+          "description": "Design and implement the individual blog post card component",
+          "dependencies": [
+            1
+          ],
+          "details": "Create a reusable post card component that displays blog post information including title, excerpt, featured image, date, and author. Ensure the card is responsive and visually appealing. Implement proper image loading optimization and text truncation for consistent card heights.",
+          "status": "pending"
+        },
+        {
+          "id": 5,
+          "title": "스켈레톤 로딩 상태 구현",
+          "description": "Create placeholder loading states for when new posts are being fetched",
+          "dependencies": [
+            1,
+            4
+          ],
+          "details": "Design skeleton loading components that mimic the structure of the post cards. Implement animations for the skeleton loaders to indicate loading activity. Create logic to display these skeletons when initial posts are loading or when additional posts are being fetched during scrolling.",
+          "status": "pending"
+        },
+        {
+          "id": 6,
+          "title": "에러 처리 및 예외 상황 관리",
+          "description": "Implement robust error handling and manage edge cases in the infinite scroll implementation",
+          "dependencies": [
+            2,
+            3
+          ],
+          "details": "Create error handling for failed API requests with appropriate user feedback. Implement retry mechanisms for failed requests. Handle edge cases such as: no more posts available, slow network connections, browser back button navigation, and maintaining scroll position when returning to the page. Add accessibility features for keyboard navigation and screen readers.",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "개별 블로그 포스트 페이지 생성",
+      "description": "Develop the individual blog post page to display full post content.",
+      "status": "pending",
+      "dependencies": [
+        3,
+        4
+      ],
+      "priority": "high",
+      "details": "Create a dynamic route in Next.js for individual posts. Render Markdown content as HTML using remark 14.0.2 and remark-html 15.0.2. Display post metadata (title, date, tags). Implement proper SEO meta tags. Use Next.js getStaticProps and getStaticPaths for static generation of post pages.",
+      "testStrategy": "Test correct rendering of Markdown content. Verify proper display of metadata. Test SEO meta tags. Ensure correct static generation of pages.",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "Next.js 동적 라우트 설정",
+          "description": "Create the file structure and implement dynamic routing for blog posts",
+          "dependencies": [],
+          "details": "Create a [slug].js file in the pages/blog directory to handle dynamic blog post routes. Implement the useRouter hook to access route parameters. Set up the basic page structure that will fetch and display blog content based on the slug parameter.",
+          "status": "pending"
+        },
+        {
+          "id": 2,
+          "title": "Remark를 이용한 마크다운-HTML 변환",
+          "description": "Implement the conversion of Markdown content to HTML using the Remark library",
+          "dependencies": [
+            1
+          ],
+          "details": "Install remark and related packages. Create a utility function that takes Markdown content as input and returns processed HTML. Implement syntax highlighting for code blocks and handle other Markdown features like tables and lists.",
+          "status": "pending"
+        },
+        {
+          "id": 3,
+          "title": "포스트 메타데이터 표시 컴포넌트",
+          "description": "Create a reusable component to display blog post metadata",
+          "dependencies": [
+            1
+          ],
+          "details": "Design and implement a component that displays post metadata such as title, date, author, and reading time. Style the component appropriately and ensure it's responsive. Make it reusable across different parts of the blog.",
+          "status": "pending"
+        },
+        {
+          "id": 4,
+          "title": "SEO 메타데이터 구현",
+          "description": "Add SEO-related metadata to blog post pages",
+          "dependencies": [
+            1,
+            3
+          ],
+          "details": "Implement Next.js Head component to add appropriate meta tags for SEO. Include Open Graph tags for social sharing, canonical URLs, and other SEO best practices. Ensure dynamic metadata is generated based on each post's content.",
+          "status": "pending"
+        },
+        {
+          "id": 5,
+          "title": "정적 생성 설정",
+          "description": "Configure static generation for blog posts using getStaticPaths and getStaticProps",
+          "dependencies": [
+            1,
+            2
+          ],
+          "details": "Implement getStaticPaths to define which blog posts should be pre-rendered at build time. Create getStaticProps to fetch the content and metadata for each post. Set up incremental static regeneration if needed for content that changes frequently.",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "코드 구문 강조 기능 구현",
+      "description": "Add syntax highlighting for code blocks in blog posts.",
+      "status": "pending",
+      "dependencies": [
+        6
+      ],
+      "priority": "medium",
+      "details": "Integrate Prism.js 1.29.0 for syntax highlighting. Configure Prism to support common programming languages. Implement a custom React component to wrap code blocks. Ensure proper styling and theme consistency with the overall design.",
+      "testStrategy": "Test syntax highlighting for various programming languages. Verify correct application of styles. Test accessibility of highlighted code blocks.",
+      "subtasks": []
+    },
+    {
+      "id": 8,
+      "title": "다크 모드 지원 개발",
+      "description": "Implement a dark mode option with user preference persistence.",
+      "status": "pending",
+      "dependencies": [
+        4
+      ],
+      "priority": "low",
+      "details": "Use Tailwind CSS dark mode utility. Create a toggle component for switching between light and dark modes. Implement local storage to persist user preference. Ensure smooth transition between modes. Consider system preference detection using matchMedia API.",
+      "testStrategy": "Test toggle functionality. Verify persistence of user preference. Test system preference detection. Ensure all components render correctly in both modes.",
+      "subtasks": []
+    },
+    {
+      "id": 9,
+      "title": "검색 기능 구현",
+      "description": "Develop a client-side search feature for blog posts.",
+      "status": "pending",
+      "dependencies": [
+        5
+      ],
+      "priority": "medium",
+      "details": "Implement a search input component. Use Fuse.js 6.6.2 for fuzzy searching. Index posts by title, tags, and content. Display search results in real-time as the user types. Implement debouncing for better performance.",
+      "testStrategy": "Test search accuracy for various queries. Verify real-time update of results. Test edge cases like empty search or no results. Measure and optimize search performance.",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "검색 입력 컴포넌트 생성",
+          "description": "Develop a reusable search input component that captures user queries and triggers the search functionality",
+          "dependencies": [],
+          "details": "Build an input field with onChange event handler to capture user input. Include placeholder text and styling for better UX. Implement state management to store the current search query using React state or equivalent.",
+          "status": "pending"
+        },
+        {
+          "id": 2,
+          "title": "퍼지 검색을 위한 Fuse.js 통합",
+          "description": "Set up Fuse.js library to enable fuzzy search capabilities with appropriate configuration options",
+          "dependencies": [
+            1
+          ],
+          "details": "Install Fuse.js package. Configure search options including threshold (0.3), keys to search (title, content with appropriate weights), and other parameters like minMatchCharLength. Create a function to initialize Fuse with the search index and execute searches based on user input.",
+          "status": "pending"
+        },
+        {
+          "id": 3,
+          "title": "포스트 인덱싱 로직 개발",
+          "description": "Create a system to generate and fetch the search index containing all searchable content",
+          "dependencies": [],
+          "details": "For static sites, implement logic to generate a JSON search index during build time. Include relevant fields like title, content, URL, and any other searchable metadata. Create a function to fetch this index (e.g., from '/search-data.json') when the application initializes.",
+          "status": "pending"
+        },
+        {
+          "id": 4,
+          "title": "실시간 검색 결과 표시 구현",
+          "description": "Create a component to display search results as the user types",
+          "dependencies": [
+            1,
+            2,
+            3
+          ],
+          "details": "Develop a results component that renders the filtered items returned by Fuse.js. Include highlighting for matched text portions. Handle empty states and loading states appropriately. Ensure results update dynamically as the user modifies their search query.",
+          "status": "pending"
+        },
+        {
+          "id": 5,
+          "title": "디바운싱을 통한 검색 성능 최적화",
+          "description": "Add debouncing to prevent excessive search operations during rapid typing",
+          "dependencies": [
+            1,
+            2
+          ],
+          "details": "Implement a debounce function that delays search execution until the user pauses typing. Set an appropriate delay time (e.g., 300ms). Ensure the search is only triggered for queries with sufficient length (e.g., 3+ characters). Add loading indicators to provide feedback during search operations.",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "태그/카테고리 필터링 개발",
+      "description": "Implement functionality to filter blog posts by tags or categories.",
+      "status": "pending",
+      "dependencies": [
+        5
+      ],
+      "priority": "medium",
+      "details": "Create a component to display all available tags. Implement filtering logic to show posts with selected tags. Update URL to reflect current filter state. Ensure smooth integration with the existing post list and infinite scroll.",
+      "testStrategy": "Test filtering accuracy for various tag combinations. Verify URL updates. Test integration with infinite scroll. Ensure performance with a large number of posts and tags.",
+      "subtasks": []
+    },
+    {
+      "id": 11,
+      "title": "RSS 피드 생성",
+      "description": "Implement RSS feed generation for the blog.",
+      "status": "pending",
+      "dependencies": [
+        3
+      ],
+      "priority": "low",
+      "details": "Use the feed 4.2.2 package to generate RSS XML. Create a script to build the RSS feed during the build process. Include post title, summary, publication date, and link in the feed. Ensure the feed is accessible at a fixed URL (e.g., /rss.xml).",
+      "testStrategy": "Validate generated RSS XML against RSS 2.0 specification. Test with various RSS readers. Ensure all recent posts are included in the feed.",
+      "subtasks": []
+    },
+    {
+      "id": 12,
+      "title": "SEO 최적화 구현",
+      "description": "Enhance SEO for the blog by implementing necessary meta tags and optimizations.",
+      "status": "pending",
+      "dependencies": [
+        5,
+        6
+      ],
+      "priority": "medium",
+      "details": "Use Next.js Head component to manage meta tags. Implement Open Graph tags for better social media sharing. Create a sitemap.xml file. Ensure proper use of heading tags (h1, h2, etc.) in post content. Implement structured data (JSON-LD) for blog posts.",
+      "testStrategy": "Validate meta tags and structured data using testing tools like Google's Structured Data Testing Tool. Test social media preview rendering. Verify sitemap.xml generation and structure.",
+      "subtasks": []
+    },
+    {
+      "id": 13,
+      "title": "성능 최적화",
+      "description": "Implement performance optimizations for faster page loads and better user experience.",
+      "status": "pending",
+      "dependencies": [
+        5,
+        6,
+        7
+      ],
+      "priority": "medium",
+      "details": "Implement lazy loading for images using Next.js Image component. Set up caching headers for static assets. Minimize and optimize CSS and JavaScript. Implement code splitting using Next.js dynamic imports. Use Web Vitals API to measure and report core web vitals.",
+      "testStrategy": "Measure performance using Lighthouse and WebPageTest. Monitor Core Web Vitals. Test performance improvements across different devices and network conditions.",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "Next.js Image를 활용한 이미지 최적화",
+          "description": "Implement the Next.js Image component to optimize images across the application",
+          "dependencies": [],
+          "details": "Use the next/image component to enable automatic size optimization, prevent layout shifts, and implement lazy loading. Set width and height attributes for remote images, use static imports for local images, add descriptive alt text, and apply the priority prop for critical above-the-fold images.",
+          "status": "pending"
+        },
+        {
+          "id": 2,
+          "title": "캐싱 전략 구현",
+          "description": "Develop and implement an effective caching strategy for the application",
+          "dependencies": [],
+          "details": "Implement browser caching with appropriate cache-control headers, set up CDN caching for static assets, configure service worker caching for offline support, and implement data caching strategies using SWR or React Query for API responses.",
+          "status": "pending"
+        },
+        {
+          "id": 3,
+          "title": "동적 임포트를 통한 코드 분할",
+          "description": "Implement code splitting using dynamic imports to reduce initial bundle size",
+          "dependencies": [],
+          "details": "Use Next.js dynamic imports for components that aren't needed immediately, implement route-based code splitting with Next.js pages, lazy load heavy libraries and components, and set up proper loading states for dynamically imported components.",
+          "status": "pending"
+        },
+        {
+          "id": 4,
+          "title": "CSS 및 JS 최적화",
+          "description": "Optimize CSS and JavaScript assets to improve loading performance",
+          "dependencies": [
+            3
+          ],
+          "details": "Implement CSS-in-JS with proper code splitting, remove unused CSS/JS, minify production assets, implement critical CSS extraction, defer non-critical JavaScript, and optimize third-party script loading with resource hints.",
+          "status": "pending"
+        },
+        {
+          "id": 5,
+          "title": "핵심 웹 바이탈 모니터링",
+          "description": "Set up monitoring for Core Web Vitals to track performance improvements",
+          "dependencies": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "details": "Implement real user monitoring (RUM) for Core Web Vitals (LCP, FID, CLS), set up performance budgets, create a dashboard for tracking metrics over time, configure alerts for performance regressions, and establish a process for regular performance reviews.",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "title": "접근성 향상 구현",
+      "description": "Ensure the blog is accessible to users with disabilities.",
+      "status": "pending",
+      "dependencies": [
+        5,
+        6
+      ],
+      "priority": "medium",
+      "details": "Implement proper ARIA attributes. Ensure keyboard navigation support. Verify color contrast ratios. Add skip to content link. Ensure proper heading structure. Test with screen readers.",
+      "testStrategy": "Use aXe or WAVE for automated accessibility testing. Perform manual testing with keyboard-only navigation. Test with popular screen readers like NVDA or VoiceOver.",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "ARIA 속성 구현",
+          "description": "Add appropriate ARIA roles, states, and properties to ensure UI components are properly identified by assistive technologies",
+          "dependencies": [],
+          "details": "Identify all interactive elements that need ARIA attributes, ensure proper labeling of UI components, and verify that dynamic content changes are announced to screen readers through appropriate ARIA live regions",
+          "status": "pending"
+        },
+        {
+          "id": 2,
+          "title": "키보드 네비게이션 개선",
+          "description": "Ensure all interactive elements are accessible and operable using only a keyboard",
+          "dependencies": [
+            1
+          ],
+          "details": "Implement proper focus management, ensure logical tab order, add visible focus indicators, and create keyboard shortcuts for complex interactions that might be difficult with standard tab navigation",
+          "status": "pending"
+        },
+        {
+          "id": 3,
+          "title": "색상 대비 검증",
+          "description": "Verify that all text content meets minimum contrast ratio thresholds according to WCAG guidelines",
+          "dependencies": [],
+          "details": "Audit all text elements against backgrounds, ensure color is not the only means of conveying information, and implement alternative visual indicators for colorblind users",
+          "status": "pending"
+        },
+        {
+          "id": 4,
+          "title": "제목 구조 최적화",
+          "description": "Ensure proper semantic heading structure throughout the application",
+          "dependencies": [],
+          "details": "Audit and reorganize heading levels (h1-h6) to create a logical document outline, avoid skipping heading levels, and ensure each page has a unique h1 element",
+          "status": "pending"
+        },
+        {
+          "id": 5,
+          "title": "스크린 리더 테스트",
+          "description": "Test the application with popular screen readers to identify and fix accessibility issues",
+          "dependencies": [
+            1,
+            2,
+            4
+          ],
+          "details": "Conduct testing with NVDA, JAWS, and VoiceOver across different browsers, document issues encountered, and verify that all content is properly announced and navigable",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "title": "지속적 통합 및 배포 설정",
+      "description": "Implement CI/CD pipeline for automated testing and deployment.",
+      "status": "pending",
+      "dependencies": [
+        1,
+        2
+      ],
+      "priority": "high",
+      "details": "Set up GitHub Actions for CI/CD. Configure workflow to run tests, lint code, and check types on every pull request. Set up automatic deployment to Vercel or Netlify. Implement branch protection rules. Generate and display test coverage reports.",
+      "testStrategy": "Verify successful pipeline execution for various scenarios (push to main, pull requests). Test deployment process. Ensure proper reporting of test results and coverage.",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "GitHub Actions 워크플로우 설정",
+          "description": "Create the basic GitHub Actions workflow structure in your repository",
+          "dependencies": [],
+          "details": "Create a .github/workflows directory in your repository root and add a YAML file (e.g., ci-cd.yml) that defines the workflow name, triggers (push to main branch and pull requests), and basic job structure",
+          "status": "pending"
+        },
+        {
+          "id": 2,
+          "title": "테스트 및 린트 자동화",
+          "description": "Configure automated testing and linting in the CI pipeline",
+          "dependencies": [
+            1
+          ],
+          "details": "Add jobs to the workflow that install dependencies, run linters (ESLint, Prettier, etc.), and execute test suites. Configure caching to improve workflow speed and set up appropriate fail conditions",
+          "status": "pending"
+        },
+        {
+          "id": 3,
+          "title": "배포 설정",
+          "description": "Set up automated deployment to Vercel/Netlify",
+          "dependencies": [
+            2
+          ],
+          "details": "Configure deployment job that triggers after successful tests, using the appropriate GitHub Action for Vercel or Netlify. Set up environment variables, deployment contexts (preview/production), and deployment conditions based on branch",
+          "status": "pending"
+        },
+        {
+          "id": 4,
+          "title": "브랜치 보호 규칙 구현",
+          "description": "Implement branch protection rules to enforce CI checks",
+          "dependencies": [
+            1,
+            2
+          ],
+          "details": "Configure branch protection rules for the main branch that require status checks to pass before merging, require pull request reviews, and prevent force pushes to ensure code quality and stability",
+          "status": "pending"
+        },
+        {
+          "id": 5,
+          "title": "테스트 커버리지 보고서 구현",
+          "description": "Implement test coverage reporting and visualization",
+          "dependencies": [
+            2
+          ],
+          "details": "Add a job to generate test coverage reports, configure a coverage threshold, and set up a reporting tool (like Codecov or Coveralls) to visualize coverage trends and display badges in the repository README",
+          "status": "pending"
+        }
+      ]
+    }
+  ]
+}

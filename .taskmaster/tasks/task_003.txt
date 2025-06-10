@@ -1,11 +1,43 @@
 # Task ID: 3
-# Title: Implement Markdown Parsing and Metadata Extraction
+# Title: 마크다운 파싱 및 메타데이터 추출 구현
 # Status: pending
 # Dependencies: 2
 # Priority: high
-# Description: Create utility functions to parse Markdown files and extract metadata using the TDD approach.
+# Description: Develop functionality to parse Markdown files and extract metadata using the YAML Front Matter format.
 # Details:
-Use gray-matter (version 4.0.3) for parsing YAML front matter. Implement functions to read Markdown files from the 'post' folder, extract metadata (title, date, tags, summary), and parse Markdown content. Use remark (version 14.0.3) for Markdown to HTML conversion.
+Use gray-matter 4.0.3 for parsing YAML Front Matter. Implement a function to read Markdown files from the 'post' folder, extract metadata (title, date, tags, summary), and parse the content. Handle potential errors in file reading or parsing. Use the latest version of fs-extra (11.1.1) for enhanced file system operations.
 
 # Test Strategy:
-Write tests for metadata extraction, content parsing, and error handling (e.g., missing required fields). Use mock filesystem for testing file reading operations.
+Write unit tests for the parsing function. Test with various Markdown files, including edge cases like missing metadata or malformed YAML. Ensure correct extraction of all metadata fields and content.
+
+# Subtasks:
+## 1. 파일 시스템 유틸리티 설정 [pending]
+### Dependencies: None
+### Description: Configure the necessary file system utilities to read and write Markdown files
+### Details:
+Set up the file system module (fs/promises) for asynchronous file operations. Create utility functions for reading Markdown files, checking if files exist, and writing processed content back to the file system. Include path resolution functionality to handle relative and absolute paths correctly.
+
+## 2. gray-matter를 이용한 YAML Front Matter 파싱 [pending]
+### Dependencies: 3.1
+### Description: Implement the parsing of YAML Front Matter from Markdown files using the gray-matter library
+### Details:
+Install and configure the gray-matter package. Create a function that takes file content as input and uses gray-matter to separate the YAML Front Matter from the Markdown content. Handle edge cases like missing or malformed Front Matter gracefully.
+
+## 3. 메타데이터 추출 함수 [pending]
+### Dependencies: 3.2
+### Description: Create a function to extract and validate metadata from the parsed YAML Front Matter
+### Details:
+Develop a function that processes the data object returned by gray-matter. Implement validation for required metadata fields. Create a standardized metadata object structure with default values for missing optional fields. Add type checking and data normalization as needed.
+
+## 4. 콘텐츠 파싱 함수 [pending]
+### Dependencies: 3.2
+### Description: Implement Markdown content parsing using a Markdown parser library
+### Details:
+Select and integrate a Markdown parser library (like markdig, markdown-it, or similar). Create a function that processes the Markdown content separated from the Front Matter. Configure the parser with appropriate extensions and options. Implement any custom syntax handling or transformations needed for the specific use case.
+
+## 5. 에러 핸들링 구현 [pending]
+### Dependencies: 3.1, 3.2, 3.3, 3.4
+### Description: Implement comprehensive error handling throughout the Markdown parsing process
+### Details:
+Create custom error classes for different types of failures (file system errors, parsing errors, validation errors). Implement try/catch blocks around critical operations. Add detailed error messages with context information. Create a logging mechanism for errors and warnings. Implement graceful fallbacks for non-critical failures.
+

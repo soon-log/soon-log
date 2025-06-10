@@ -1,11 +1,43 @@
 # Task ID: 9
-# Title: Implement Search Functionality
+# Title: 검색 기능 구현
 # Status: pending
 # Dependencies: 5
 # Priority: medium
-# Description: Add a search feature to find posts by title or tags.
+# Description: Develop a client-side search feature for blog posts.
 # Details:
-Implement client-side search using Fuse.js (version 6.6.2) for fuzzy searching. Create a search input component. Update post list based on search results. Optimize for performance with debouncing.
+Implement a search input component. Use Fuse.js 6.6.2 for fuzzy searching. Index posts by title, tags, and content. Display search results in real-time as the user types. Implement debouncing for better performance.
 
 # Test Strategy:
-Write unit tests for the search algorithm. Create integration tests for the search functionality, including edge cases like empty results. Test search performance with a large number of posts.
+Test search accuracy for various queries. Verify real-time update of results. Test edge cases like empty search or no results. Measure and optimize search performance.
+
+# Subtasks:
+## 1. 검색 입력 컴포넌트 생성 [pending]
+### Dependencies: None
+### Description: Develop a reusable search input component that captures user queries and triggers the search functionality
+### Details:
+Build an input field with onChange event handler to capture user input. Include placeholder text and styling for better UX. Implement state management to store the current search query using React state or equivalent.
+
+## 2. 퍼지 검색을 위한 Fuse.js 통합 [pending]
+### Dependencies: 9.1
+### Description: Set up Fuse.js library to enable fuzzy search capabilities with appropriate configuration options
+### Details:
+Install Fuse.js package. Configure search options including threshold (0.3), keys to search (title, content with appropriate weights), and other parameters like minMatchCharLength. Create a function to initialize Fuse with the search index and execute searches based on user input.
+
+## 3. 포스트 인덱싱 로직 개발 [pending]
+### Dependencies: None
+### Description: Create a system to generate and fetch the search index containing all searchable content
+### Details:
+For static sites, implement logic to generate a JSON search index during build time. Include relevant fields like title, content, URL, and any other searchable metadata. Create a function to fetch this index (e.g., from '/search-data.json') when the application initializes.
+
+## 4. 실시간 검색 결과 표시 구현 [pending]
+### Dependencies: 9.1, 9.2, 9.3
+### Description: Create a component to display search results as the user types
+### Details:
+Develop a results component that renders the filtered items returned by Fuse.js. Include highlighting for matched text portions. Handle empty states and loading states appropriately. Ensure results update dynamically as the user modifies their search query.
+
+## 5. 디바운싱을 통한 검색 성능 최적화 [pending]
+### Dependencies: 9.1, 9.2
+### Description: Add debouncing to prevent excessive search operations during rapid typing
+### Details:
+Implement a debounce function that delays search execution until the user pauses typing. Set an appropriate delay time (e.g., 300ms). Ensure the search is only triggered for queries with sufficient length (e.g., 3+ characters). Add loading indicators to provide feedback during search operations.
+

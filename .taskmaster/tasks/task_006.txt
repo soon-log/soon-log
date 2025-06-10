@@ -1,11 +1,43 @@
 # Task ID: 6
-# Title: Implement Individual Blog Post Page
+# Title: 개별 블로그 포스트 페이지 생성
 # Status: pending
 # Dependencies: 3, 4
 # Priority: high
-# Description: Create a detailed view page for individual blog posts.
+# Description: Develop the individual blog post page to display full post content.
 # Details:
-Use Next.js dynamic routing to create pages for each post. Implement server-side rendering (getServerSideProps) to fetch post data. Render Markdown content as HTML. Display metadata (title, date, tags) prominently.
+Create a dynamic route in Next.js for individual posts. Render Markdown content as HTML using remark 14.0.2 and remark-html 15.0.2. Display post metadata (title, date, tags). Implement proper SEO meta tags. Use Next.js getStaticProps and getStaticPaths for static generation of post pages.
 
 # Test Strategy:
-Write unit tests for the Markdown to HTML conversion. Create integration tests for the post page, checking correct rendering of content and metadata.
+Test correct rendering of Markdown content. Verify proper display of metadata. Test SEO meta tags. Ensure correct static generation of pages.
+
+# Subtasks:
+## 1. Next.js 동적 라우트 설정 [pending]
+### Dependencies: None
+### Description: Create the file structure and implement dynamic routing for blog posts
+### Details:
+Create a [slug].js file in the pages/blog directory to handle dynamic blog post routes. Implement the useRouter hook to access route parameters. Set up the basic page structure that will fetch and display blog content based on the slug parameter.
+
+## 2. Remark를 이용한 마크다운-HTML 변환 [pending]
+### Dependencies: 6.1
+### Description: Implement the conversion of Markdown content to HTML using the Remark library
+### Details:
+Install remark and related packages. Create a utility function that takes Markdown content as input and returns processed HTML. Implement syntax highlighting for code blocks and handle other Markdown features like tables and lists.
+
+## 3. 포스트 메타데이터 표시 컴포넌트 [pending]
+### Dependencies: 6.1
+### Description: Create a reusable component to display blog post metadata
+### Details:
+Design and implement a component that displays post metadata such as title, date, author, and reading time. Style the component appropriately and ensure it's responsive. Make it reusable across different parts of the blog.
+
+## 4. SEO 메타데이터 구현 [pending]
+### Dependencies: 6.1, 6.3
+### Description: Add SEO-related metadata to blog post pages
+### Details:
+Implement Next.js Head component to add appropriate meta tags for SEO. Include Open Graph tags for social sharing, canonical URLs, and other SEO best practices. Ensure dynamic metadata is generated based on each post's content.
+
+## 5. 정적 생성 설정 [pending]
+### Dependencies: 6.1, 6.2
+### Description: Configure static generation for blog posts using getStaticPaths and getStaticProps
+### Details:
+Implement getStaticPaths to define which blog posts should be pre-rendered at build time. Create getStaticProps to fetch the content and metadata for each post. Set up incremental static regeneration if needed for content that changes frequently.
+

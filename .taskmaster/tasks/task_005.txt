@@ -1,11 +1,49 @@
 # Task ID: 5
-# Title: Implement Blog Post List Page with Infinite Scroll
+# Title: 무한 스크롤 기능이 있는 블로그 포스트 목록 페이지 구현
 # Status: pending
 # Dependencies: 3, 4
 # Priority: high
-# Description: Create the main page displaying a list of blog posts with infinite scroll functionality.
+# Description: Create the main blog post list page with infinite scroll functionality.
 # Details:
-Use Next.js API routes to serve post data. Implement client-side fetching with SWR (version 2.1.5) for efficient data loading. Use Intersection Observer API for infinite scroll. Display post title, date, summary, and tags in each PostCard component.
+Develop a React component for the blog post list. Implement infinite scroll using Intersection Observer API or a library like react-infinite-scroll-component 6.1.0. Display post title, date, summary, and tags. Sort posts by date. Use Next.js Image component for optimized image loading. Implement skeleton loading for better UX.
 
 # Test Strategy:
-Test the API route for correct data return. Write integration tests for the list page, mocking API calls. Test infinite scroll behavior using React Testing Library and jest-dom.
+Write unit tests for the list component. Test infinite scroll behavior. Verify correct display of post metadata. Test edge cases like no posts or network errors.
+
+# Subtasks:
+## 1. 포스트 목록 컴포넌트 구조 설계 [pending]
+### Dependencies: None
+### Description: Create the main container component that will house the blog post cards and handle the overall layout
+### Details:
+Design a responsive container component that will hold all blog post cards. Include a grid or flex layout system to arrange posts appropriately across different screen sizes. Set up the initial state management for posts array, loading state, and pagination variables.
+
+## 2. 데이터 페칭 로직 구현 [pending]
+### Dependencies: 5.1
+### Description: Implement the API service and hooks to fetch paginated blog post data
+### Details:
+Create a data fetching service that handles API calls with pagination parameters. Implement custom hooks for fetching initial posts and subsequent pages. Set up state management for tracking current page, total pages, and whether more posts are available. Include caching mechanisms to prevent redundant API calls.
+
+## 3. 인터섹션 옵저버를 활용한 무한 스크롤 구현 [pending]
+### Dependencies: 5.1, 5.2
+### Description: Set up the Intersection Observer API to detect when user scrolls to the bottom of the list
+### Details:
+Implement the Intersection Observer API to monitor when the last post card or a sentinel element becomes visible. Create the logic to trigger the next page load when the observer fires. Handle debouncing to prevent multiple simultaneous requests. Ensure the observer is properly connected and disconnected during component lifecycle.
+
+## 4. 포스트 카드 컴포넌트 [pending]
+### Dependencies: 5.1
+### Description: Design and implement the individual blog post card component
+### Details:
+Create a reusable post card component that displays blog post information including title, excerpt, featured image, date, and author. Ensure the card is responsive and visually appealing. Implement proper image loading optimization and text truncation for consistent card heights.
+
+## 5. 스켈레톤 로딩 상태 구현 [pending]
+### Dependencies: 5.1, 5.4
+### Description: Create placeholder loading states for when new posts are being fetched
+### Details:
+Design skeleton loading components that mimic the structure of the post cards. Implement animations for the skeleton loaders to indicate loading activity. Create logic to display these skeletons when initial posts are loading or when additional posts are being fetched during scrolling.
+
+## 6. 에러 처리 및 예외 상황 관리 [pending]
+### Dependencies: 5.2, 5.3
+### Description: Implement robust error handling and manage edge cases in the infinite scroll implementation
+### Details:
+Create error handling for failed API requests with appropriate user feedback. Implement retry mechanisms for failed requests. Handle edge cases such as: no more posts available, slow network connections, browser back button navigation, and maintaining scroll position when returning to the page. Add accessibility features for keyboard navigation and screen readers.
+

@@ -1,11 +1,43 @@
 # Task ID: 13
-# Title: Implement Performance Optimizations
+# Title: 성능 최적화
 # Status: pending
 # Dependencies: 5, 6, 7
 # Priority: medium
-# Description: Optimize the application for better performance and load times.
+# Description: Implement performance optimizations for faster page loads and better user experience.
 # Details:
-Implement image optimization using Next.js Image component. Use dynamic imports for code splitting. Implement caching strategies for API routes. Optimize Tailwind CSS for production.
+Implement lazy loading for images using Next.js Image component. Set up caching headers for static assets. Minimize and optimize CSS and JavaScript. Implement code splitting using Next.js dynamic imports. Use Web Vitals API to measure and report core web vitals.
 
 # Test Strategy:
-Use Lighthouse in CI to test performance scores. Write tests to verify lazy loading of images and components. Measure and assert on key performance metrics like Time to Interactive and First Contentful Paint.
+Measure performance using Lighthouse and WebPageTest. Monitor Core Web Vitals. Test performance improvements across different devices and network conditions.
+
+# Subtasks:
+## 1. Next.js Image를 활용한 이미지 최적화 [pending]
+### Dependencies: None
+### Description: Implement the Next.js Image component to optimize images across the application
+### Details:
+Use the next/image component to enable automatic size optimization, prevent layout shifts, and implement lazy loading. Set width and height attributes for remote images, use static imports for local images, add descriptive alt text, and apply the priority prop for critical above-the-fold images.
+
+## 2. 캐싱 전략 구현 [pending]
+### Dependencies: None
+### Description: Develop and implement an effective caching strategy for the application
+### Details:
+Implement browser caching with appropriate cache-control headers, set up CDN caching for static assets, configure service worker caching for offline support, and implement data caching strategies using SWR or React Query for API responses.
+
+## 3. 동적 임포트를 통한 코드 분할 [pending]
+### Dependencies: None
+### Description: Implement code splitting using dynamic imports to reduce initial bundle size
+### Details:
+Use Next.js dynamic imports for components that aren't needed immediately, implement route-based code splitting with Next.js pages, lazy load heavy libraries and components, and set up proper loading states for dynamically imported components.
+
+## 4. CSS 및 JS 최적화 [pending]
+### Dependencies: 13.3
+### Description: Optimize CSS and JavaScript assets to improve loading performance
+### Details:
+Implement CSS-in-JS with proper code splitting, remove unused CSS/JS, minify production assets, implement critical CSS extraction, defer non-critical JavaScript, and optimize third-party script loading with resource hints.
+
+## 5. 핵심 웹 바이탈 모니터링 [pending]
+### Dependencies: 13.1, 13.2, 13.3, 13.4
+### Description: Set up monitoring for Core Web Vitals to track performance improvements
+### Details:
+Implement real user monitoring (RUM) for Core Web Vitals (LCP, FID, CLS), set up performance budgets, create a dashboard for tracking metrics over time, configure alerts for performance regressions, and establish a process for regular performance reviews.
+
