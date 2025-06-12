@@ -18,7 +18,7 @@ const compat = new FlatCompat({
 const eslintConfig = [
   ...compat.extends('next/core-web-vitals', 'next/typescript'),
   {
-    ignores: ['node_modules/**', 'dist/**', '*.config.ts'],
+    ignores: ['node_modules/**', 'dist/**', '*.config.{js,mjs,ts}'],
     files: ['**/*.{js,jsx,ts,tsx,mjs,cjs}'],
     languageOptions: {
       ecmaVersion: 'latest',
