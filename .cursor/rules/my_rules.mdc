@@ -1,0 +1,7 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+의존성 설치는 pnpm을 사용합니다.
+생성할 코드는 ESLint 규칙을 준수합니다.

@@ -1,6 +1,6 @@
 # Task ID: 1
 # Title: 개발 환경 설정
-# Status: pending
+# Status: done
 # Dependencies: None
 # Priority: high
 # Description: Set up the initial project structure with Next.js, TypeScript, ESLint, and Prettier.

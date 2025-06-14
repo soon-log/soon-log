@@ -1,6 +1,6 @@
 # Task ID: 2
 # Title: Jest TDD 환경 구축
-# Status: pending
+# Status: done
 # Dependencies: 1
 # Priority: high
 # Description: Set up Jest and React Testing Library for test-driven development.

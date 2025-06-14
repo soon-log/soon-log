@@ -7,6 +7,8 @@ import eslintPluginImport from 'eslint-plugin-import';
 import eslintPluginJsxA11y from 'eslint-plugin-jsx-a11y';
 import eslintPluginPrettier from 'eslint-plugin-prettier';
 import eslintPluginReactHooks from 'eslint-plugin-react-hooks';
+import eslintPluginTestingLibrary from 'eslint-plugin-testing-library';
+import eslintPluginJestDom from 'eslint-plugin-jest-dom';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -78,6 +80,15 @@ const eslintConfig = [
       ...eslintConfigPrettier.rules,
       'prettier/prettier': ['error', {}, { usePrettierrc: true }]
     }
+  },
+  // Testing Library 설정 (테스트 파일에만 적용)
+  {
+    files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
+    ...eslintPluginTestingLibrary.configs['flat/react']
+  },
+  {
+    files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
+    ...eslintPluginJestDom.configs['flat/recommended']
   }
 ];
 

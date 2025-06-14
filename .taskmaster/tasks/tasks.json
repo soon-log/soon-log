@@ -4,7 +4,7 @@
       "id": 1,
       "title": "개발 환경 설정",
       "description": "Set up the initial project structure with Next.js, TypeScript, ESLint, and Prettier.",
-      "status": "pending",
+      "status": "done",
       "dependencies": [],
       "priority": "high",
       "details": "Initialize a new Next.js project with TypeScript support. Configure ESLint for code quality and Prettier for code formatting. Set up a strict tsconfig.json for enhanced type safety. Use the latest stable versions: Next.js 13.4.3, TypeScript 5.0.4, ESLint 8.41.0, and Prettier 2.8.8. Include recommended VS Code extensions in .vscode/extensions.json.",
@@ -15,7 +15,7 @@
       "id": 2,
       "title": "Jest TDD 환경 구축",
       "description": "Set up Jest and React Testing Library for test-driven development.",
-      "status": "pending",
+      "status": "done",
       "dependencies": [
         1
       ],
