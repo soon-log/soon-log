@@ -1,94 +1,14 @@
 {
   "meta": {
-    "generatedAt": "2025-06-10T13:40:51.603Z",
-    "tasksAnalyzed": 15,
-    "totalTasks": 15,
+    "generatedAt": "2025-06-16T14:11:37.052Z",
+    "tasksAnalyzed": 10,
+    "totalTasks": 10,
     "analysisCount": 15,
     "thresholdScore": 5,
     "projectName": "Taskmaster",
-    "usedResearch": true
+    "usedResearch": false
   },
   "complexityAnalysis": [
-    {
-      "taskId": 1,
-      "taskTitle": "개발 환경 설정",
-      "complexityScore": 4,
-      "recommendedSubtasks": 4,
-      "expansionPrompt": "Break down the Next.js TypeScript project setup into specific configuration steps including: 1) Project initialization, 2) TypeScript configuration, 3) ESLint setup, and 4) Prettier integration",
-      "reasoning": "Setting up a Next.js project with TypeScript is relatively straightforward as Next.js has built-in TypeScript support. The task involves initializing the project, configuring TypeScript, and setting up code quality tools. Next.js automatically installs TypeScript dependencies when files are renamed to .ts/.tsx extensions."
-    },
-    {
-      "taskId": 2,
-      "taskTitle": "Jest TDD 환경 구축",
-      "complexityScore": 5,
-      "recommendedSubtasks": 4,
-      "expansionPrompt": "Divide the Jest and React Testing Library setup into: 1) Installation of dependencies, 2) Jest configuration for Next.js and TypeScript, 3) Test directory structure setup, and 4) Sample test creation to verify the environment",
-      "reasoning": "Setting up Jest with React Testing Library in a Next.js TypeScript project requires specific configuration to handle TypeScript and Next.js features. The task involves installing dependencies, configuring Jest, creating test directories, and writing sample tests to verify the setup."
-    },
-    {
-      "taskId": 3,
-      "taskTitle": "마크다운 파싱 및 메타데이터 추출 구현",
-      "complexityScore": 6,
-      "recommendedSubtasks": 5,
-      "expansionPrompt": "Break down the Markdown parsing implementation into: 1) File system utility setup, 2) YAML Front Matter parsing with gray-matter, 3) Metadata extraction function, 4) Content parsing function, and 5) Error handling implementation",
-      "reasoning": "This task involves working with file system operations, parsing Markdown with YAML Front Matter, extracting metadata, and handling potential errors. It requires integration of multiple libraries and careful error handling for various edge cases."
-    },
-    {
-      "taskId": 4,
-      "taskTitle": "기본 스타일링 및 반응형 디자인 개발",
-      "complexityScore": 5,
-      "recommendedSubtasks": 4,
-      "expansionPrompt": "Divide the Tailwind CSS styling system into: 1) Tailwind installation and configuration, 2) Base layout component development, 3) Custom utility classes creation, and 4) Responsive design implementation with breakpoints",
-      "reasoning": "Setting up Tailwind CSS in a Next.js project requires configuration and customization. The task involves creating responsive layouts, utility classes, and ensuring consistent styling across different viewport sizes."
-    },
-    {
-      "taskId": 5,
-      "taskTitle": "무한 스크롤 기능이 있는 블로그 포스트 목록 페이지 구현",
-      "complexityScore": 7,
-      "recommendedSubtasks": 6,
-      "expansionPrompt": "Break down the infinite scroll blog post list into: 1) Post list component structure, 2) Data fetching logic, 3) Infinite scroll implementation with Intersection Observer, 4) Post card component, 5) Skeleton loading states, and 6) Error handling and edge cases",
-      "reasoning": "Implementing infinite scroll requires complex state management, intersection observer API integration, and handling of loading states. The component needs to fetch and display post data efficiently while managing pagination and user interaction."
-    },
-    {
-      "taskId": 6,
-      "taskTitle": "개별 블로그 포스트 페이지 생성",
-      "complexityScore": 6,
-      "recommendedSubtasks": 5,
-      "expansionPrompt": "Divide the blog post page implementation into: 1) Dynamic route setup in Next.js, 2) Markdown to HTML rendering with remark, 3) Post metadata display component, 4) SEO metadata implementation, and 5) Static generation configuration",
-      "reasoning": "Creating individual blog post pages involves dynamic routing in Next.js, rendering Markdown content as HTML, displaying metadata, and implementing SEO tags. The static generation approach adds complexity but improves performance."
-    },
-    {
-      "taskId": 7,
-      "taskTitle": "코드 구문 강조 기능 구현",
-      "complexityScore": 4,
-      "recommendedSubtasks": 3,
-      "expansionPrompt": "Break down the syntax highlighting implementation into: 1) Prism.js integration with Next.js, 2) Custom code block component development, and 3) Language-specific styling configuration",
-      "reasoning": "Implementing syntax highlighting with Prism.js is relatively straightforward but requires careful integration with the Markdown rendering process. The task involves creating a custom component and ensuring proper styling for different programming languages."
-    },
-    {
-      "taskId": 8,
-      "taskTitle": "다크 모드 지원 개발",
-      "complexityScore": 5,
-      "recommendedSubtasks": 4,
-      "expansionPrompt": "Divide the dark mode implementation into: 1) Tailwind dark mode configuration, 2) Theme toggle component, 3) Local storage persistence logic, and 4) System preference detection",
-      "reasoning": "Implementing dark mode requires managing theme state, persisting user preferences, and ensuring smooth transitions between themes. The integration with Tailwind CSS simplifies styling, but handling system preferences and persistence adds complexity."
-    },
-    {
-      "taskId": 9,
-      "taskTitle": "검색 기능 구현",
-      "complexityScore": 6,
-      "recommendedSubtasks": 5,
-      "expansionPrompt": "Break down the search feature into: 1) Search input component, 2) Fuse.js integration for fuzzy search, 3) Post indexing logic, 4) Real-time results display, and 5) Search performance optimization with debouncing",
-      "reasoning": "Implementing client-side search requires creating a search index, handling user input, displaying results in real-time, and optimizing performance. The fuzzy search functionality adds complexity but improves user experience."
-    },
-    {
-      "taskId": 10,
-      "taskTitle": "태그/카테고리 필터링 개발",
-      "complexityScore": 5,
-      "recommendedSubtasks": 4,
-      "expansionPrompt": "Divide the tag filtering functionality into: 1) Tag display component, 2) Post filtering logic, 3) URL state management, and 4) Integration with infinite scroll",
-      "reasoning": "Implementing tag filtering requires managing filter state, updating the URL, and integrating with the existing post list. The complexity comes from ensuring smooth interaction between filtering and infinite scroll functionality."
-    },
     {
       "taskId": 11,
       "taskTitle": "RSS 피드 생성",
@@ -128,6 +48,86 @@
       "recommendedSubtasks": 5,
       "expansionPrompt": "Break down the CI/CD implementation into: 1) GitHub Actions workflow setup, 2) Test and lint automation, 3) Deployment configuration for Vercel/Netlify, 4) Branch protection rules, and 5) Test coverage reporting",
       "reasoning": "Setting up CI/CD involves configuring workflows for testing, linting, and deployment. The complexity comes from ensuring all parts of the pipeline work together correctly and handling different scenarios like pull requests and direct pushes."
+    },
+    {
+      "taskId": 1,
+      "taskTitle": "빌드 타임 마크다운 파싱 시스템",
+      "complexityScore": 7,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Task 1(빌드 타임 마크다운 파싱 시스템)을 다음 하위 작업으로 분할해주세요: 1) 파일 시스템 탐색 유틸리티 구현, 2) 마크다운 파싱 및 메타데이터 추출 기능 구현, 3) JSON 데이터 파일 생성 로직 구현, 4) 증분 빌드를 위한 파일 해시 추적 시스템 구현, 5) 전체 빌드 스크립트 통합 및 테스트. 각 하위 작업에 대한 상세 설명, 구현 세부사항, 테스트 전략을 포함해주세요.",
+      "reasoning": "이 작업은 파일 시스템 탐색, 마크다운 파싱, 메타데이터 추출, JSON 생성, 증분 빌드 등 여러 기술적 요소를 포함하고 있습니다. 재귀적 디렉토리 탐색, 파일 해시 추적, 다양한 형식의 front matter 처리 등 복잡한 로직이 필요합니다. 또한 TDD 접근 방식으로 각 기능에 대한 테스트 작성도 요구됩니다. 이러한 복잡성을 관리하기 위해 5개의 논리적 하위 작업으로 분할하는 것이 효과적입니다."
+    },
+    {
+      "taskId": 2,
+      "taskTitle": "정적 데이터 로더 및 런타임 시스템",
+      "complexityScore": 6,
+      "recommendedSubtasks": 4,
+      "expansionPrompt": "Task 2(정적 데이터 로더 및 런타임 시스템)을 다음 하위 작업으로 분할해주세요: 1) 데이터 타입 정의 및 인터페이스 설계, 2) 기본 데이터 로딩 유틸리티 함수 구현(getPosts, getPostsByCategory 등), 3) 개발 모드 실시간 파일 변경 감지 시스템 구현, 4) 검색 및 필터링 기능 구현. 각 하위 작업에 대한 상세 설명, 구현 세부사항, 테스트 전략을 포함해주세요.",
+      "reasoning": "이 작업은 정적 JSON 데이터를 로드하고 접근하는 유틸리티 함수 개발과 개발 모드에서의 실시간 파일 변경 지원을 포함합니다. TypeScript 인터페이스 정의, 다양한 데이터 접근 함수 구현, 캐싱 메커니즘, 개발 모드 지원 등 여러 기능이 필요합니다. 특히 프로덕션과 개발 모드 모두를 지원해야 하는 복잡성이 있습니다. 4개의 하위 작업으로 분할하여 각 기능을 독립적으로 개발하고 테스트하는 것이 효율적입니다."
+    },
+    {
+      "taskId": 3,
+      "taskTitle": "무한 스크롤이 있는 블로그 포스트 목록 페이지",
+      "complexityScore": 7,
+      "recommendedSubtasks": 4,
+      "expansionPrompt": "Task 3(무한 스크롤이 있는 블로그 포스트 목록 페이지)을 다음 하위 작업으로 분할해주세요: 1) PostCard 컴포넌트 구현, 2) PostList 컴포넌트 및 기본 레이아웃 구현, 3) Intersection Observer를 활용한 무한 스크롤 기능 구현, 4) 상태 관리 및 에러 처리 구현. 각 하위 작업에 대한 상세 설명, 구현 세부사항, 테스트 전략을 포함해주세요.",
+      "reasoning": "이 작업은 반응형 UI 구현과 무한 스크롤 기능을 포함하는 복잡한 프론트엔드 개발을 요구합니다. Intersection Observer API를 사용한 무한 스크롤 구현, 상태 관리, 에러 처리, 반응형 디자인 등 여러 기술적 요소가 필요합니다. 특히 무한 스크롤은 성능과 사용자 경험을 고려한 세심한 구현이 필요합니다. 4개의 하위 작업으로 분할하여 UI 컴포넌트와 기능적 요소를 분리하는 것이 효과적입니다."
+    },
+    {
+      "taskId": 4,
+      "taskTitle": "개별 포스트 상세 페이지",
+      "complexityScore": 6,
+      "recommendedSubtasks": 4,
+      "expansionPrompt": "Task 4(개별 포스트 상세 페이지)를 다음 하위 작업으로 분할해주세요: 1) 동적 라우팅 및 데이터 페칭 구현(getStaticProps, getStaticPaths), 2) PostHeader 컴포넌트 구현, 3) PostContent 및 마크다운 렌더링 시스템 구현, 4) RelatedPosts 컴포넌트 및 네비게이션 구현. 각 하위 작업에 대한 상세 설명, 구현 세부사항, 테스트 전략을 포함해주세요.",
+      "reasoning": "이 작업은 Next.js의 동적 라우팅, 정적 사이트 생성, 마크다운 렌더링, 코드 구문 강조 등 여러 기술적 요소를 포함합니다. 특히 마크다운을 HTML로 변환하고 코드 블록에 구문 강조를 적용하는 부분은 복잡합니다. 또한 접근성을 고려한 구현이 필요합니다. 4개의 하위 작업으로 분할하여 라우팅, UI 컴포넌트, 마크다운 렌더링, 관련 포스트 기능을 독립적으로 개발하는 것이 효율적입니다."
+    },
+    {
+      "taskId": 5,
+      "taskTitle": "카테고리 네비게이션 및 필터링 시스템",
+      "complexityScore": 6,
+      "recommendedSubtasks": 3,
+      "expansionPrompt": "Task 5(카테고리 네비게이션 및 필터링 시스템)를 다음 하위 작업으로 분할해주세요: 1) CategoryNav 컴포넌트 및 사이드바/헤더 네비게이션 구현, 2) 카테고리 페이지 및 CategoryHeader 컴포넌트 구현, 3) 태그 기반 필터링 및 URL 쿼리 매개변수 처리 구현. 각 하위 작업에 대한 상세 설명, 구현 세부사항, 테스트 전략을 포함해주세요.",
+      "reasoning": "이 작업은 카테고리 기반 네비게이션과 태그 필터링 기능을 구현하는 것으로, UI 컴포넌트 개발과 필터링 로직 구현이 필요합니다. 특히 URL 쿼리 매개변수를 통한 필터링 상태 공유 기능은 복잡한 로직이 요구됩니다. 카테고리 네비게이션, 카테고리 페이지, 필터링 시스템으로 논리적으로 분할하여 개발하는 것이 효과적입니다."
+    },
+    {
+      "taskId": 6,
+      "taskTitle": "검색 기능",
+      "complexityScore": 7,
+      "recommendedSubtasks": 4,
+      "expansionPrompt": "Task 6(검색 기능)을 다음 하위 작업으로 분할해주세요: 1) 검색 로직 및 알고리즘 구현(lib/search.ts), 2) SearchBar 컴포넌트 및 드롭다운 UI 구현, 3) 검색 결과 페이지(pages/search.tsx) 구현, 4) SearchResult 컴포넌트 및 결과 강조 기능 구현. 각 하위 작업에 대한 상세 설명, 구현 세부사항, 테스트 전략을 포함해주세요.",
+      "reasoning": "이 작업은 클라이언트 사이드 검색 시스템 구현으로, 검색 알고리즘, UI 컴포넌트, 결과 강조 등 여러 복잡한 요소를 포함합니다. 특히 실시간 검색 결과 제공, 키보드 네비게이션, 결과 순위 매김 등은 세심한 구현이 필요합니다. 검색 로직, UI 컴포넌트, 검색 결과 페이지, 결과 표시 컴포넌트로 분할하여 각 부분을 독립적으로 개발하고 테스트하는 것이 효율적입니다."
+    },
+    {
+      "taskId": 7,
+      "taskTitle": "코드 하이라이팅 및 마크다운 스타일링",
+      "complexityScore": 5,
+      "recommendedSubtasks": 3,
+      "expansionPrompt": "Task 7(코드 하이라이팅 및 마크다운 스타일링)을 다음 하위 작업으로 분할해주세요: 1) Prism.js 통합 및 코드 블록 구문 강조 구현, 2) Tailwind CSS를 사용한 마크다운 요소 스타일링, 3) 코드 블록 기능(줄 번호, 복사 버튼 등) 및 접근성 구현. 각 하위 작업에 대한 상세 설명, 구현 세부사항, 테스트 전략을 포함해주세요.",
+      "reasoning": "이 작업은 코드 블록 구문 강조와 마크다운 콘텐츠 스타일링을 구현하는 것으로, Prism.js 통합, Tailwind CSS 스타일링, 접근성 고려 등이 필요합니다. 상대적으로 다른 작업에 비해 복잡성이 낮지만, 다양한 마크다운 요소와 코드 언어를 지원해야 하는 세부적인 구현이 요구됩니다. 3개의 하위 작업으로 분할하여 코드 하이라이팅, 마크다운 스타일링, 추가 기능 구현을 독립적으로 진행하는 것이 효과적입니다."
+    },
+    {
+      "taskId": 8,
+      "taskTitle": "다크 모드 지원",
+      "complexityScore": 5,
+      "recommendedSubtasks": 3,
+      "expansionPrompt": "Task 8(다크 모드 지원)을 다음 하위 작업으로 분할해주세요: 1) Tailwind CSS 다크 모드 설정 및 테마 색상 시스템 구현, 2) ThemeProvider 컨텍스트 및 테마 지속성 구현, 3) ThemeToggle 컴포넌트 및 테마 적용 테스트 구현. 각 하위 작업에 대한 상세 설명, 구현 세부사항, 테스트 전략을 포함해주세요.",
+      "reasoning": "이 작업은 다크 모드와 라이트 모드를 지원하는 테마 전환 시스템을 구현하는 것으로, Tailwind CSS 설정, React 컨텍스트 API 사용, 로컬 스토리지 지속성 등이 필요합니다. 상대적으로 범위가 명확하고 기술적 복잡성이 낮지만, 모든 컴포넌트에 일관된 테마 적용과 접근성 고려가 요구됩니다. 3개의 하위 작업으로 분할하여 테마 시스템 설정, 상태 관리, UI 구현을 독립적으로 진행하는 것이 효과적입니다."
+    },
+    {
+      "taskId": 9,
+      "taskTitle": "RSS 피드 생성",
+      "complexityScore": 4,
+      "recommendedSubtasks": 2,
+      "expansionPrompt": "Task 9(RSS 피드 생성)을 다음 하위 작업으로 분할해주세요: 1) RSS 피드 생성 스크립트 구현(메인 피드 및 카테고리별 피드), 2) 빌드 프로세스 통합 및 API 엔드포인트 구현(선택사항). 각 하위 작업에 대한 상세 설명, 구현 세부사항, 테스트 전략을 포함해주세요.",
+      "reasoning": "이 작업은 RSS 피드 생성 시스템을 구현하는 것으로, 표준 RSS 2.0 형식에 따른 XML 생성과 빌드 프로세스 통합이 필요합니다. 기술적 복잡성이 상대적으로 낮고 범위가 명확합니다. 피드 생성 스크립트 구현과 빌드 프로세스 통합이라는 2개의 하위 작업으로 분할하는 것이 충분합니다."
+    },
+    {
+      "taskId": 10,
+      "taskTitle": "반응형 디자인 및 기본 스타일링",
+      "complexityScore": 6,
+      "recommendedSubtasks": 4,
+      "expansionPrompt": "Task 10(반응형 디자인 및 기본 스타일링)을 다음 하위 작업으로 분할해주세요: 1) Tailwind CSS 설정 및 테마 정의, 2) 핵심 레이아웃 컴포넌트 구현(Layout, Header, Footer, Container), 3) 페이지별 반응형 스타일링 구현, 4) 접근성 및 성능 최적화. 각 하위 작업에 대한 상세 설명, 구현 세부사항, 테스트 전략을 포함해주세요.",
+      "reasoning": "이 작업은 Tailwind CSS를 사용한 반응형 디자인과 기본 스타일링을 구현하는 것으로, 테마 설정, 레이아웃 컴포넌트 개발, 페이지별 스타일링, 접근성 및 성능 최적화가 필요합니다. 모바일 우선 접근 방식과 다양한 기기에서의 최적화된 경험을 제공해야 하는 복잡성이 있습니다. 4개의 하위 작업으로 분할하여 체계적으로 접근하는 것이 효과적입니다."
     }
   ]
 }

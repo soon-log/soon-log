@@ -1,11 +1,51 @@
 # Task ID: 1
-# Title: 개발 환경 설정
-# Status: done
+# Title: 빌드 타임 마크다운 파싱 시스템
+# Status: pending
 # Dependencies: None
 # Priority: high
-# Description: Set up the initial project structure with Next.js, TypeScript, ESLint, and Prettier.
+# Description: posts 디렉토리를 재귀적으로 스캔하고, 마크다운 파일을 파싱하며, 메타데이터를 추출하여 정적 JSON 데이터 파일을 생성하는 빌드 스크립트를 만듭니다.
 # Details:
-Initialize a new Next.js project with TypeScript support. Configure ESLint for code quality and Prettier for code formatting. Set up a strict tsconfig.json for enhanced type safety. Use the latest stable versions: Next.js 13.4.3, TypeScript 5.0.4, ESLint 8.41.0, and Prettier 2.8.8. Include recommended VS Code extensions in .vscode/extensions.json.
+다음 기능을 가진 Node.js 스크립트 (scripts/build-posts.js)를 구현합니다:
+1. posts 디렉토리 구조를 재귀적으로 탐색
+2. 카테고리 하위 폴더 내의 마크다운 파일 식별
+3. 마크다운 콘텐츠를 파싱하고 YAML/JSON front matter 메타데이터 추출
+4. public/data/에 구조화된 JSON 데이터 파일 생성
+   - posts.json: 메타데이터가 포함된 모든 포스트 데이터
+   - categories.json: 카테고리 정보 및 통계
+   - metadata.json: 증분 빌드를 위한 빌드 정보 및 파일 해시
+
+구현 세부사항:
+- 파일 시스템 작업을 위해 fs/promises 사용
+- front matter 파싱을 위해 gray-matter 사용
+- 증분 빌드를 위한 파일 해시 추적 구현
+- 폴더 구조에서 카테고리 추출
+- 파일명에서 슬러그 생성
+- 개발 모드용 파일 경로 정보 포함
+
+지원할 폴더 구조 예시:
+```
+posts/
+├── react/
+│   ├── useState.md
+│   └── useEffect.md
+├── javascript/
+│   ├── closure.md
+│   └── async-await.md
+└── typescript/
+    └── generics.md
+```
 
 # Test Strategy:
-Verify correct installation and configuration of all tools. Run `npm run lint` and `npm run format` to ensure ESLint and Prettier are working. Check TypeScript compilation with `npm run build`.
+TDD 접근 방식으로 Jest 사용:
+1. 각 유틸리티 함수에 대한 단위 테스트 작성:
+   - 모의 파일 시스템으로 디렉토리 탐색 테스트
+   - 샘플 마크다운 파일로 마크다운 파싱 테스트
+   - 다양한 front matter 형식으로 메타데이터 추출 테스트
+   - 파일 경로에서 카테고리 추출 테스트
+   - 슬러그 생성 테스트
+   - 파일 해시 생성 및 비교 테스트
+2. 전체 빌드 프로세스에 대한 통합 테스트 작성:
+   - 샘플 디렉토리 구조가 포함된 모의 파일 시스템으로 테스트
+   - 출력 JSON 구조가 예상 스키마와 일치하는지 확인
+   - 특정 파일만 변경하여 증분 빌드 테스트
+3. 일관된 출력 형식을 확인하기 위해 스냅샷 사용

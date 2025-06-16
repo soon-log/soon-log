@@ -1,11 +1,43 @@
 # Task ID: 2
-# Title: Jest TDD 환경 구축
-# Status: done
+# Title: 정적 데이터 로더 및 런타임 시스템
+# Status: pending
 # Dependencies: 1
 # Priority: high
-# Description: Set up Jest and React Testing Library for test-driven development.
+# Description: 미리 생성된 JSON 데이터를 런타임에 로드하고 사용할 수 있는 유틸리티 함수를 만들고, 개발 모드에서 실시간 파일 변경을 지원합니다.
 # Details:
-Install Jest 29.5.0, React Testing Library 14.0.0, and related dependencies. Configure Jest in package.json or jest.config.js. Set up test file structure (__tests__/ directory). Create sample test to verify setup. Integrate with TypeScript for type-safe testing.
+다음 기능을 가진 데이터 로딩 시스템을 구현합니다:
+1. 정적 JSON 데이터를 로드하고 접근할 수 있는 유틸리티 함수 제공
+2. 프로덕션(정적 JSON)과 개발 모드(실시간 파싱 옵션) 모두 지원
+3. 최적화된 성능을 위한 캐싱 구현
+
+주요 구성요소:
+- lib/data.ts에 다음 함수들 생성:
+  - getPosts(): 페이지네이션 지원으로 모든 포스트 반환
+  - getPostsByCategory(category): 카테고리별로 필터링된 포스트 반환
+  - getCategories(): 통계가 포함된 모든 카테고리 반환
+  - getPostBySlug(slug): 슬러그로 단일 포스트 반환
+  - searchPosts(query): 제목, 태그, 콘텐츠로 포스트 검색
+
+- 개발 모드 지원:
+  - 개발 중 파일 변경을 위한 watcher 구현
+  - 실시간 파싱 또는 정적 JSON 사용 옵션 제공
+  - package.json scripts에 rebuild 명령 추가
+
+- 타입 정의:
+  - Post, Category, BuildMetadata를 위한 TypeScript 인터페이스 정의
+  - 애플리케이션 전체에 걸쳐 타입 안전성 보장
 
 # Test Strategy:
-Write a simple test case to ensure Jest is correctly set up. Verify that the test runner can execute tests and report results accurately.
+1. 각 데이터 로딩 함수에 대한 단위 테스트 작성:
+   - 다양한 페이지네이션 매개변수로 getPosts 테스트
+   - 다른 카테고리로 getPostsByCategory 테스트
+   - 존재하는/존재하지 않는 슬러그로 getPostBySlug 테스트
+   - 다양한 검색 쿼리로 searchPosts 테스트
+
+2. 테스트를 위한 JSON 데이터 파일 모킹:
+   - 샘플 포스트 및 카테고리 데이터로 fixtures 생성
+   - 프로덕션과 개발 모드 모두 테스트
+
+3. 에러 처리 테스트:
+   - JSON 파일이 누락되거나 잘못된 형식일 때의 동작 테스트
+   - 요청된 데이터가 존재하지 않을 때의 동작 테스트

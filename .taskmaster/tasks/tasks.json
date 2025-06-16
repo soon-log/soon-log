@@ -2,563 +2,311 @@
   "tasks": [
     {
       "id": 1,
-      "title": "개발 환경 설정",
-      "description": "Set up the initial project structure with Next.js, TypeScript, ESLint, and Prettier.",
-      "status": "done",
+      "title": "빌드 타임 마크다운 파싱 시스템",
+      "description": "posts 디렉토리를 재귀적으로 스캔하고, 마크다운 파일을 파싱하며, 메타데이터를 추출하여 정적 JSON 데이터 파일을 생성하는 빌드 스크립트를 만듭니다.",
+      "details": "다음 기능을 가진 Node.js 스크립트 (scripts/build-posts.js)를 구현합니다:\n1. posts 디렉토리 구조를 재귀적으로 탐색\n2. 카테고리 하위 폴더 내의 마크다운 파일 식별\n3. 마크다운 콘텐츠를 파싱하고 YAML/JSON front matter 메타데이터 추출\n4. public/data/에 구조화된 JSON 데이터 파일 생성\n   - posts.json: 메타데이터가 포함된 모든 포스트 데이터\n   - categories.json: 카테고리 정보 및 통계\n   - metadata.json: 증분 빌드를 위한 빌드 정보 및 파일 해시\n\n구현 세부사항:\n- 파일 시스템 작업을 위해 fs/promises 사용\n- front matter 파싱을 위해 gray-matter 사용\n- 증분 빌드를 위한 파일 해시 추적 구현\n- 폴더 구조에서 카테고리 추출\n- 파일명에서 슬러그 생성\n- 개발 모드용 파일 경로 정보 포함\n\n지원할 폴더 구조 예시:\n```\nposts/\n├── react/\n│   ├── useState.md\n│   └── useEffect.md\n├── javascript/\n│   ├── closure.md\n│   └── async-await.md\n└── typescript/\n    └── generics.md\n```",
+      "testStrategy": "TDD 접근 방식으로 Jest 사용:\n1. 각 유틸리티 함수에 대한 단위 테스트 작성:\n   - 모의 파일 시스템으로 디렉토리 탐색 테스트\n   - 샘플 마크다운 파일로 마크다운 파싱 테스트\n   - 다양한 front matter 형식으로 메타데이터 추출 테스트\n   - 파일 경로에서 카테고리 추출 테스트\n   - 슬러그 생성 테스트\n   - 파일 해시 생성 및 비교 테스트\n2. 전체 빌드 프로세스에 대한 통합 테스트 작성:\n   - 샘플 디렉토리 구조가 포함된 모의 파일 시스템으로 테스트\n   - 출력 JSON 구조가 예상 스키마와 일치하는지 확인\n   - 특정 파일만 변경하여 증분 빌드 테스트\n3. 일관된 출력 형식을 확인하기 위해 스냅샷 사용",
+      "priority": "high",
       "dependencies": [],
-      "priority": "high",
-      "details": "Initialize a new Next.js project with TypeScript support. Configure ESLint for code quality and Prettier for code formatting. Set up a strict tsconfig.json for enhanced type safety. Use the latest stable versions: Next.js 13.4.3, TypeScript 5.0.4, ESLint 8.41.0, and Prettier 2.8.8. Include recommended VS Code extensions in .vscode/extensions.json.",
-      "testStrategy": "Verify correct installation and configuration of all tools. Run `npm run lint` and `npm run format` to ensure ESLint and Prettier are working. Check TypeScript compilation with `npm run build`.",
-      "subtasks": []
-    },
-    {
-      "id": 2,
-      "title": "Jest TDD 환경 구축",
-      "description": "Set up Jest and React Testing Library for test-driven development.",
-      "status": "done",
-      "dependencies": [
-        1
-      ],
-      "priority": "high",
-      "details": "Install Jest 29.5.0, React Testing Library 14.0.0, and related dependencies. Configure Jest in package.json or jest.config.js. Set up test file structure (__tests__/ directory). Create sample test to verify setup. Integrate with TypeScript for type-safe testing.",
-      "testStrategy": "Write a simple test case to ensure Jest is correctly set up. Verify that the test runner can execute tests and report results accurately.",
-      "subtasks": []
-    },
-    {
-      "id": 3,
-      "title": "마크다운 파싱 및 메타데이터 추출 구현",
-      "description": "Develop functionality to parse Markdown files and extract metadata using the YAML Front Matter format.",
       "status": "pending",
-      "dependencies": [
-        2
-      ],
-      "priority": "high",
-      "details": "Use gray-matter 4.0.3 for parsing YAML Front Matter. Implement a function to read Markdown files from the 'post' folder, extract metadata (title, date, tags, summary), and parse the content. Handle potential errors in file reading or parsing. Use the latest version of fs-extra (11.1.1) for enhanced file system operations.",
-      "testStrategy": "Write unit tests for the parsing function. Test with various Markdown files, including edge cases like missing metadata or malformed YAML. Ensure correct extraction of all metadata fields and content.",
       "subtasks": [
         {
           "id": 1,
-          "title": "파일 시스템 유틸리티 설정",
-          "description": "Configure the necessary file system utilities to read and write Markdown files",
-          "dependencies": [],
-          "details": "Set up the file system module (fs/promises) for asynchronous file operations. Create utility functions for reading Markdown files, checking if files exist, and writing processed content back to the file system. Include path resolution functionality to handle relative and absolute paths correctly.",
-          "status": "pending"
+          "title": "파일 시스템 탐색 유틸리티 구현",
+          "description": "posts 디렉토리 구조를 재귀적으로 탐색하고 마크다운 파일을 식별하는 유틸리티 함수를 구현합니다.",
+          "details": "fs/promises를 사용하여 디렉토리 탐색 로직을 구현하고, 카테고리 폴더 구조를 파악하여 마크다운 파일 목록을 생성합니다.",
+          "status": "pending",
+          "dependencies": []
         },
         {
           "id": 2,
-          "title": "gray-matter를 이용한 YAML Front Matter 파싱",
-          "description": "Implement the parsing of YAML Front Matter from Markdown files using the gray-matter library",
-          "dependencies": [
-            1
-          ],
-          "details": "Install and configure the gray-matter package. Create a function that takes file content as input and uses gray-matter to separate the YAML Front Matter from the Markdown content. Handle edge cases like missing or malformed Front Matter gracefully.",
-          "status": "pending"
+          "title": "마크다운 파싱 및 메타데이터 추출 기능 구현",
+          "description": "gray-matter를 사용하여 마크다운 파일을 파싱하고 front matter 메타데이터를 추출하는 기능을 구현합니다.",
+          "details": "YAML/JSON front matter를 파싱하고, 마크다운 콘텐츠를 처리하여 구조화된 데이터로 변환합니다.",
+          "status": "pending",
+          "dependencies": [1]
         },
         {
           "id": 3,
-          "title": "메타데이터 추출 함수",
-          "description": "Create a function to extract and validate metadata from the parsed YAML Front Matter",
-          "dependencies": [
-            2
-          ],
-          "details": "Develop a function that processes the data object returned by gray-matter. Implement validation for required metadata fields. Create a standardized metadata object structure with default values for missing optional fields. Add type checking and data normalization as needed.",
-          "status": "pending"
+          "title": "JSON 데이터 파일 생성 로직 구현",
+          "description": "파싱된 데이터를 posts.json, categories.json, metadata.json 파일로 생성하는 로직을 구현합니다.",
+          "details": "구조화된 JSON 파일을 생성하고, 카테고리 통계를 계산하며, 빌드 메타데이터를 포함합니다.",
+          "status": "pending",
+          "dependencies": [2]
         },
         {
           "id": 4,
-          "title": "콘텐츠 파싱 함수",
-          "description": "Implement Markdown content parsing using a Markdown parser library",
-          "dependencies": [
-            2
-          ],
-          "details": "Select and integrate a Markdown parser library (like markdig, markdown-it, or similar). Create a function that processes the Markdown content separated from the Front Matter. Configure the parser with appropriate extensions and options. Implement any custom syntax handling or transformations needed for the specific use case.",
-          "status": "pending"
+          "title": "증분 빌드를 위한 파일 해시 추적 시스템 구현",
+          "description": "파일 변경 감지를 위한 해시 추적 시스템을 구현하여 증분 빌드를 지원합니다.",
+          "details": "파일 해시를 계산하고 비교하여 변경된 파일만 재처리하는 증분 빌드 메커니즘을 구현합니다.",
+          "status": "pending",
+          "dependencies": [3]
         },
         {
           "id": 5,
-          "title": "에러 핸들링 구현",
-          "description": "Implement comprehensive error handling throughout the Markdown parsing process",
-          "dependencies": [
-            1,
-            2,
-            3,
-            4
-          ],
-          "details": "Create custom error classes for different types of failures (file system errors, parsing errors, validation errors). Implement try/catch blocks around critical operations. Add detailed error messages with context information. Create a logging mechanism for errors and warnings. Implement graceful fallbacks for non-critical failures.",
-          "status": "pending"
+          "title": "전체 빌드 스크립트 통합 및 테스트",
+          "description": "모든 기능을 통합한 빌드 스크립트를 완성하고 포괄적인 테스트를 작성합니다.",
+          "details": "scripts/build-posts.js로 모든 기능을 통합하고, Jest를 사용한 단위 테스트와 통합 테스트를 구현합니다.",
+          "status": "pending",
+          "dependencies": [4]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "정적 데이터 로더 및 런타임 시스템",
+      "description": "미리 생성된 JSON 데이터를 런타임에 로드하고 사용할 수 있는 유틸리티 함수를 만들고, 개발 모드에서 실시간 파일 변경을 지원합니다.",
+      "details": "다음 기능을 가진 데이터 로딩 시스템을 구현합니다:\n1. 정적 JSON 데이터를 로드하고 접근할 수 있는 유틸리티 함수 제공\n2. 프로덕션(정적 JSON)과 개발 모드(실시간 파싱 옵션) 모두 지원\n3. 최적화된 성능을 위한 캐싱 구현\n\n주요 구성요소:\n- lib/data.ts에 다음 함수들 생성:\n  - getPosts(): 페이지네이션 지원으로 모든 포스트 반환\n  - getPostsByCategory(category): 카테고리별로 필터링된 포스트 반환\n  - getCategories(): 통계가 포함된 모든 카테고리 반환\n  - getPostBySlug(slug): 슬러그로 단일 포스트 반환\n  - searchPosts(query): 제목, 태그, 콘텐츠로 포스트 검색\n\n- 개발 모드 지원:\n  - 개발 중 파일 변경을 위한 watcher 구현\n  - 실시간 파싱 또는 정적 JSON 사용 옵션 제공\n  - package.json scripts에 rebuild 명령 추가\n\n- 타입 정의:\n  - Post, Category, BuildMetadata를 위한 TypeScript 인터페이스 정의\n  - 애플리케이션 전체에 걸쳐 타입 안전성 보장",
+      "testStrategy": "1. 각 데이터 로딩 함수에 대한 단위 테스트 작성:\n   - 다양한 페이지네이션 매개변수로 getPosts 테스트\n   - 다른 카테고리로 getPostsByCategory 테스트\n   - 존재하는/존재하지 않는 슬러그로 getPostBySlug 테스트\n   - 다양한 검색 쿼리로 searchPosts 테스트\n\n2. 테스트를 위한 JSON 데이터 파일 모킹:\n   - 샘플 포스트 및 카테고리 데이터로 fixtures 생성\n   - 프로덕션과 개발 모드 모두 테스트\n\n3. 에러 처리 테스트:\n   - JSON 파일이 누락되거나 잘못된 형식일 때의 동작 테스트\n   - 요청된 데이터가 존재하지 않을 때의 동작 테스트",
+      "priority": "high",
+      "dependencies": [1],
+      "status": "pending",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "데이터 타입 정의 및 인터페이스 설계",
+          "description": "Post, Category, BuildMetadata를 위한 TypeScript 인터페이스를 정의하고 타입 안전성을 보장합니다.",
+          "details": "lib/types.ts에 애플리케이션 전체에서 사용할 데이터 구조와 인터페이스를 정의합니다.",
+          "status": "pending",
+          "dependencies": []
+        },
+        {
+          "id": 2,
+          "title": "기본 데이터 로딩 유틸리티 함수 구현",
+          "description": "getPosts, getPostsByCategory, getCategories, getPostBySlug 등의 핵심 데이터 로딩 함수를 구현합니다.",
+          "details": "lib/data.ts에 정적 JSON 데이터를 로드하고 처리하는 유틸리티 함수들을 구현합니다.",
+          "status": "pending",
+          "dependencies": [1]
+        },
+        {
+          "id": 3,
+          "title": "개발 모드 실시간 파일 변경 감지 시스템 구현",
+          "description": "개발 중 파일 변경을 감지하는 watcher와 실시간 파싱 옵션을 제공합니다.",
+          "details": "개발 모드에서 마크다운 파일 변경을 감지하고 자동으로 데이터를 업데이트하는 시스템을 구현합니다.",
+          "status": "pending",
+          "dependencies": [2]
+        },
+        {
+          "id": 4,
+          "title": "검색 및 필터링 기능 구현",
+          "description": "searchPosts 함수와 고급 필터링 옵션을 구현하여 콘텐츠 검색 기능을 제공합니다.",
+          "details": "제목, 태그, 콘텐츠를 대상으로 한 검색 기능과 카테고리별 필터링을 구현합니다.",
+          "status": "pending",
+          "dependencies": [2]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "무한 스크롤이 있는 블로그 포스트 목록 페이지",
+      "description": "제목, 날짜, 요약, 태그, 카테고리가 표시되는 메인 블로그 목록 페이지를 구현하고, 추가 포스트를 동적으로 로드하는 무한 스크롤 기능을 제공합니다.",
+      "details": "다음 기능을 가진 메인 블로그 포스트 목록 페이지를 생성합니다:\n1. 반응형 그리드 또는 리스트 레이아웃으로 포스트 표시\n2. 더 많은 포스트를 동적으로 로드하는 무한 스크롤 구현\n3. 제목, 날짜, 카테고리, 태그, 요약을 포함한 포스트 메타데이터 표시\n4. 색상이나 아이콘으로 카테고리를 시각적으로 구분\n\n구현 세부사항:\n- pages/index.tsx를 메인 진입점으로 생성\n- Task 2의 데이터 로더를 사용하여 초기 포스트 가져오기\n- PostList 컴포넌트 구현:\n  - PostCard 컴포넌트 목록 렌더링\n  - Intersection Observer API를 사용한 무한 스크롤 처리\n  - 사용자가 하단으로 스크롤할 때 추가 포스트 로드\n- PostCard 컴포넌트 생성:\n  - 포스트 제목, 날짜, 카테고리, 태그, 요약 표시\n  - 다양한 카테고리에 대한 시각적 표시기 사용\n  - 포스트 상세 페이지로 링크\n- Tailwind CSS를 사용한 반응형 디자인 구현:\n  - 데스크톱용 그리드 레이아웃 (2-3열)\n  - 모바일용 단일 열\n\n상태 관리:\n- 로드된 포스트, 로딩 상태, 페이지네이션 추적\n- 에러 상태를 우아하게 처리",
+      "testStrategy": "1. React Testing Library를 사용한 컴포넌트 테스트:\n   - PostList 컴포넌트가 샘플 데이터로 올바르게 렌더링되는지 테스트\n   - PostCard 컴포넌트가 모든 필수 메타데이터를 표시하는지 테스트\n   - 모킹된 Intersection Observer로 무한 스크롤 동작 테스트\n\n2. 통합 테스트:\n   - 데이터 가져오기 및 렌더링 파이프라인 테스트\n   - 모의 데이터로 페이지네이션 및 무한 스크롤 테스트\n\n3. 반응형 디자인 테스트:\n   - 다양한 뷰포트 크기에서 레이아웃 테스트\n   - 모바일 및 데스크톱 레이아웃이 올바르게 렌더링되는지 확인",
+      "priority": "high",
+      "dependencies": [2],
+      "status": "pending",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "PostCard 컴포넌트 구현",
+          "description": "포스트 제목, 날짜, 카테고리, 태그, 요약을 표시하는 개별 포스트 카드 컴포넌트를 구현합니다.",
+          "details": "반응형 디자인과 카테고리별 시각적 구분을 포함한 PostCard 컴포넌트를 구현하고 포스트 상세 페이지로의 링크를 제공합니다.",
+          "status": "pending",
+          "dependencies": []
+        },
+        {
+          "id": 2,
+          "title": "PostList 컴포넌트 및 기본 레이아웃 구현",
+          "description": "PostCard 목록을 렌더링하고 반응형 그리드 레이아웃을 제공하는 PostList 컴포넌트를 구현합니다.",
+          "details": "Tailwind CSS를 사용한 반응형 그리드 레이아웃(데스크톱 2-3열, 모바일 단일 열)과 기본 상태 관리를 구현합니다.",
+          "status": "pending",
+          "dependencies": [1]
+        },
+        {
+          "id": 3,
+          "title": "Intersection Observer를 활용한 무한 스크롤 기능 구현",
+          "description": "Intersection Observer API를 사용하여 사용자가 하단으로 스크롤할 때 추가 포스트를 동적으로 로드하는 무한 스크롤을 구현합니다.",
+          "details": "성능 최적화된 무한 스크롤 로직을 구현하고 로딩 인디케이터와 에러 처리를 포함합니다.",
+          "status": "pending",
+          "dependencies": [2]
+        },
+        {
+          "id": 4,
+          "title": "상태 관리 및 에러 처리 구현",
+          "description": "로드된 포스트, 로딩 상태, 페이지네이션을 추적하고 에러 상태를 우아하게 처리하는 시스템을 구현합니다.",
+          "details": "useState/useReducer를 사용한 상태 관리와 에러 바운더리, 로딩 스피너, 빈 상태 등의 UX 요소를 구현합니다.",
+          "status": "pending",
+          "dependencies": [3]
         }
       ]
     },
     {
       "id": 4,
-      "title": "기본 스타일링 및 반응형 디자인 개발",
-      "description": "Implement a basic styling system using Tailwind CSS with responsive design principles.",
-      "status": "pending",
-      "dependencies": [
-        1
-      ],
-      "priority": "medium",
-      "details": "Install and configure Tailwind CSS 3.3.2. Set up a base layout component with responsive breakpoints. Create utility classes for typography, spacing, and colors. Implement a simple grid system for responsive layouts. Use Tailwind's built-in dark mode utility for future dark mode support.",
-      "testStrategy": "Create visual regression tests using Jest-image-snapshot. Test responsive behavior across different viewport sizes. Ensure consistent styling across different browsers.",
-      "subtasks": []
-    },
-    {
-      "id": 5,
-      "title": "무한 스크롤 기능이 있는 블로그 포스트 목록 페이지 구현",
-      "description": "Create the main blog post list page with infinite scroll functionality.",
-      "status": "pending",
-      "dependencies": [
-        3,
-        4
-      ],
+      "title": "개별 포스트 상세 페이지",
+      "description": "선택된 블로그 포스트의 전체 콘텐츠를 적절한 마크다운 포맷팅과 코드 하이라이팅으로 렌더링하는 포스트 상세 페이지를 만듭니다.",
+      "details": "다음 기능을 가진 포스트 상세 페이지를 구현합니다:\n1. 선택된 포스트의 전체 마크다운 콘텐츠 렌더링\n2. 포스트 메타데이터(제목, 날짜, 카테고리, 태그) 표시\n3. 코드 블록에 대한 구문 강조 구현\n4. 관련 포스트로의 네비게이션 제공\n\n구현 세부사항:\n- Next.js 동적 라우팅을 사용하여 pages/posts/[slug].tsx 생성\n- 정적 사이트 생성을 위해 getStaticProps와 getStaticPaths 사용:\n  - getStaticPaths: 빌드 시 모든 포스트에 대한 경로 생성\n  - getStaticProps: 슬러그로 포스트 데이터 가져오기\n- 마크다운 렌더링 구현:\n  - 마크다운을 HTML로 변환하기 위해 remark 또는 markdown-it 사용\n  - 코드 구문 강조를 위해 Prism.js 통합\n  - Tailwind CSS로 마크다운 요소 스타일링\n- 컴포넌트 생성:\n  - PostHeader: 제목, 날짜, 카테고리, 태그 표시\n  - PostContent: 마크다운 콘텐츠 렌더링\n  - RelatedPosts: 같은 카테고리의 포스트 표시\n\n접근성 고려사항:\n- 적절한 제목 계층 구조 보장\n- 이미지에 적절한 alt 텍스트 추가\n- 코드 블록의 접근성 보장",
+      "testStrategy": "1. 컴포넌트 테스트:\n   - PostHeader가 올바른 메타데이터를 표시하는지 테스트\n   - PostContent가 마크다운을 올바르게 렌더링하는지 테스트\n   - 다양한 언어에 대해 코드 하이라이팅이 작동하는지 테스트\n\n2. 라우팅 테스트:\n   - 다양한 슬러그로 동적 라우팅 테스트\n   - 존재하지 않는 슬러그 처리 테스트\n\n3. 렌더링 테스트:\n   - 다양한 마크다운 기능으로 마크다운 렌더링 테스트\n   - 다양한 언어로 코드 블록 렌더링 테스트\n   - 다양한 뷰포트 크기에서 반응형 레이아웃 테스트",
       "priority": "high",
-      "details": "Develop a React component for the blog post list. Implement infinite scroll using Intersection Observer API or a library like react-infinite-scroll-component 6.1.0. Display post title, date, summary, and tags. Sort posts by date. Use Next.js Image component for optimized image loading. Implement skeleton loading for better UX.",
-      "testStrategy": "Write unit tests for the list component. Test infinite scroll behavior. Verify correct display of post metadata. Test edge cases like no posts or network errors.",
+      "dependencies": [2],
+      "status": "pending",
       "subtasks": [
         {
           "id": 1,
-          "title": "포스트 목록 컴포넌트 구조 설계",
-          "description": "Create the main container component that will house the blog post cards and handle the overall layout",
-          "dependencies": [],
-          "details": "Design a responsive container component that will hold all blog post cards. Include a grid or flex layout system to arrange posts appropriately across different screen sizes. Set up the initial state management for posts array, loading state, and pagination variables.",
-          "status": "pending"
+          "title": "동적 라우팅 및 데이터 페칭 구현",
+          "description": "Next.js getStaticProps와 getStaticPaths를 사용하여 동적 라우팅과 정적 사이트 생성을 구현합니다.",
+          "details": "pages/posts/[slug].tsx에서 슬러그 기반 라우팅과 빌드 시 모든 포스트 경로 생성을 구현합니다.",
+          "status": "pending",
+          "dependencies": []
         },
         {
           "id": 2,
-          "title": "데이터 페칭 로직 구현",
-          "description": "Implement the API service and hooks to fetch paginated blog post data",
-          "dependencies": [
-            1
-          ],
-          "details": "Create a data fetching service that handles API calls with pagination parameters. Implement custom hooks for fetching initial posts and subsequent pages. Set up state management for tracking current page, total pages, and whether more posts are available. Include caching mechanisms to prevent redundant API calls.",
-          "status": "pending"
+          "title": "PostHeader 컴포넌트 구현",
+          "description": "포스트 제목, 날짜, 카테고리, 태그를 표시하는 PostHeader 컴포넌트를 구현합니다.",
+          "details": "메타데이터를 깔끔하게 표시하고 카테고리/태그 링크 기능을 포함한 PostHeader 컴포넌트를 구현합니다.",
+          "status": "pending",
+          "dependencies": [1]
         },
         {
           "id": 3,
-          "title": "인터섹션 옵저버를 활용한 무한 스크롤 구현",
-          "description": "Set up the Intersection Observer API to detect when user scrolls to the bottom of the list",
-          "dependencies": [
-            1,
-            2
-          ],
-          "details": "Implement the Intersection Observer API to monitor when the last post card or a sentinel element becomes visible. Create the logic to trigger the next page load when the observer fires. Handle debouncing to prevent multiple simultaneous requests. Ensure the observer is properly connected and disconnected during component lifecycle.",
-          "status": "pending"
+          "title": "PostContent 및 마크다운 렌더링 시스템 구현",
+          "description": "remark/markdown-it을 사용한 마크다운 렌더링과 Prism.js 코드 구문 강조를 구현합니다.",
+          "details": "마크다운을 HTML로 변환하고 코드 블록에 구문 강조를 적용하며 Tailwind CSS로 스타일링합니다.",
+          "status": "pending",
+          "dependencies": [2]
         },
         {
           "id": 4,
-          "title": "포스트 카드 컴포넌트",
-          "description": "Design and implement the individual blog post card component",
-          "dependencies": [
-            1
-          ],
-          "details": "Create a reusable post card component that displays blog post information including title, excerpt, featured image, date, and author. Ensure the card is responsive and visually appealing. Implement proper image loading optimization and text truncation for consistent card heights.",
-          "status": "pending"
+          "title": "RelatedPosts 컴포넌트 및 네비게이션 구현",
+          "description": "같은 카테고리의 관련 포스트를 표시하는 RelatedPosts 컴포넌트와 포스트 간 네비게이션을 구현합니다.",
+          "details": "카테고리 기반 관련 포스트 추천과 이전/다음 포스트 네비게이션을 구현합니다.",
+          "status": "pending",
+          "dependencies": [3]
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "카테고리 네비게이션 및 필터링 시스템",
+      "description": "카테고리 기반 네비게이션 시스템과 태그 필터링 기능이 있는 전용 카테고리 페이지를 구현합니다.",
+      "details": "다음 기능을 가진 포괄적인 카테고리 네비게이션 및 필터링 시스템을 생성합니다:\n1. 사이드바 또는 헤더 네비게이션에서 카테고리 표시\n2. 해당 카테고리의 모든 포스트가 있는 전용 카테고리 페이지 구현\n3. 카테고리 내에서 태그 기반 필터링 제공\n4. 카테고리 통계(포스트 수, 최신 포스트) 표시\n\n구현 세부사항:\n- components/CategoryNav.tsx 생성:\n  - 사이드바 또는 헤더 네비게이션 컴포넌트\n  - 포스트 수와 함께 모든 카테고리 표시\n  - 현재 카테고리 강조\n- pages/category/[category].tsx 생성:\n  - 카테고리 페이지용 동적 라우팅\n  - 선택된 카테고리의 모든 포스트 표시\n  - 태그 필터링 UI 구현\n  - 카테고리 설명 및 통계 표시\n- 필터링 로직 구현:\n  - 태그별 클라이언트 사이드 필터링\n  - 카테고리 및 태그 필터 결합\n  - 공유 가능한 필터링된 뷰를 위한 URL 쿼리 매개변수\n- CategoryHeader 컴포넌트 생성:\n  - 카테고리 이름, 설명, 통계 표시\n  - 필터링을 위한 사용 가능한 태그 표시\n\nURL 구조:\n- /category/react - 모든 React 포스트\n- /category/react?tags=hooks - 'hooks' 태그가 있는 React 포스트",
+      "testStrategy": "1. 컴포넌트 테스트:\n   - CategoryNav가 모든 카테고리를 올바르게 렌더링하는지 테스트\n   - CategoryHeader가 올바른 정보를 표시하는지 테스트\n   - 태그 필터링 UI가 예상대로 작동하는지 테스트\n\n2. 통합 테스트:\n   - 카테고리 페이지가 올바른 포스트를 렌더링하는지 테스트\n   - 카테고리와 태그 필터링의 결합 테스트\n   - URL 쿼리 매개변수 처리 테스트\n\n3. 네비게이션 테스트:\n   - 카테고리 간 네비게이션 테스트\n   - 활성 상태 강조 테스트\n   - 모바일 네비게이션 동작 테스트",
+      "priority": "medium",
+      "dependencies": [2, 3],
+      "status": "pending",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "CategoryNav 컴포넌트 및 사이드바/헤더 네비게이션 구현",
+          "description": "포스트 수와 함께 모든 카테고리를 표시하는 네비게이션 컴포넌트를 구현합니다.",
+          "details": "현재 카테고리 강조와 반응형 네비게이션을 포함한 CategoryNav 컴포넌트를 구현합니다.",
+          "status": "pending",
+          "dependencies": []
         },
         {
-          "id": 5,
-          "title": "스켈레톤 로딩 상태 구현",
-          "description": "Create placeholder loading states for when new posts are being fetched",
-          "dependencies": [
-            1,
-            4
-          ],
-          "details": "Design skeleton loading components that mimic the structure of the post cards. Implement animations for the skeleton loaders to indicate loading activity. Create logic to display these skeletons when initial posts are loading or when additional posts are being fetched during scrolling.",
-          "status": "pending"
+          "id": 2,
+          "title": "카테고리 페이지 및 CategoryHeader 컴포넌트 구현",
+          "description": "동적 라우팅과 카테고리 정보를 표시하는 전용 카테고리 페이지를 구현합니다.",
+          "details": "pages/category/[category].tsx와 카테고리 통계 및 설명을 표시하는 CategoryHeader를 구현합니다.",
+          "status": "pending",
+          "dependencies": [1]
         },
         {
-          "id": 6,
-          "title": "에러 처리 및 예외 상황 관리",
-          "description": "Implement robust error handling and manage edge cases in the infinite scroll implementation",
-          "dependencies": [
-            2,
-            3
-          ],
-          "details": "Create error handling for failed API requests with appropriate user feedback. Implement retry mechanisms for failed requests. Handle edge cases such as: no more posts available, slow network connections, browser back button navigation, and maintaining scroll position when returning to the page. Add accessibility features for keyboard navigation and screen readers.",
-          "status": "pending"
+          "id": 3,
+          "title": "태그 기반 필터링 및 URL 쿼리 매개변수 처리 구현",
+          "description": "태그별 클라이언트 사이드 필터링과 URL 쿼리 매개변수를 통한 상태 공유를 구현합니다.",
+          "details": "태그 필터링 UI와 쿼리 매개변수 기반 상태 관리를 구현하여 공유 가능한 필터링된 뷰를 제공합니다.",
+          "status": "pending",
+          "dependencies": [2]
         }
       ]
     },
     {
       "id": 6,
-      "title": "개별 블로그 포스트 페이지 생성",
-      "description": "Develop the individual blog post page to display full post content.",
+      "title": "검색 기능",
+      "description": "사용자가 제목, 태그 또는 콘텐츠로 포스트를 검색할 수 있는 클라이언트 사이드 검색 시스템을 구현합니다.",
+      "details": "다음 기능을 가진 검색 시스템을 생성합니다:\n1. 사용자가 제목, 태그 또는 콘텐츠로 포스트를 검색할 수 있도록 허용\n2. 사용자가 입력할 때 실시간 검색 결과 제공\n3. 검색 결과에서 일치하는 용어 강조\n4. 고급 필터링 옵션 지원\n\n구현 세부사항:\n- components/SearchBar.tsx 생성:\n  - 검색 아이콘이 있는 입력 필드\n  - 검색 결과용 드롭다운\n  - 키보드 네비게이션 지원\n- 전용 검색 페이지용 pages/search.tsx 생성:\n  - 전체 페이지 검색 결과\n  - 고급 필터링 옵션\n  - 검색 결과 페이지네이션\n- lib/search.ts에서 검색 로직 구현:\n  - 미리 생성된 데이터를 사용한 클라이언트 사이드 검색\n  - 더 나은 사용자 경험을 위한 퍼지 검색\n  - 제목, 태그, 카테고리, 콘텐츠 전반에 걸친 검색\n  - 관련성에 따른 결과 순위 매김\n- SearchResult 컴포넌트 생성:\n  - 포스트 제목, 날짜, 카테고리, 일치하는 발췌문 표시\n  - 일치하는 용어 강조\n  - 포스트 상세 페이지 링크\n\n최적화:\n- 과도한 처리를 방지하기 위해 입력 디바운스\n- Fuse.js와 같은 가벼운 검색 라이브러리 사용 고려",
+      "testStrategy": "1. 컴포넌트 테스트:\n   - SearchBar UI 및 상호작용 테스트\n   - SearchResult 렌더링 및 강조 테스트\n   - 검색 결과에서 키보드 네비게이션 테스트\n\n2. 검색 로직 테스트:\n   - 다양한 쿼리로 검색 기능 테스트\n   - 퍼지 매칭 기능 테스트\n   - 다양한 필드(제목, 태그, 콘텐츠)에서 검색 테스트\n   - 결과 순위 알고리즘 테스트\n\n3. 통합 테스트:\n   - 샘플 쿼리로 검색 페이지 테스트\n   - 검색 결과 네비게이션 테스트\n   - 대용량 데이터셋에서 성능 테스트",
+      "priority": "medium",
+      "dependencies": [2],
       "status": "pending",
-      "dependencies": [
-        3,
-        4
-      ],
-      "priority": "high",
-      "details": "Create a dynamic route in Next.js for individual posts. Render Markdown content as HTML using remark 14.0.2 and remark-html 15.0.2. Display post metadata (title, date, tags). Implement proper SEO meta tags. Use Next.js getStaticProps and getStaticPaths for static generation of post pages.",
-      "testStrategy": "Test correct rendering of Markdown content. Verify proper display of metadata. Test SEO meta tags. Ensure correct static generation of pages.",
       "subtasks": [
         {
           "id": 1,
-          "title": "Next.js 동적 라우트 설정",
-          "description": "Create the file structure and implement dynamic routing for blog posts",
-          "dependencies": [],
-          "details": "Create a [slug].js file in the pages/blog directory to handle dynamic blog post routes. Implement the useRouter hook to access route parameters. Set up the basic page structure that will fetch and display blog content based on the slug parameter.",
-          "status": "pending"
+          "title": "검색 로직 및 알고리즘 구현",
+          "description": "lib/search.ts에 클라이언트 사이드 검색 로직과 퍼지 검색 알고리즘을 구현합니다.",
+          "details": "Fuse.js 또는 유사한 라이브러리를 사용한 검색 엔진과 결과 순위 매김 알고리즘을 구현합니다.",
+          "status": "pending",
+          "dependencies": []
         },
         {
           "id": 2,
-          "title": "Remark를 이용한 마크다운-HTML 변환",
-          "description": "Implement the conversion of Markdown content to HTML using the Remark library",
-          "dependencies": [
-            1
-          ],
-          "details": "Install remark and related packages. Create a utility function that takes Markdown content as input and returns processed HTML. Implement syntax highlighting for code blocks and handle other Markdown features like tables and lists.",
-          "status": "pending"
+          "title": "SearchBar 컴포넌트 및 드롭다운 UI 구현",
+          "description": "검색 입력 필드와 실시간 검색 결과를 표시하는 드롭다운 UI를 구현합니다.",
+          "details": "입력 디바운스, 키보드 네비게이션, 검색 아이콘을 포함한 SearchBar 컴포넌트를 구현합니다.",
+          "status": "pending",
+          "dependencies": [1]
         },
         {
           "id": 3,
-          "title": "포스트 메타데이터 표시 컴포넌트",
-          "description": "Create a reusable component to display blog post metadata",
-          "dependencies": [
-            1
-          ],
-          "details": "Design and implement a component that displays post metadata such as title, date, author, and reading time. Style the component appropriately and ensure it's responsive. Make it reusable across different parts of the blog.",
-          "status": "pending"
+          "title": "검색 결과 페이지 구현",
+          "description": "전체 페이지 검색 결과와 고급 필터링 옵션을 제공하는 pages/search.tsx를 구현합니다.",
+          "details": "검색 결과 페이지네이션, 필터링 옵션, 검색 결과 정렬 기능을 포함한 검색 페이지를 구현합니다.",
+          "status": "pending",
+          "dependencies": [2]
         },
         {
           "id": 4,
-          "title": "SEO 메타데이터 구현",
-          "description": "Add SEO-related metadata to blog post pages",
-          "dependencies": [
-            1,
-            3
-          ],
-          "details": "Implement Next.js Head component to add appropriate meta tags for SEO. Include Open Graph tags for social sharing, canonical URLs, and other SEO best practices. Ensure dynamic metadata is generated based on each post's content.",
-          "status": "pending"
-        },
-        {
-          "id": 5,
-          "title": "정적 생성 설정",
-          "description": "Configure static generation for blog posts using getStaticPaths and getStaticProps",
-          "dependencies": [
-            1,
-            2
-          ],
-          "details": "Implement getStaticPaths to define which blog posts should be pre-rendered at build time. Create getStaticProps to fetch the content and metadata for each post. Set up incremental static regeneration if needed for content that changes frequently.",
-          "status": "pending"
+          "title": "SearchResult 컴포넌트 및 결과 강조 기능 구현",
+          "description": "검색 결과를 표시하고 일치하는 용어를 강조하는 SearchResult 컴포넌트를 구현합니다.",
+          "details": "검색어 하이라이팅, 발췌문 표시, 포스트 메타데이터를 포함한 SearchResult 컴포넌트를 구현합니다.",
+          "status": "pending",
+          "dependencies": [3]
         }
       ]
     },
     {
       "id": 7,
-      "title": "코드 구문 강조 기능 구현",
-      "description": "Add syntax highlighting for code blocks in blog posts.",
-      "status": "pending",
-      "dependencies": [
-        6
-      ],
+      "title": "코드 하이라이팅 및 마크다운 스타일링",
+      "description": "코드 블록에 대한 구문 강조를 구현하고 최적의 가독성을 위해 마크다운 콘텐츠를 스타일링합니다.",
+      "details": "다음을 통해 마크다운 렌더링을 향상시킵니다:\n1. Prism.js를 사용한 코드 블록 구문 강조\n2. 마크다운 요소에 대한 사용자 정의 스타일링\n3. 다양한 마크다운 기능 지원\n\n구현 세부사항:\n- 구문 강조를 위한 Prism.js 통합:\n  - prismjs 및 관련 패키지 설치\n  - 지원되는 언어 설정\n  - 테마 전환(라이트/다크) 구현\n- Tailwind CSS를 사용한 사용자 정의 마크다운 스타일 생성:\n  - 제목, 단락, 목록, 인용문 스타일링\n  - 코드 블록용 사용자 정의 스타일 생성\n  - 모든 요소에 대한 반응형 디자인 보장\n- 고급 마크다운 기능 지원:\n  - 테이블\n  - 작업 목록\n  - 각주\n  - 사용자 정의 컨테이너\n\n코드 블록 기능:\n- 줄 번호\n- 언어 표시기\n- 코드 복사 버튼\n- 지정된 언어에 따른 구문 강조\n\n접근성 고려사항:\n- 충분한 색상 대비 보장\n- 모든 뷰포트 크기에서 가독성 유지",
+      "testStrategy": "1. 컴포넌트 테스트:\n   - 다양한 언어로 코드 블록 렌더링 테스트\n   - 마크다운 요소 스타일링 테스트\n   - 코드 복사 기능 테스트\n\n2. 시각적 테스트:\n   - 라이트 및 다크 모드에서 외관 테스트\n   - 마크다운 요소의 반응형 동작 테스트\n   - 구문 강조가 올바르게 작동하는지 확인\n\n3. 접근성 테스트:\n   - 색상 대비 준수 테스트\n   - 스크린 리더 호환성 테스트\n   - 상호작용 요소의 키보드 네비게이션 테스트",
       "priority": "medium",
-      "details": "Integrate Prism.js 1.29.0 for syntax highlighting. Configure Prism to support common programming languages. Implement a custom React component to wrap code blocks. Ensure proper styling and theme consistency with the overall design.",
-      "testStrategy": "Test syntax highlighting for various programming languages. Verify correct application of styles. Test accessibility of highlighted code blocks.",
+      "dependencies": [4],
+      "status": "pending",
       "subtasks": []
     },
     {
       "id": 8,
-      "title": "다크 모드 지원 개발",
-      "description": "Implement a dark mode option with user preference persistence.",
-      "status": "pending",
-      "dependencies": [
-        4
-      ],
+      "title": "다크 모드 지원",
+      "description": "사용자 기본 설정에 따라 다크 및 라이트 모드를 지원하는 테마 전환 시스템을 구현합니다.",
+      "details": "다음 기능을 가진 테마 전환 시스템을 생성합니다:\n1. 다크 및 라이트 모드 지원\n2. 사용자 시스템 기본 설정 존중\n3. 사용자 선택 지속\n4. 모든 컴포넌트에 테마 일관성 있게 적용\n\n구현 세부사항:\n- Tailwind CSS 다크 모드 사용:\n  - 다크 모드 지원을 위해 tailwind.config.js 설정\n  - 테마 색상을 위한 CSS 변수 생성\n- ThemeProvider 컨텍스트 생성:\n  - 테마 상태(다크/라이트) 저장\n  - 테마 변경 메서드 제공\n  - 시스템 기본 설정 변경 감지\n- 테마 지속성 구현:\n  - localStorage에 사용자 기본 설정 저장\n  - 초기 로드 시 저장된 기본 설정 적용\n- ThemeToggle 컴포넌트 생성:\n  - 태양/달 아이콘이 있는 버튼\n  - 상태 간 애니메이션 전환\n- 모든 컴포넌트에 테마 스타일 적용:\n  - 마크다운 콘텐츠\n  - 코드 블록\n  - UI 요소\n\n접근성 고려사항:\n- 스크린 리더에게 테마 변경 알림\n- 두 테마 모두에서 충분한 대비 유지",
+      "testStrategy": "1. 컴포넌트 테스트:\n   - ThemeToggle 기능 테스트\n   - ThemeProvider 컨텍스트 동작 테스트\n\n2. 통합 테스트:\n   - 페이지 네비게이션 간 테마 지속성 테스트\n   - 시스템 기본 설정 감지 테스트\n   - 모든 컴포넌트에 테마 적용 테스트\n\n3. 시각적 테스트:\n   - 모든 컴포넌트가 두 테마에서 올바르게 렌더링되는지 확인\n   - 전환 애니메이션 테스트\n   - 대비 비율이 접근성 표준을 충족하는지 확인",
       "priority": "low",
-      "details": "Use Tailwind CSS dark mode utility. Create a toggle component for switching between light and dark modes. Implement local storage to persist user preference. Ensure smooth transition between modes. Consider system preference detection using matchMedia API.",
-      "testStrategy": "Test toggle functionality. Verify persistence of user preference. Test system preference detection. Ensure all components render correctly in both modes.",
+      "dependencies": [3, 4, 7],
+      "status": "pending",
       "subtasks": []
     },
     {
       "id": 9,
-      "title": "검색 기능 구현",
-      "description": "Develop a client-side search feature for blog posts.",
+      "title": "RSS 피드 생성",
+      "description": "전체 블로그와 개별 카테고리에 대한 RSS 피드를 생성하는 시스템을 만듭니다.",
+      "details": "다음 기능을 가진 RSS 피드 생성 시스템을 구현합니다:\n1. 모든 블로그 포스트에 대한 RSS 피드 생성\n2. 각 카테고리에 대한 별도 RSS 피드 생성\n3. 빌드 프로세스 중 피드 업데이트\n\n구현 세부사항:\n- scripts/generate-rss.js 생성:\n  - feed 패키지를 사용하여 RSS XML 생성\n  - /rss.xml에 메인 피드 생성\n  - /category/[category]/rss.xml에 카테고리 피드 생성\n- 피드에 포함할 내용:\n  - 포스트 제목, 날짜, 작성자\n  - 포스트 요약 또는 발췌문\n  - 전체 포스트 링크\n  - 피드 카테고리로서의 카테고리 및 태그\n- 빌드 프로세스와 통합:\n  - package.json scripts에 추가\n  - build-posts.js 후 실행\n- pages/api/rss.ts 생성 (선택사항):\n  - 필요한 경우 RSS 피드를 동적으로 제공\n\nRSS 피드 구조:\n- 표준 RSS 2.0 형식 사용\n- 적절한 채널 메타데이터 포함\n- RFC 822에 따른 날짜 형식\n- HTML 콘텐츠용 CDATA 섹션 포함",
+      "testStrategy": "1. 단위 테스트:\n   - RSS 생성 함수 테스트\n   - RSS 스키마에 대한 XML 출력 검증\n   - 피드 항목 형식 테스트\n\n2. 통합 테스트:\n   - 샘플 포스트 데이터로 피드 생성 테스트\n   - 카테고리 피드가 올바른 포스트를 포함하는지 확인\n   - 빌드 프로세스와 통합 테스트\n\n3. 검증 테스트:\n   - W3C Feed Validator로 생성된 피드 검증\n   - 인기 있는 RSS 리더에서 피드 테스트\n   - 모든 필수 요소가 존재하는지 확인",
+      "priority": "low",
+      "dependencies": [1, 2],
       "status": "pending",
-      "dependencies": [
-        5
-      ],
-      "priority": "medium",
-      "details": "Implement a search input component. Use Fuse.js 6.6.2 for fuzzy searching. Index posts by title, tags, and content. Display search results in real-time as the user types. Implement debouncing for better performance.",
-      "testStrategy": "Test search accuracy for various queries. Verify real-time update of results. Test edge cases like empty search or no results. Measure and optimize search performance.",
-      "subtasks": [
-        {
-          "id": 1,
-          "title": "검색 입력 컴포넌트 생성",
-          "description": "Develop a reusable search input component that captures user queries and triggers the search functionality",
-          "dependencies": [],
-          "details": "Build an input field with onChange event handler to capture user input. Include placeholder text and styling for better UX. Implement state management to store the current search query using React state or equivalent.",
-          "status": "pending"
-        },
-        {
-          "id": 2,
-          "title": "퍼지 검색을 위한 Fuse.js 통합",
-          "description": "Set up Fuse.js library to enable fuzzy search capabilities with appropriate configuration options",
-          "dependencies": [
-            1
-          ],
-          "details": "Install Fuse.js package. Configure search options including threshold (0.3), keys to search (title, content with appropriate weights), and other parameters like minMatchCharLength. Create a function to initialize Fuse with the search index and execute searches based on user input.",
-          "status": "pending"
-        },
-        {
-          "id": 3,
-          "title": "포스트 인덱싱 로직 개발",
-          "description": "Create a system to generate and fetch the search index containing all searchable content",
-          "dependencies": [],
-          "details": "For static sites, implement logic to generate a JSON search index during build time. Include relevant fields like title, content, URL, and any other searchable metadata. Create a function to fetch this index (e.g., from '/search-data.json') when the application initializes.",
-          "status": "pending"
-        },
-        {
-          "id": 4,
-          "title": "실시간 검색 결과 표시 구현",
-          "description": "Create a component to display search results as the user types",
-          "dependencies": [
-            1,
-            2,
-            3
-          ],
-          "details": "Develop a results component that renders the filtered items returned by Fuse.js. Include highlighting for matched text portions. Handle empty states and loading states appropriately. Ensure results update dynamically as the user modifies their search query.",
-          "status": "pending"
-        },
-        {
-          "id": 5,
-          "title": "디바운싱을 통한 검색 성능 최적화",
-          "description": "Add debouncing to prevent excessive search operations during rapid typing",
-          "dependencies": [
-            1,
-            2
-          ],
-          "details": "Implement a debounce function that delays search execution until the user pauses typing. Set an appropriate delay time (e.g., 300ms). Ensure the search is only triggered for queries with sufficient length (e.g., 3+ characters). Add loading indicators to provide feedback during search operations.",
-          "status": "pending"
-        }
-      ]
+      "subtasks": []
     },
     {
       "id": 10,
-      "title": "태그/카테고리 필터링 개발",
-      "description": "Implement functionality to filter blog posts by tags or categories.",
-      "status": "pending",
-      "dependencies": [
-        5
-      ],
+      "title": "반응형 디자인 및 기본 스타일링",
+      "description": "모든 기기에서 최적의 보기 경험을 위해 Tailwind CSS를 사용한 반응형 레이아웃과 기본 스타일링을 구현합니다.",
+      "details": "다음 기능을 가진 반응형 디자인 시스템을 생성합니다:\n1. 모든 기기에서 최적의 보기 경험 제공\n2. 콘텐츠에 집중한 깔끔하고 미니멀한 UI 구현\n3. 스타일링을 위한 Tailwind CSS 사용\n4. 일관된 시각적 계층 구조 유지\n\n구현 세부사항:\n- Tailwind CSS 설정:\n  - 사용자 정의 테마로 tailwind.config.js 설정\n  - 색상 팔레트, 타이포그래피, 간격 정의\n  - 필요에 따라 사용자 정의 유틸리티 생성\n- 반응형 레이아웃 생성:\n  - 모바일 우선 접근 방식\n  - 태블릿 및 데스크톱용 브레이크포인트\n  - 유연한 그리드 시스템\n- 핵심 컴포넌트 구현:\n  - Layout: 헤더, 푸터, 콘텐츠 영역이 있는 메인 레이아웃 래퍼\n  - Header: 사이트 제목, 네비게이션, 검색, 테마 토글\n  - Footer: 저작권, 링크, 추가 정보\n  - Container: 콘텐츠 너비 제한\n- 특정 페이지 유형 스타일링:\n  - 홈 페이지: 포스트 그리드/목록 레이아웃\n  - 카테고리 페이지: 카테고리 헤더 및 포스트 목록\n  - 포스트 상세: 콘텐츠 타이포그래피 및 간격\n\n접근성 및 성능:\n- 충분한 색상 대비 보장\n- Core Web Vitals 최적화\n- 반응형 이미지 구현",
+      "testStrategy": "1. 컴포넌트 테스트:\n   - UI 컴포넌트의 반응형 동작 테스트\n   - 다양한 브레이크포인트에서 레이아웃 확인\n\n2. 시각적 테스트:\n   - 다양한 기기(모바일, 태블릿, 데스크톱)에서 외관 테스트\n   - 브라우저 간 일관된 스타일링 확인\n\n3. 접근성 테스트:\n   - 색상 대비 준수 테스트\n   - 반응형 동작이 접근성을 유지하는지 확인\n   - 키보드 네비게이션 테스트\n\n4. 성능 테스트:\n   - Core Web Vitals 메트릭 측정\n   - 다양한 기기에서 로딩 성능 테스트\n   - CSS 최적화 확인",
       "priority": "medium",
-      "details": "Create a component to display all available tags. Implement filtering logic to show posts with selected tags. Update URL to reflect current filter state. Ensure smooth integration with the existing post list and infinite scroll.",
-      "testStrategy": "Test filtering accuracy for various tag combinations. Verify URL updates. Test integration with infinite scroll. Ensure performance with a large number of posts and tags.",
+      "dependencies": [3, 4, 5],
+      "status": "pending",
       "subtasks": []
-    },
-    {
-      "id": 11,
-      "title": "RSS 피드 생성",
-      "description": "Implement RSS feed generation for the blog.",
-      "status": "pending",
-      "dependencies": [
-        3
-      ],
-      "priority": "low",
-      "details": "Use the feed 4.2.2 package to generate RSS XML. Create a script to build the RSS feed during the build process. Include post title, summary, publication date, and link in the feed. Ensure the feed is accessible at a fixed URL (e.g., /rss.xml).",
-      "testStrategy": "Validate generated RSS XML against RSS 2.0 specification. Test with various RSS readers. Ensure all recent posts are included in the feed.",
-      "subtasks": []
-    },
-    {
-      "id": 12,
-      "title": "SEO 최적화 구현",
-      "description": "Enhance SEO for the blog by implementing necessary meta tags and optimizations.",
-      "status": "pending",
-      "dependencies": [
-        5,
-        6
-      ],
-      "priority": "medium",
-      "details": "Use Next.js Head component to manage meta tags. Implement Open Graph tags for better social media sharing. Create a sitemap.xml file. Ensure proper use of heading tags (h1, h2, etc.) in post content. Implement structured data (JSON-LD) for blog posts.",
-      "testStrategy": "Validate meta tags and structured data using testing tools like Google's Structured Data Testing Tool. Test social media preview rendering. Verify sitemap.xml generation and structure.",
-      "subtasks": []
-    },
-    {
-      "id": 13,
-      "title": "성능 최적화",
-      "description": "Implement performance optimizations for faster page loads and better user experience.",
-      "status": "pending",
-      "dependencies": [
-        5,
-        6,
-        7
-      ],
-      "priority": "medium",
-      "details": "Implement lazy loading for images using Next.js Image component. Set up caching headers for static assets. Minimize and optimize CSS and JavaScript. Implement code splitting using Next.js dynamic imports. Use Web Vitals API to measure and report core web vitals.",
-      "testStrategy": "Measure performance using Lighthouse and WebPageTest. Monitor Core Web Vitals. Test performance improvements across different devices and network conditions.",
-      "subtasks": [
-        {
-          "id": 1,
-          "title": "Next.js Image를 활용한 이미지 최적화",
-          "description": "Implement the Next.js Image component to optimize images across the application",
-          "dependencies": [],
-          "details": "Use the next/image component to enable automatic size optimization, prevent layout shifts, and implement lazy loading. Set width and height attributes for remote images, use static imports for local images, add descriptive alt text, and apply the priority prop for critical above-the-fold images.",
-          "status": "pending"
-        },
-        {
-          "id": 2,
-          "title": "캐싱 전략 구현",
-          "description": "Develop and implement an effective caching strategy for the application",
-          "dependencies": [],
-          "details": "Implement browser caching with appropriate cache-control headers, set up CDN caching for static assets, configure service worker caching for offline support, and implement data caching strategies using SWR or React Query for API responses.",
-          "status": "pending"
-        },
-        {
-          "id": 3,
-          "title": "동적 임포트를 통한 코드 분할",
-          "description": "Implement code splitting using dynamic imports to reduce initial bundle size",
-          "dependencies": [],
-          "details": "Use Next.js dynamic imports for components that aren't needed immediately, implement route-based code splitting with Next.js pages, lazy load heavy libraries and components, and set up proper loading states for dynamically imported components.",
-          "status": "pending"
-        },
-        {
-          "id": 4,
-          "title": "CSS 및 JS 최적화",
-          "description": "Optimize CSS and JavaScript assets to improve loading performance",
-          "dependencies": [
-            3
-          ],
-          "details": "Implement CSS-in-JS with proper code splitting, remove unused CSS/JS, minify production assets, implement critical CSS extraction, defer non-critical JavaScript, and optimize third-party script loading with resource hints.",
-          "status": "pending"
-        },
-        {
-          "id": 5,
-          "title": "핵심 웹 바이탈 모니터링",
-          "description": "Set up monitoring for Core Web Vitals to track performance improvements",
-          "dependencies": [
-            1,
-            2,
-            3,
-            4
-          ],
-          "details": "Implement real user monitoring (RUM) for Core Web Vitals (LCP, FID, CLS), set up performance budgets, create a dashboard for tracking metrics over time, configure alerts for performance regressions, and establish a process for regular performance reviews.",
-          "status": "pending"
-        }
-      ]
-    },
-    {
-      "id": 14,
-      "title": "접근성 향상 구현",
-      "description": "Ensure the blog is accessible to users with disabilities.",
-      "status": "pending",
-      "dependencies": [
-        5,
-        6
-      ],
-      "priority": "medium",
-      "details": "Implement proper ARIA attributes. Ensure keyboard navigation support. Verify color contrast ratios. Add skip to content link. Ensure proper heading structure. Test with screen readers.",
-      "testStrategy": "Use aXe or WAVE for automated accessibility testing. Perform manual testing with keyboard-only navigation. Test with popular screen readers like NVDA or VoiceOver.",
-      "subtasks": [
-        {
-          "id": 1,
-          "title": "ARIA 속성 구현",
-          "description": "Add appropriate ARIA roles, states, and properties to ensure UI components are properly identified by assistive technologies",
-          "dependencies": [],
-          "details": "Identify all interactive elements that need ARIA attributes, ensure proper labeling of UI components, and verify that dynamic content changes are announced to screen readers through appropriate ARIA live regions",
-          "status": "pending"
-        },
-        {
-          "id": 2,
-          "title": "키보드 네비게이션 개선",
-          "description": "Ensure all interactive elements are accessible and operable using only a keyboard",
-          "dependencies": [
-            1
-          ],
-          "details": "Implement proper focus management, ensure logical tab order, add visible focus indicators, and create keyboard shortcuts for complex interactions that might be difficult with standard tab navigation",
-          "status": "pending"
-        },
-        {
-          "id": 3,
-          "title": "색상 대비 검증",
-          "description": "Verify that all text content meets minimum contrast ratio thresholds according to WCAG guidelines",
-          "dependencies": [],
-          "details": "Audit all text elements against backgrounds, ensure color is not the only means of conveying information, and implement alternative visual indicators for colorblind users",
-          "status": "pending"
-        },
-        {
-          "id": 4,
-          "title": "제목 구조 최적화",
-          "description": "Ensure proper semantic heading structure throughout the application",
-          "dependencies": [],
-          "details": "Audit and reorganize heading levels (h1-h6) to create a logical document outline, avoid skipping heading levels, and ensure each page has a unique h1 element",
-          "status": "pending"
-        },
-        {
-          "id": 5,
-          "title": "스크린 리더 테스트",
-          "description": "Test the application with popular screen readers to identify and fix accessibility issues",
-          "dependencies": [
-            1,
-            2,
-            4
-          ],
-          "details": "Conduct testing with NVDA, JAWS, and VoiceOver across different browsers, document issues encountered, and verify that all content is properly announced and navigable",
-          "status": "pending"
-        }
-      ]
-    },
-    {
-      "id": 15,
-      "title": "지속적 통합 및 배포 설정",
-      "description": "Implement CI/CD pipeline for automated testing and deployment.",
-      "status": "pending",
-      "dependencies": [
-        1,
-        2
-      ],
-      "priority": "high",
-      "details": "Set up GitHub Actions for CI/CD. Configure workflow to run tests, lint code, and check types on every pull request. Set up automatic deployment to Vercel or Netlify. Implement branch protection rules. Generate and display test coverage reports.",
-      "testStrategy": "Verify successful pipeline execution for various scenarios (push to main, pull requests). Test deployment process. Ensure proper reporting of test results and coverage.",
-      "subtasks": [
-        {
-          "id": 1,
-          "title": "GitHub Actions 워크플로우 설정",
-          "description": "Create the basic GitHub Actions workflow structure in your repository",
-          "dependencies": [],
-          "details": "Create a .github/workflows directory in your repository root and add a YAML file (e.g., ci-cd.yml) that defines the workflow name, triggers (push to main branch and pull requests), and basic job structure",
-          "status": "pending"
-        },
-        {
-          "id": 2,
-          "title": "테스트 및 린트 자동화",
-          "description": "Configure automated testing and linting in the CI pipeline",
-          "dependencies": [
-            1
-          ],
-          "details": "Add jobs to the workflow that install dependencies, run linters (ESLint, Prettier, etc.), and execute test suites. Configure caching to improve workflow speed and set up appropriate fail conditions",
-          "status": "pending"
-        },
-        {
-          "id": 3,
-          "title": "배포 설정",
-          "description": "Set up automated deployment to Vercel/Netlify",
-          "dependencies": [
-            2
-          ],
-          "details": "Configure deployment job that triggers after successful tests, using the appropriate GitHub Action for Vercel or Netlify. Set up environment variables, deployment contexts (preview/production), and deployment conditions based on branch",
-          "status": "pending"
-        },
-        {
-          "id": 4,
-          "title": "브랜치 보호 규칙 구현",
-          "description": "Implement branch protection rules to enforce CI checks",
-          "dependencies": [
-            1,
-            2
-          ],
-          "details": "Configure branch protection rules for the main branch that require status checks to pass before merging, require pull request reviews, and prevent force pushes to ensure code quality and stability",
-          "status": "pending"
-        },
-        {
-          "id": 5,
-          "title": "테스트 커버리지 보고서 구현",
-          "description": "Implement test coverage reporting and visualization",
-          "dependencies": [
-            2
-          ],
-          "details": "Add a job to generate test coverage reports, configure a coverage threshold, and set up a reporting tool (like Codecov or Coveralls) to visualize coverage trends and display badges in the repository README",
-          "status": "pending"
-        }
-      ]
     }
   ]
 }
