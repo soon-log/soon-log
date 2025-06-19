@@ -1,46 +1,63 @@
 # Task ID: 4
-# Title: 개별 포스트 상세 페이지
+# Title: 무한 스크롤로 홈페이지 게시물 목록 구현
 # Status: pending
-# Dependencies: 2
+# Dependencies: 3
 # Priority: high
-# Description: 선택된 블로그 포스트의 전체 콘텐츠를 적절한 마크다운 포맷팅과 코드 하이라이팅으로 렌더링하는 포스트 상세 페이지를 만듭니다.
+# Description: 모든 블로그 게시물을 표시하는 메인 페이지를 만듭니다. 무한 스크롤 기능을 사용하여 역순으로 게시물을 표시합니다.
 # Details:
-다음 기능을 가진 포스트 상세 페이지를 구현합니다:
-1. 선택된 포스트의 전체 마크다운 콘텐츠 렌더링
-2. 포스트 메타데이터(제목, 날짜, 카테고리, 태그) 표시
-3. 코드 블록에 대한 구문 강조 구현
-4. 관련 포스트로의 네비게이션 제공
+1. `/components/post-card.tsx`에 PostCard 구성 요소를 만듭니다. 개별 게시물 세부 정보를 표시하는 데 사용됩니다.
+   - 게시물 제목
+   - 게시 날짜(형식화)
+   - 태그
+   - 요약
+   - 카테고리 뱃지
+2. `/app/page.tsx`에서 다음을 구현합니다.
+   - 게시물 데이터를 가져옵니다.
+   - 모든 카테고리를 단일 배열로 평탄화합니다.
+   - 날짜(최신순)로 게시물 정렬
+   - PostCard 구성 요소를 사용하여 게시물 그리드 렌더링
+3. 무한 스크롤 기능 추가:
+   - 초기에 제한된 수의 게시물 렌더링(예: 10)
+   - IntersectionObserver를 사용하여 사용자가 하단에 가까이 스크롤할 때 추가 게시물 로드
+```typescript
+// Example IntersectionObserver implementation
+const observer = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting && hasMorePosts) {
+    loadMorePosts();
+  }
+}, { threshold: 0.1 });
 
-구현 세부사항:
-- Next.js 동적 라우팅을 사용하여 pages/posts/[slug].tsx 생성
-- 정적 사이트 생성을 위해 getStaticProps와 getStaticPaths 사용:
-  - getStaticPaths: 빌드 시 모든 포스트에 대한 경로 생성
-  - getStaticProps: 슬러그로 포스트 데이터 가져오기
-- 마크다운 렌더링 구현:
-  - 마크다운을 HTML로 변환하기 위해 remark 또는 markdown-it 사용
-  - 코드 구문 강조를 위해 Prism.js 통합
-  - Tailwind CSS로 마크다운 요소 스타일링
-- 컴포넌트 생성:
-  - PostHeader: 제목, 날짜, 카테고리, 태그 표시
-  - PostContent: 마크다운 콘텐츠 렌더링
-  - RelatedPosts: 같은 카테고리의 포스트 표시
-
-접근성 고려사항:
-- 적절한 제목 계층 구조 보장
-- 이미지에 적절한 alt 텍스트 추가
-- 코드 블록의 접근성 보장
+if (loadMoreRef.current) {
+  observer.observe(loadMoreRef.current);
+}
+```
+4. 더 많은 게시물이 로드될 때 로딩 인디케이터 추가
+5. 다양한 화면 크기에 대한 Tailwind CSS를 사용하여 반응형 그리드 레이아웃 구현
 
 # Test Strategy:
-1. 컴포넌트 테스트:
-   - PostHeader가 올바른 메타데이터를 표시하는지 테스트
-   - PostContent가 마크다운을 올바르게 렌더링하는지 테스트
-   - 다양한 언어에 대해 코드 하이라이팅이 작동하는지 테스트
+1. PostCard 구성 요소 렌더링을 다양한 메타데이터 조합으로 테스트
+2. 게시물이 날짜에 따라 정렬되는지 확인
+3. 무한 스크롤을 모의 IntersectionObserver 및 더 많은 게시물 로드 확인을 통해 테스트
+4. 다양한 화면 크기(모바일, 태블릿, 데스크탑)에서 반응형 레이아웃 테스트
+5. 많은 게시물이 있는 경우 성능 테스트
+6. 게시물이 없는 경우와 같은 에지 사례 테스트
 
-2. 라우팅 테스트:
-   - 다양한 슬러그로 동적 라우팅 테스트
-   - 존재하지 않는 슬러그 처리 테스트
+# Subtasks:
+## 1. PostCard 구성 요소 개발 [pending]
+### Dependencies: None
+### Description: 재사용 가능한 PostCard 구성 요소를 만들어 개별 게시물 세부 정보를 표시합니다. 구성 요소가 반응형이고 다양한 기기에서 일관된 렌더링을 보장합니다.
+### Details:
+게시물 데이터에 대한 속성을 사용하여 PostCard 구성 요소를 설계하고 모의 데이터를 사용하여 테스트하여 올바른 렌더링을 보장합니다.
 
-3. 렌더링 테스트:
-   - 다양한 마크다운 기능으로 마크다운 렌더링 테스트
-   - 다양한 언어로 코드 블록 렌더링 테스트
-   - 다양한 뷰포트 크기에서 반응형 레이아웃 테스트
+## 2. 데이터 가져오기를 통한 홈페이지 구현 [pending]
+### Dependencies: 4.1
+### Description: PostCard 구성 요소를 사용하여 게시물 목록을 가져오고 표시하는 홈페이지 레이아웃을 구축합니다. 초기 데이터 가져오기 논리와 로드 및 오류 상태를 통합합니다.
+### Details:
+게시물 상태 관리, 로드 및 오류를 설정합니다. API에서 첫 페이지의 게시물을 가져와 PostCard 구성 요소를 사용하여 렌더링합니다. 필요에 따라 로드 및 오류 메시지를 표시합니다.
+
+## 3. 무한 스크롤 기능 구현 [pending]
+### Dependencies: 4.2
+### Description: IntersectionObserver API 또는 적절한 라이브러리를 사용하여 무한 스크롤을 홈페이지에 추가합니다. 사용자가 목록의 하단에 가까이 스크롤할 때 추가 데이터를 자동으로 가져오고 추가합니다.
+### Details:
+사용자가 목록 끝에 접근할 때 추가 데이터를 가져오는 로직을 구현합니다. 성능을 최적화하여 대규모 데이터 세트를 처리하고 중복 요청을 방지합니다.
+

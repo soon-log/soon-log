@@ -1,311 +1,121 @@
 # Overview  
-soon-log는 MDX 파일 기반의 개인 개발 블로그입니다. posts 폴더 내 MDX 파일들을 읽어들여 정적 블로그를 생성합니다. 깔끔한 UI와 강력한 검색/필터링 기능을 통해 사용자가 원하는 콘텐츠를 빠르게 찾을 수 있으며, SEO 최적화와 반응형 디자인으로 다양한 환경에서 일관된 사용자 경험을 제공합니다.
+soon-log는 최신 기술 스택을 활용하여 개발 지식과 경험을 공유하는 개인 기술 블로그입니다. 이 프로젝트는 마크다운(MDX) 파일 기반의 정적 사이트 생성(SSG) 방식을 통해 개발자(저자)에게는 효율적인 콘텐츠 관리 경험을, 독자에게는 빠르고 쾌적한 탐색 경험을 제공하는 것을 목표로 합니다. 복잡한 데이터베이스나 CMS 없이, Git 기반으로 포스트를 관리하여 단순성과 유지보수성을 극대화합니다.
 
 # Core Features  
+## MDX 기반 콘텐츠 관리 (MDX-based Content Management)
+- What it does: posts/ 폴더 내에 폴더 단위로 MDX 파일을 작성하여 블로그 게시물을 관리합니다. 각 index.mdx 파일 상단의 YAML Frontmatter를 통해 제목, 날짜, 태그, 카테고리 등의 메타데이터를 정의합니다.
+- Why it's important: 개발자에게 익숙한 마크다운 문법과 코드 중심의 버전 관리(Git)를 통해 콘텐츠 작성 및 관리가 매우 효율적입니다. 또한, React 컴포넌트를 마크다운 내부에 직접 사용할 수 있어 동적인 콘텐츠 표현이 가능합니다.
+- How it works: 빌드 시점에 모든 index.mdx 파일을 파싱하여 메타데이터를 추출하고, 이를 기반으로 게시물 목록을 위한 JSON 파일과 각 게시물의 상세 페이지를 정적으로 생성합니다.
 
-## MDX 기반 콘텐츠 관리
-- posts 폴더 구조를 통한 직관적인 파일 관리
-- YAML 메타데이터와 마크다운 콘텐츠 분리
-- 빌드 타임에 메타데이터 자동 수집 및 JSON 생성
-- 개발자 친화적인 콘텐츠 작성 환경 제공
+## 게시물 목록 및 탐색 (Post Listing & Navigation)
+- What it does: 블로그의 메인 페이지에서 모든 게시물을 최신순으로 정렬하여 보여줍니다. 사용자가 스크롤을 내리면 추가 게시물을 동적으로 로드(Infinite Scroll)합니다. 태그, 작성일(연/월/일)을 기준으로 게시물을 필터링하는 기능을 제공합니다.
+- Why it's important: 사용자가 방대한 양의 콘텐츠 속에서도 원하는 정보를 쉽고 빠르게 찾을 수 있도록 돕습니다. 직관적인 탐색 기능은 사용자 경험을 크게 향상시킵니다.
+- How it works: 빌드 시 생성된 메타데이터 JSON 파일을 활용하여 클라이언트 측에서 필터링 및 정렬 로직을 수행합니다. 필터링 조건은 URL 쿼리 스트링(?tags=, ?date=)으로 관리되어 링크 공유 시에도 필터 상태가 유지됩니다.
 
-## 카테고리 기반 분류 시스템
-- 메타데이터 기반 자동 카테고리 분류
-- 데스크톱: 좌측 사이드바 메뉴
-- 모바일: 햄버거 메뉴 Drawer 형태
-- 카테고리별 글 목록 필터링 (?category= 쿼리스트링)
+## 게시물 상세 페이지 (Post Detail Page)
+- What it does: MDX 파일의 본문을 HTML로 변환하여 렌더링합니다. 코드 블록에는 구문 강조(Syntax Highlighting)를 적용하여 가독성을 높입니다.
+- Why it's important: 콘텐츠의 핵심인 블로그 글을 독자가 편안하게 읽을 수 있는 환경을 제공합니다. 특히 개발 블로그에서 코드의 가독성은 매우 중요합니다.
+- How it works: 빌드 시점에 각 post/[key] 경로에 대한 정적 페이지를 생성합니다. MDX 파서가 마크다운을 HTML로 변환하고, Prism.js 라이브러리로 코드 블록 스타일을 적용합니다.
 
-## 검색 및 필터링 기능
-- 제목, 태그, 요약 내용 기반 통합 검색 (?search= 쿼리스트링)
-- 태그별 필터링 (?tags= 쿼리스트링)
-- 작성일 기반 필터링 (?date= 쿼리스트링)
-- 다중 필터 조합 지원 (카테고리 + 태그/날짜)
-
-## 무한 스크롤 글 목록
-- 작성일 내림차순 정렬
-- 동적 콘텐츠 로딩으로 성능 최적화
-- 썸네일 이미지 자동 감지 및 fallback 처리
-- 글 제목, 작성일, 요약, 태그 표시
-
-## 반응형 상세 페이지
-- MDX를 HTML로 변환하여 렌더링
-- 구문 강조가 적용된 코드 블록
-- SEO 최적화된 메타 태그
-- RSS 피드 생성 지원
-
-## 사용자 경험 최적화
-- 시스템 설정 기반 다크/라이트 모드
-- 깔끔하고 미니멀한 UI 디자인
-- 모바일/데스크톱 호환 반응형 레이아웃
-- 빠른 페이지 로드를 위한 SSG/SSR
+## 클라이언트 측 검색 (Client-Side Search)
+- What it does: 헤더의 검색창을 통해 키워드로 게시물을 검색하는 기능을 제공합니다.
+- Why it's important: 사용자가 특정 키워드를 통해 원하는 정보를 즉시 찾을 수 있게 하여 블로그의 사용성을 높입니다.
+- How it works: 빌드 시점에 Lunr.js를 사용하여 모든 게시물의 텍스트 콘텐츠(제목, 요약, 태그 등)에 대한 검색 인덱스 파일을 생성합니다. 사용자가 검색을 실행하면, 클라이언트는 이 인덱스 파일을 로드하여 빠르고 효율적으로 검색 결과를 반환합니다.
 
 # User Experience  
+## User Personas:
+- Author (개발자 본인): Git과 마크다운을 사용해 쉽고 빠르게 기술 문서를 작성하고 게시하길 원함.
+- Reader (방문자): 특정 개발 지식을 얻기 위해 방문한 개발자. 빠르고 쾌적한 환경에서 원하는 정보를 정확하게 탐색하길 원함.
 
-## 사용자 페르소나
-- 주요 대상: 개발자, 기술 블로그 독자
-- 니즈: 기술 정보 탐색, 학습 자료 검색, 개발 트렌드 파악
+## Key User Flows:
+- 게시물 탐색: 메인 페이지 접속 → 전체 글 목록 확인 (무한 스크롤) → 필터(태그/날짜) 기능으로 글 목록 정제 → 관심 있는 글 클릭하여 상세 페이지로 이동.
+- 카테고리별 탐색: 사이드 메뉴(PC) 또는 햄버거 메뉴(모바일)에서 카테고리 선택 → 해당 카테고리 글 목록 확인 → 필터 기능으로 글 목록 정제 → 상세 페이지로 이동.
 
-## 핵심 사용자 플로우
+## UI/UX Considerations:
+- Minimalism & Readability: 콘텐츠에 집중할 수 있는 깔끔하고 미니멀한 디자인.
+- Performance: SSG를 통한 즉각적인 페이지 로딩으로 최상의 성능을 보장.
+- Responsive Design: 데스크톱, 태블릿, 모바일 등 모든 디바이스에서 일관되고 최적화된 사용자 경험을 제공.
+- Dark/Light Mode: 사용자의 시스템 설정을 기본으로 따르며, 수동으로 테마를 전환할 수 있는 토글 버튼을 제공.
 
-### 1. 블로그 탐색 플로우
-1. soon-log 접속 → 메인 페이지 전체 글 목록 확인
-2. 무한 스크롤로 추가 글 로드
-3. 태그/작성일 필터링으로 원하는 글 탐색
-4. 개별 글 클릭 → 상세 페이지(/post/[key]) 이동
+# Technical Architecture
+## System Components:
+- Framework: Next.js (with TypeScript)
+- Styling: Tailwind CSS
+- UI Components: shadcn/ui
+- Content Parsing: @next/mdx, gray-matter
+- Client-Side Search: Lunr.js
+- Testing: Jest, React Testing Library
 
-### 2. 카테고리별 탐색 플로우
-1. 사이드바 메뉴(데스크톱) 또는 햄버거 메뉴(모바일) 클릭
-2. 해당 카테고리의 글 목록 확인
-3. 태그/작성일 필터링으로 원하는 글 탐색
-4. 개별 글 상세 페이지로 이동
-
-## UI/UX 고려사항
-- 심플한 디자인: 깔끔하고 미니멀한 UI로 콘텐츠에 집중
-- 정적 사이트 생성(SSG) 또는 서버 사이드 렌더링(SSR)으로 빠른 페이지 로드 보장
-- 다양한 디바이스에서 일관된 사용자 경험 보장
-- 시인성 좋은 타이포그래피와 적절한 여백 활용
-
-# Technical Architecture  
-
-## 시스템 컴포넌트
-- Next.js 기반 React 애플리케이션
-- MDX 파서 및 변환기
-- 빌드 타임 메타데이터 수집기
-- 반응형 UI 컴포넌트 라이브러리
-
-## 데이터 모델
-
-### MDX 파일 구조
+## Data Models:
+- MDX Frontmatter (Metadata):
 ```
-posts/
-├── [글제목]/
-│   ├── assets/
-│   │   ├── thumbnail.(jpg|png|webp) (선택사항)
-│   │   └── [기타이미지]
-│   └── index.mdx
+---
+key: string       # Unique identifier (folder name)
+title: string     # Post title
+date: string      # Publication date (YYYY-MM-DD)
+tags: string[]    # Array of tags
+category: string  # Post category
+summary: string   # Short summary of the post
+---
 ```
-
-### 메타데이터 스키마
-```yaml
-key: string (폴더명, URL path)
-title: string (글 제목)
-date: string (YYYY-MM-DD 형식)
-tags: string[] (태그 배열)
-category: string (카테고리)
-summary: string (요약 내용)
+- Build-time Generated posts.json:
 ```
-
-### 생성된 JSON 구조
-```json
 {
-  "[카테고리명]": [
+  "[categoryName]": [
     {
-      "key": "string",
-      "title": "string", 
-      "date": "string",
-      "tags": ["string"],
-      "category": "string",
-      "summary": "string"
+      "key": "...",
+      "title": "...",
+      "date": "...",
+      "tags": ["..."],
+      "category": "...",
+      "summary": "..."
     }
   ]
 }
 ```
 
-## API 및 통합
-- 빌드 타임 파일 시스템 API 활용
-- RSS 피드 XML 생성
-- 검색 인덱싱을 위한 메타데이터 처리
-- 이미지 최적화 및 썸네일 처리
+## APIs and Integrations
+- Build-Time Data Pipeline: Node.js 스크립트를 사용하여 posts/ 디렉토리를 순회. 각 MDX 파일에서 메타데이터를 추출하여 posts.json과 lunr-index.json을 생성.
+- SEO & Syndication: 빌드 프로세스에 sitemap.xml과 rss.xml 파일 생성을 포함하여 검색 엔진 최적화 및 RSS 피드 기능을 지원.
+- Dynamic Head/OG Tags: 상세 페이지(post/[key]) 렌더링 시, 해당 글의 메타데이터를 기반으로 <title>, <meta name="description">, Open Graph 태그 (og:title, og:description, og:image 등)를 동적으로 생성.
 
-## 인프라 요구사항
-- Node.js 런타임 환경
-- 정적 파일 호스팅 (Vercel, Netlify 등)
-- CDN 지원 (이미지 및 정적 자산)
-- SEO를 위한 서버 사이드 렌더링 지원
+## Infrastructure Requirements:
+Deployment: Next.js 정적 사이트 배포를 지원하는 플랫폼 Vercel 사용
+CI/CD: main 브랜치에 push 또는 merge 시 자동으로 테스트, 빌드, 배포를 실행하는 워크플로우
 
-# Development Roadmap  
+# Development Roadmap
+## Phase 1: MVP (Minimum Viable Product) - The Core Blog
+1. MDX Content Rendering: MDX 파일을 읽어 기본 스타일의 HTML 페이지(post/[key])로 렌더링하는 기능 구현.
+2. Homepage Post List: 빌드 시 모든 포스트의 메타데이터를 읽어, 메인 페이지(/)에 제목과 날짜만 있는 간단한 목록을 최신순으로 표시.
 
-## Phase 1: MVP 핵심 기능
-### 기본 블로그 시스템
-- Next.js 프로젝트 셋업 및 기본 구조 생성
-- MDX 파서 설정 및 기본 렌더링 구현
-- 메타데이터 수집 스크립트 개발
-- 홈페이지 글 목록 표시 기능
-- 상세 페이지 렌더링 기능
+## Phase 2: Core Features & Usability
+1. Metadata-driven Listing: posts.json 생성 로직을 구현하고, 이를 바탕으로 메인 페이지 목록을 제목, 요약, 날짜, 태그가 포함된 형태로 개선. 썸네일 로직 적용.
+2. Category System: 카테고리별 필터링 기능(?category=...) 및 반응형 사이드/드로어 메뉴 구현.
+3. Advanced Filtering: 태그(다중 선택) 및 날짜 기반 필터링 기능 추가.
+4. UI Polish: 다크/라이트 모드 기능 구현 및 전반적인 UI 디자인(shadcn/ui, Tailwind CSS) 적용.
 
-### 기본 UI/UX
-- 반응형 레이아웃 구현
-- 헤더 컴포넌트 (로고, 검색바, 다크모드 토글)
-- 글 카드 컴포넌트 설계
-- 기본 스타일링 및 타이포그래피
-
-## Phase 2: 검색 및 필터링
-### 검색 기능
-- 통합 검색 시스템 구현
-- 쿼리스트링 기반 상태 관리
-- 검색 결과 하이라이팅
-
-### 필터링 시스템
-- 카테고리별 필터링
-- 태그별 필터링  
-- 날짜별 필터링
-- 다중 필터 조합 로직
-
-## Phase 3: 고급 기능 및 최적화
-### 무한 스크롤
-- 페이지네이션 로직 구현
-- 성능 최적화된 리스트 렌더링
-- 로딩 상태 관리
-
-### 카테고리 네비게이션
-- 사이드바 메뉴 구현
-- 모바일 Drawer 컴포넌트
-- 카테고리 동적 생성 로직
-
-### 썸네일 시스템
-- 이미지 자동 감지 로직
-- 썸네일 최적화 및 fallback 처리
-- 이미지 레이지 로딩
-
-## Phase 4: SEO 및 성능 최적화
-### SEO 최적화
-- 메타 태그 동적 생성
-- Open Graph 태그 구현
-- 구조화된 데이터 마크업
-- RSS 피드 생성
-
-### 성능 최적화
-- 코드 스플리팅 및 번들 최적화
-- 이미지 최적화 파이프라인
-- 캐싱 전략 구현
-- Core Web Vitals 최적화
+## Phase 3: Advanced Functionality & Production Readiness
+1. Search Implementation: Lunr.js 검색 인덱스 생성 스크립트 작성 및 검색 UI/로직 구현.
+2. SEO & Syndication: sitemap.xml, rss.xml 생성 로직 구현. Open Graph 태그 동적 생성 고도화.
 
 # Logical Dependency Chain
+1. Foundation (Must-have first): MDX 파일 파싱 및 post/[key] 상세 페이지 렌더링 기능이 최우선. 이것이 없으면 블로그의 본질인 '글'이 존재할 수 없다.
+2. Visibility (Making it usable): 모든 글의 메타데이터를 집계하여 메인 페이지에 목록으로 보여주는 기능. 이것이 구현되어야 사용자가 작성된 글들을 발견할 수 있다.
+3. Navigability (Building upon the foundation): 목록 기능이 완성된 후, 집계된 메타데이터를 활용하여 카테고리 및 필터 기능을 추가. 이는 기존 목록 기능에 의존한다.
+4. Discoverability (Independent enhancement): 검색 기능은 메타데이터 집계에 의존하지만, 필터링 기능과는 독립적으로 개발될 수 있다.
+5. Polish & Optimization (Layered on top): UI 개선(다크모드), SEO, 자동화된 테스트는 핵심 기능이 동작하는 어느 시점에서든 추가하거나 개선할 수 있는 독립적인 레이어다.
 
-## Foundation Layer (Phase 1)
-1. **프로젝트 초기 설정**
-   - Next.js 프로젝트 생성 및 TypeScript 설정
-   - 필수 패키지 설치 (MDX 관련, 스타일링)
-   - 기본 폴더 구조 및 설정 파일
+# Risks and Mitigations
+- Risk: 빌드 시 처리할 작업(MDX 파싱, JSON 생성, 검색 인덱싱)이 많아지면서 빌드 시간이 길어질 수 있음.
+   - Mitigation: 빌드 스크립트를 효율적으로 작성하고, 변경된 파일만 처리하는 캐싱 전략을 도입하여 증분 빌드(Incremental Builds)를 최대한 활용.
+- Risk: MVP 범위 설정 실패로 초기 개발 기간이 길어지는 것.
+   - Mitigation: 위 Development Roadmap에서 정의한 Phase 1(MVP)에 집중. 핵심 기능(글 작성 및 목록 보기)을 먼저 완성하고, 이후 기능을 점진적으로 추가하는 전략을 엄격히 준수.
+- Risk: 개인 프로젝트로서 개발 리소스(시간)가 제한적임.
+   - Mitigation: UI 개발 시간을 단축하기 위해 shadcn/ui와 같은 기성 컴포넌트 라이브러리를 적극 활용. 복잡한 커스텀 기능보다는 핵심 기능의 안정성에 집중.
 
-2. **MDX 처리 시스템**
-   - MDX 파서 및 변환기 구현
-   - 메타데이터 추출 로직
-   - 파일 시스템 기반 라우팅
-
-3. **기본 페이지 구조**
-   - 레이아웃 컴포넌트
-   - 홈페이지 (글 목록)
-   - 상세 페이지 템플릿
-
-## Core Features Layer (Phase 2)
-4. **검색 시스템**
-   - 메타데이터 인덱싱
-   - 검색 알고리즘 구현
-   - 결과 표시 UI
-
-5. **필터링 시스템**
-   - 카테고리/태그/날짜 필터 로직
-   - URL 상태 관리
-   - 필터 UI 컴포넌트
-
-## Enhanced UX Layer (Phase 3)
-6. **네비게이션 시스템**
-   - 사이드바 및 모바일 메뉴
-   - 카테고리 동적 생성
-
-7. **성능 최적화 기능**
-   - 무한 스크롤
-   - 이미지 최적화
-
-## Polish Layer (Phase 4)
-8. **SEO 및 접근성**
-   - 메타 태그 시스템
-   - RSS 피드
-   - 성능 최적화
-
-# Risks and Mitigations  
-
-## 기술적 도전과제
-
-### MDX 파싱 복잡성
-- **위험**: MDX 파일 파싱 중 메타데이터 추출 오류
-- **완화**: 철저한 파일 검증 로직과 에러 핸들링 구현
-
-### 성능 이슈
-- **위험**: 글이 많아질수록 초기 로딩 시간 증가
-- **완화**: 무한 스크롤, 이미지 레이지 로딩, 코드 스플리팅 적용
-
-### 검색 기능 정확도
-- **위험**: 단순 문자열 매칭으로 인한 검색 결과 부정확성  
-- **완화**: 가중치 기반 검색 알고리즘 도입, 검색어 하이라이팅
-
-## MVP 구성 전략
-
-### 핵심 기능 우선순위
-- **위험**: 기능 범위 확장으로 인한 개발 지연
-- **완화**: 단계별 개발 로드맵 준수, 핵심 기능 먼저 완성
-
-### 사용자 경험 일관성
-- **위험**: 다양한 디바이스에서 일관되지 않은 UX
-- **완화**: 모바일 퍼스트 접근법, 체계적인 반응형 디자인
-
-## 리소스 제약사항
-
-### 개발 시간 관리
-- **위험**: 완벽주의로 인한 개발 지연
-- **완화**: MVP 기능 정의 명확화, 반복적 개선 접근법
-
-### 콘텐츠 관리 복잡성
-- **위험**: MDX 파일 작성 및 관리의 복잡성
-- **완화**: 명확한 파일 구조 가이드라인, 예제 템플릿 제공
-
-# Appendix  
-
-## 기술 스택
-- **Frontend**: Next.js, React, TypeScript
-- **Styling**: Tailwind CSS
-- **MDX Processing**: @next/mdx
-- **Testing**: Jest, React Testing Library
-- **Deployment**: Vercel
-
-## 파일 구조 예시
-```
-src/
-├── app/
-│   ├── page.tsx (홈페이지)
-│   ├── post/
-│   │   └── [key]/
-│   │       └── page.tsx (상세페이지)
-│   └── layout.tsx
-├── components/
-│   ├── ui/ (공통 UI 컴포넌트)
-│   ├── Header.tsx
-│   ├── PostCard.tsx
-│   ├── Sidebar.tsx
-│   └── SearchBar.tsx
-├── lib/
-│   ├── mdx.ts (MDX 처리 유틸)
-│   ├── metadata.ts (메타데이터 수집)
-│   └── search.ts (검색 로직)
-└── types/
-    └── post.ts (타입 정의)
-```
-
-## 테스팅 전략
-- **방법론**: TDD (Red-Green-Refactor 사이클)
-- **목표**: 코드 커버리지 80% 이상
-- **자동화**: GitHub Actions를 통한 CI/CD
-- **테스트 범위**: 컴포넌트 단위, 유틸 함수, API 엔드포인트
-
-## 메타데이터 예시
-```yaml
----
-key: good-teammate
-title: '함께 일하고 싶은 동료'
-date: 2025-01-27
-tags: ['팀워크', '협업', '개발문화', '자동화', '문서화']
-category: '기타'
-summary: '주변 사람들이 일에 몰입할 수 있도록 좋은 환경으로 지속적으로 개선하는 사람에 대한 생각을 정리했습니다.'
----
-```
+# Appendix
+## Testing Strategy:
+- Methodology: TDD (Test-Driven Development) 접근법을 지향하여 '실패하는 테스트 작성 → 통과하는 코드 작성 → 리팩토링' 사이클을 따름.
+- Tools: Jest로 유틸리티 함수 및 빌드 스크립트를 테스트하고, React Testing Library로 컴포넌트의 렌더링과 상호작용을 테스트.
+- Goal: 전체 코드 커버리지 80% 이상을 목표로 하여 코드의 신뢰성 확보.
+- Automation: GitHub Actions를 통해 Pull Request 생성 시 자동으로 테스트를 실행하여 안정성을 유지.

@@ -1,50 +1,86 @@
 # Task ID: 8
-# Title: 다크 모드 지원
+# Title: SEO 및 Open Graph 태그 구현
 # Status: pending
-# Dependencies: 3, 4, 7
-# Priority: low
-# Description: 사용자 기본 설정에 따라 다크 및 라이트 모드를 지원하는 테마 전환 시스템을 구현합니다.
+# Dependencies: 2, 3
+# Priority: medium
+# Description: 동적 메타 태그, Open Graph 태그 및 구조화된 데이터를 추가하여 SEO 최적화를 향상시키고 검색 엔진 노출 및 소셜 미디어 공유를 향상시킵니다.
 # Details:
-다음 기능을 가진 테마 전환 시스템을 생성합니다:
-1. 다크 및 라이트 모드 지원
-2. 사용자 시스템 기본 설정 존중
-3. 사용자 선택 지속
-4. 모든 컴포넌트에 테마 일관성 있게 적용
-
-구현 세부사항:
-- Tailwind CSS 다크 모드 사용:
-  - 다크 모드 지원을 위해 tailwind.config.js 설정
-  - 테마 색상을 위한 CSS 변수 생성
-- ThemeProvider 컨텍스트 생성:
-  - 테마 상태(다크/라이트) 저장
-  - 테마 변경 메서드 제공
-  - 시스템 기본 설정 변경 감지
-- 테마 지속성 구현:
-  - localStorage에 사용자 기본 설정 저장
-  - 초기 로드 시 저장된 기본 설정 적용
-- ThemeToggle 컴포넌트 생성:
-  - 태양/달 아이콘이 있는 버튼
-  - 상태 간 애니메이션 전환
-- 모든 컴포넌트에 테마 스타일 적용:
-  - 마크다운 콘텐츠
-  - 코드 블록
-  - UI 요소
-
-접근성 고려사항:
-- 스크린 리더에게 테마 변경 알림
-- 두 테마 모두에서 충분한 대비 유지
+1. `/components/seo.tsx`에 SEO 구성 요소를 만듭니다. 적절한 메타 태그를 동적으로 생성하고 삽입합니다.
+```typescript
+export function SEO({ title, description, ogImage, url, type = 'article' }) {
+  const siteTitle = 'soon-log';
+  const fullTitle = title ? `${title} | ${siteTitle}` : siteTitle;
+  
+  return (
+    <Head>
+      <title>{fullTitle}</title>
+      <meta name="description" content={description} />
+      <meta property="og:title" content={fullTitle} />
+      <meta property="og:description" content={description} />
+      <meta property="og:image" content={ogImage} />
+      <meta property="og:url" content={url} />
+      <meta property="og:type" content={type} />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={fullTitle} />
+      <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={ogImage} />
+    </Head>
+  );
+}
+```
+2. `/scripts/generate-sitemap.js`에서 빌드 시간에 sitemap.xml을 생성하는 스크립트 만들기
+3. `/scripts/generate-rss.js`에서 빌드 시간에 RSS 피드를 생성하는 스크립트 만들기
+4. 블로그 게시물에 대한 구조화된 데이터(JSON-LD) 추가:
+```typescript
+export function BlogPostSchema({ post, url }) {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": post.title,
+    "datePublished": post.date,
+    "author": {
+      "@type": "Person",
+      "name": "Author Name"
+    },
+    "description": post.summary,
+    "url": url
+  };
+  
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  );
+}
+```
+5. 이 스크립트를 package.json의 prebuild 후크에 추가합니다
+6. 게시물 세부 정보를 기반으로 페이지 세부 정보에 동적 메타 태그 구현
 
 # Test Strategy:
-1. 컴포넌트 테스트:
-   - ThemeToggle 기능 테스트
-   - ThemeProvider 컨텍스트 동작 테스트
+1. 각 페이지가 브라우저 개발 도구를 사용하여 적절한 메타 태그를 가지는지 확인
+2. sitemap.xml 생성을 다양한 게시물 구조와 테스트
+3. 온라인 유효성 검사 도구를 사용하여 sitemap.xml 및 RSS 피드 유효성 검사
+4. Google의 Structured Data Testing Tool을 사용하여 구조화된 데이터 테스트
+5. Open Graph 태그가 다양한 게시물 유형에 대해 정확하게 채워지는지 확인
+6. Facebook 및 Twitter와 같은 플랫폼의 디버깅 도구를 사용하여 소셜 미디어 미리보기 렌더링 테스트
 
-2. 통합 테스트:
-   - 페이지 네비게이션 간 테마 지속성 테스트
-   - 시스템 기본 설정 감지 테스트
-   - 모든 컴포넌트에 테마 적용 테스트
+# Subtasks:
+## 1. SEO 구성 요소 및 Open Graph 태그 구현 [pending]
+### Dependencies: None
+### Description: 동적으로 페이지 컨텐츠를 기반으로 메타 태그(제목, 설명, canonical, robots) 및 Open Graph 태그(og:title, og:description, og:image, 등)를 생성하고 삽입하는 재사용 가능한 SEO 구성 요소를 개발합니다. 검색 엔진 및 소셜 공유를 위해 태그를 최적화합니다.
+### Details:
+구성 요소는 각 태그에 대한 입력을 받거나 데이터를 통해 유효성을 검사하고 서버 측 또는 클라이언트 측으로 적절한 태그를 렌더링해야 합니다. 키워드 배치 및 매력적인 제목을 위한 최선의 사례를 따르십시오.
 
-3. 시각적 테스트:
-   - 모든 컴포넌트가 두 테마에서 올바르게 렌더링되는지 확인
-   - 전환 애니메이션 테스트
-   - 대비 비율이 접근성 표준을 충족하는지 확인
+## 2. Sitemap 및 RSS 피드 생성 [pending]
+### Dependencies: 8.1
+### Description: 모든 관련 사이트 컨텐츠를 반영하는 XML sitemap 및 RSS 피드를 생성하고 업데이트하는 자동화된 프로세스를 만듭니다. 컨텐츠가 변경될 때 이러한 파일을 검색 엔진 및 사용자에게 액세스할 수 있고 업데이트합니다.
+### Details:
+sitemap은 모든 인덱스 가능한 페이지를 포함해야 하며 마지막으로 수정된 날짜를 포함해야 합니다. RSS 피드는 최근 컨텐츠를 구독해야 합니다. 출력 두 개를 유효성 검사하여 표준을 준수합니다.
+
+## 3. 구조화된 데이터(스키마 마크업) 통합 [pending]
+### Dependencies: 8.1
+### Description: schema.org 마크업(JSON-LD)을 사용하여 키 컨텐츠 유형(기사, 제품 등)에 대한 구조화된 데이터를 구현하여 검색 결과 모양과 자격을 향상시키고 풍부한 결과를 위한 태그를 추가합니다.
+### Details:
+관련 스키마 유형을 식별하고 컨텐츠 필드를 스키마 속성에 매핑하고 JSON-LD를 페이지 헤드에 주입합니다. Google의 Rich Results Test를 사용하여 유효성 검사를 테스트합니다.
+

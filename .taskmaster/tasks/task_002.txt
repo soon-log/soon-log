@@ -1,43 +1,60 @@
 # Task ID: 2
-# Title: 정적 데이터 로더 및 런타임 시스템
+# Title: MDX 파싱 및 컨텐츠 렌더링 구현
 # Status: pending
 # Dependencies: 1
 # Priority: high
-# Description: 미리 생성된 JSON 데이터를 런타임에 로드하고 사용할 수 있는 유틸리티 함수를 만들고, 개발 모드에서 실시간 파일 변경을 지원합니다.
+# Description: MDX 파일을 게시물 디렉토리에서 파싱하고 프론트매터에서 메타데이터를 추출하고 게시물 세부 페이지에서 컨텐츠를 HTML로 렌더링하는 핵심 기능을 만듭니다.
 # Details:
-다음 기능을 가진 데이터 로딩 시스템을 구현합니다:
-1. 정적 JSON 데이터를 로드하고 접근할 수 있는 유틸리티 함수 제공
-2. 프로덕션(정적 JSON)과 개발 모드(실시간 파싱 옵션) 모두 지원
-3. 최적화된 성능을 위한 캐싱 구현
-
-주요 구성요소:
-- lib/data.ts에 다음 함수들 생성:
-  - getPosts(): 페이지네이션 지원으로 모든 포스트 반환
-  - getPostsByCategory(category): 카테고리별로 필터링된 포스트 반환
-  - getCategories(): 통계가 포함된 모든 카테고리 반환
-  - getPostBySlug(slug): 슬러그로 단일 포스트 반환
-  - searchPosts(query): 제목, 태그, 콘텐츠로 포스트 검색
-
-- 개발 모드 지원:
-  - 개발 중 파일 변경을 위한 watcher 구현
-  - 실시간 파싱 또는 정적 JSON 사용 옵션 제공
-  - package.json scripts에 rebuild 명령 추가
-
-- 타입 정의:
-  - Post, Category, BuildMetadata를 위한 TypeScript 인터페이스 정의
-  - 애플리케이션 전체에 걸쳐 타입 안전성 보장
+1. 필요한 MDX 종속성 설치:
+```bash
+npm install @next/mdx @mdx-js/loader @mdx-js/react gray-matter next-mdx-remote remark-gfm rehype-slug rehype-autolink-headings
+```
+2. Next.js를 처리하도록 설정하여 next.config.js에서 MDX 파일 처리
+3. `/lib/mdx.ts`에서 유틸리티 함수를 만들어 다음을 수행합니다.
+   - 게시물 디렉토리에서 MDX 파일 읽기
+   - gray-matter를 사용하여 프론트매터 파싱
+   - 메타데이터(키, 제목, 날짜, 태그, 카테고리, 요약) 추출
+   - 필요한 필드 유효성 검사
+4. 다음과 같은 게시물/[키] 동적 경로를 구현합니다.
+   - 키 매개변수를 기반으로 특정 MDX 파일 가져오기
+   - next-mdx-remote를 사용하여 MDX 컨텐츠 렌더링
+   - 기본 스타일을 적용한 렌더링 컨텐츠
+5. Prism.js를 사용하여 코드 블록에 구문 강조 추가:
+```bash
+npm install prismjs
+```
+6. 특정 요소를 강조하여 렌더링하는 사용자 지정 MDX 컴포넌트 맵 만들기
 
 # Test Strategy:
-1. 각 데이터 로딩 함수에 대한 단위 테스트 작성:
-   - 다양한 페이지네이션 매개변수로 getPosts 테스트
-   - 다른 카테고리로 getPostsByCategory 테스트
-   - 존재하는/존재하지 않는 슬러그로 getPostBySlug 테스트
-   - 다양한 검색 쿼리로 searchPosts 테스트
+1. 다양한 프론트매터 구성으로 테스트 MDX 파일 만들기
+2. Jest를 사용하여 MDX 파싱 유틸리티 함수에 대한 유닛 테스트 작성
+3. 다른 게시물 키를 사용하여 경로 테스트 테스트하여 올바른 렌더링 확인
+4. 다른 프로그래밍 언어에 대한 구문 강조가 정상적으로 작동하는지 확인
+5. 누락되거나 오류가 있는 MDX 파일에 대한 오류 처리 테스트
+6. 모든 필요한 메타데이터 필드가 정상적으로 추출되고 사용되는지 확인
 
-2. 테스트를 위한 JSON 데이터 파일 모킹:
-   - 샘플 포스트 및 카테고리 데이터로 fixtures 생성
-   - 프로덕션과 개발 모드 모두 테스트
+# Subtasks:
+## 1. MDX 통합 설정 [pending]
+### Dependencies: None
+### Description: 프로젝트에 MDX 설정, 선택한 프레임워크(예: Next.js)와 호환되도록 설정. 필요한 플러그인 설정 및 MDX 파일 지원 환경 설정.
+### Details:
+필요한 MDX 패키지(예: @mdx-js/loader 또는 next-mdx-remote) 설치, 프로젝트 설정 파일 업데이트 및 MDX 파일이 React 컴포넌트로 가져오고 렌더링될 수 있는지 확인.
 
-3. 에러 처리 테스트:
-   - JSON 파일이 누락되거나 잘못된 형식일 때의 동작 테스트
-   - 요청된 데이터가 존재하지 않을 때의 동작 테스트
+## 2. 컨텐츠 파싱 유틸리티 개발 [pending]
+### Dependencies: 2.1
+### Description: gray-matter 및 compileMDX 라이브러리를 사용하여 MDX 파일을 파싱하고 프론트매터 및 컨텐츠를 추출하는 유틸리티를 구현합니다.
+### Details:
+파일 시스템에서 MDX 파일을 읽고 프론트매터 메타데이터를 파싱하고 렌더링을 위해 준비하는 함수를 만듭니다. 유형 안전성과 오류 처리를 위해 파일을 유효성 검사합니다.
+
+## 3. MDX 컨텐츠에 대한 동적 경로 처리 구현 [pending]
+### Dependencies: 2.2
+### Description: URL 매개변수를 기반으로 MDX 컨텐츠를 제공하는 동적 라우팅을 설정합니다. 각 MDX 파일에 대한 개별 페이지를 활성화합니다.
+### Details:
+동적 경로(예: Next.js의 [slug].tsx)를 구성하고 적절한 MDX 파일을 기반으로 경로를 가져오고 파싱된 컨텐츠를 페이지 컴포넌트 내에서 렌더링합니다.
+
+## 4. 코드 구문 강조 통합 [pending]
+### Dependencies: 2.3
+### Description: rehype-prism 또는 remark-prism 라이브러리를 사용하여 MDX 컨텐츠 내에서 코드 블록에 대한 구문 강조 지원을 추가합니다.
+### Details:
+MDX 구성을 업데이트하여 구문 강조 플러그인을 포함하고 필요에 따라 스타일을 사용자 지정하고 MDX 파일 내에서 렌더링된 코드 블록이 정상적으로 구문 강조되는지 확인합니다.
+

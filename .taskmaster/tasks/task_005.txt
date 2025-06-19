@@ -1,50 +1,81 @@
 # Task ID: 5
-# Title: 카테고리 네비게이션 및 필터링 시스템
+# Title: 카테고리 및 태그 필터링 구현
 # Status: pending
-# Dependencies: 2, 3
+# Dependencies: 4
 # Priority: medium
-# Description: 카테고리 기반 네비게이션 시스템과 태그 필터링 기능이 있는 전용 카테고리 페이지를 구현합니다.
+# Description: 카테고리 및 태그를 기반으로 게시물을 필터링하는 기능을 추가합니다. URL 쿼리 매개변수를 사용하여 필터 상태를 유지하고 공유합니다.
 # Details:
-다음 기능을 가진 포괄적인 카테고리 네비게이션 및 필터링 시스템을 생성합니다:
-1. 사이드바 또는 헤더 네비게이션에서 카테고리 표시
-2. 해당 카테고리의 모든 포스트가 있는 전용 카테고리 페이지 구현
-3. 카테고리 내에서 태그 기반 필터링 제공
-4. 카테고리 통계(포스트 수, 최신 포스트) 표시
+1. `/components/filter-bar.tsx`에 FilterBar 구성 요소를 만듭니다. 포함:
+   - 카테고리 드롭다운 선택기
+   - 태그 다중 선택 구성 요소
+   - 필터 초기화 버튼
+2. 홈페이지를 수정하여:
+   - URL 쿼리 문자열에서 필터 매개변수 읽기(?category=, ?tags=)
+   - 게시물 목록에 필터 적용
+   - 필터 변경 시 URL 업데이트(Next.js 라우터 사용)
+3. `/hooks/use-post-filter.ts`에서 클라이언트 측 필터링 논리 구현:
+```typescript
+export function usePostFilter(allPosts, initialFilters) {
+  const [filters, setFilters] = useState(initialFilters);
+  const [filteredPosts, setFilteredPosts] = useState([]);
 
-구현 세부사항:
-- components/CategoryNav.tsx 생성:
-  - 사이드바 또는 헤더 네비게이션 컴포넌트
-  - 포스트 수와 함께 모든 카테고리 표시
-  - 현재 카테고리 강조
-- pages/category/[category].tsx 생성:
-  - 카테고리 페이지용 동적 라우팅
-  - 선택된 카테고리의 모든 포스트 표시
-  - 태그 필터링 UI 구현
-  - 카테고리 설명 및 통계 표시
-- 필터링 로직 구현:
-  - 태그별 클라이언트 사이드 필터링
-  - 카테고리 및 태그 필터 결합
-  - 공유 가능한 필터링된 뷰를 위한 URL 쿼리 매개변수
-- CategoryHeader 컴포넌트 생성:
-  - 카테고리 이름, 설명, 통계 표시
-  - 필터링을 위한 사용 가능한 태그 표시
+  useEffect(() => {
+    const filtered = allPosts.filter(post => {
+      // Filter by category if specified
+      if (filters.category && post.category !== filters.category) {
+        return false;
+      }
+      
+      // Filter by tags if specified
+      if (filters.tags && filters.tags.length > 0) {
+        const hasAllTags = filters.tags.every(tag => 
+          post.tags.includes(tag)
+        );
+        if (!hasAllTags) return false;
+      }
+      
+      return true;
+    });
+    
+    setFilteredPosts(filtered);
+  }, [filters, allPosts]);
 
-URL 구조:
-- /category/react - 모든 React 포스트
-- /category/react?tags=hooks - 'hooks' 태그가 있는 React 포스트
+  return { filteredPosts, filters, setFilters };
+}
+```
+4. URL 동기화를 통해 주소 표시줄에서 필터 상태 유지
+5. 모든 가능한 태그를 표시하는 TagCloud 구성 요소 만들기
 
 # Test Strategy:
-1. 컴포넌트 테스트:
-   - CategoryNav가 모든 카테고리를 올바르게 렌더링하는지 테스트
-   - CategoryHeader가 올바른 정보를 표시하는지 테스트
-   - 태그 필터링 UI가 예상대로 작동하는지 테스트
+1. FilterBar 구성 요소를 다양한 필터 조합으로 테스트
+2. URL 쿼리 매개변수가 현재 필터를 정확하게 반영하는지 확인
+3. 필터 매개변수가 있는 URL을 공유하여 페이지가 필터가 적용된 상태로 로드되는지 확인
+4. 다양한 카테고리 및 태그 조합으로 필터링 논리 테스트
+5. 모든 필터 초기화 버튼이 모든 필터를 초기화하는지 확인
+6. 일치하는 결과가 없는 경우와 같은 에지 사례 테스트
 
-2. 통합 테스트:
-   - 카테고리 페이지가 올바른 포스트를 렌더링하는지 테스트
-   - 카테고리와 태그 필터링의 결합 테스트
-   - URL 쿼리 매개변수 처리 테스트
+# Subtasks:
+## 1. 필터 UI 구성 요소 디자인 및 구현 [pending]
+### Dependencies: None
+### Description: 카테고리 및 태그 필터링을 위한 사용자 인터페이스 구성 요소를 만듭니다. 카테고리 및 태그를 명확하게 구별하고 에지 사례(예: 결과 없음, 빈 상태)를 처리하고 반응형 경험을 제공합니다.
+### Details:
+드롭다운, 체크박스 또는 칩을 개발하여 카테고리 및 태그를 선택합니다. 접근성 및 사용성 모범 사례를 따르십시오.
 
-3. 네비게이션 테스트:
-   - 카테고리 간 네비게이션 테스트
-   - 활성 상태 강조 테스트
-   - 모바일 네비게이션 동작 테스트
+## 2. URL 매개변수와 필터 상태 동기화 [pending]
+### Dependencies: 5.1
+### Description: 필터 상태(선택된 카테고리 및 태그)를 URL 쿼리 매개변수와 동기화하는 로직을 구현합니다. 필터 선택이 URL을 업데이트하고 매개변수가 있는 URL을 로드할 때 올바른 필터 상태를 복원할 수 있는지 확인합니다.
+### Details:
+브라우저 기록 업데이트, 깊은 링크 및 뒤로/앞으로 탐색을 처리합니다. URL이 현재 필터 상태를 반영하는지 확인하고 공유 및 북마크 가능성을 보장합니다.
+
+## 3. 필터링 논리 구현 [pending]
+### Dependencies: 5.2
+### Description: 선택된 카테고리 및 태그를 데이터 세트에 적용하는 효율적인 필터링 논리를 개발합니다. 논리가 대규모 데이터 세트를 지원하고 에지 사례와 같은 유효성 검사를 처리할 수 있는지 확인합니다.
+### Details:
+성능을 최적화하기 위해 메모화 또는 서버 측 필터링을 사용할 수 있습니다. 한 번에 하나의 카테고리만 선택할 수 있지만 여러 태그를 결합할 수 있는지 확인합니다.
+
+## 4. TagCloud 시각화 구현 [pending]
+### Dependencies: 5.3
+### Description: 가능한 태그를 시각적으로 표현하는 TagCloud 구성 요소를 만듭니다. 현재 필터 선택에 따라 동적으로 업데이트되고 태그를 시각적으로 표시합니다.
+### Details:
+현재 필터 선택에 따라 동적으로 업데이트되고 태그를 시각적으로 표시합니다.
+
