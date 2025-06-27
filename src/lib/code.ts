@@ -23,15 +23,15 @@ export function parseCodeMeta(metaString: string): CodeMeta {
     if (updatePart.includes('-')) {
       const [start, end] = updatePart.split('-').map(Number);
 
-      if (start === undefined || end === undefined) return [];
-      if (Number.isNaN(start) || Number.isNaN(end)) return [];
+      if (typeof start !== 'number' || typeof end !== 'number') return [];
+      if (start <= 0 || end <= 0) return [];
       if (start > end) return [];
 
       return Array.from({ length: end - start + 1 }, (_, i) => start + i);
     }
     const num = Number(updatePart);
 
-    return Number.isNaN(num) ? [] : [num];
+    return typeof num === 'number' && num > 0 ? [num] : [];
   });
 
   return { language, highlightLines };

@@ -72,7 +72,7 @@ const lineNumberSyntaxHighlighterStyle: React.CSSProperties = {
 
 interface CodeBlockProps {
   children: string;
-  language: string;
+  language?: string;
   highlightLines?: number[];
   className?: string;
   theme?: any;

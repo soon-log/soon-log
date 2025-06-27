@@ -1,0 +1,343 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`CodeBlock 컴포넌트 렌더링 테스트 코드 블록 1, 3번 라인에 하이라이트가 적용된다 1`] = `
+<div>
+  <div
+    class="my-6 overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700"
+  >
+    <div
+      class="flex items-center justify-between bg-gray-100 px-4 py-2 dark:bg-gray-800"
+    >
+      <span
+        class="text-sm font-medium text-gray-600 dark:text-gray-400"
+      >
+        javascript
+      </span>
+      <button
+        class="text-sm font-medium text-gray-600 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
+      >
+        Copy
+      </button>
+    </div>
+    <div
+      class="overflow-x-auto"
+    >
+      <pre
+        style="color: rgb(212, 212, 212); font-size: 0.875rem; text-shadow: none; font-family: Menlo, Monaco, Consolas, "Andale Mono", "Ubuntu Mono", "Courier New", monospace; direction: ltr; text-align: left; white-space: pre; word-spacing: normal; word-break: normal; line-height: 1.5; tab-size: 4; hyphens: none; padding: 1rem; margin: 0px; overflow: auto; background: transparent;"
+      >
+        <code
+          class="language-javascript"
+          style="white-space: pre; color: rgb(156, 220, 254); font-size: 13px; text-shadow: none; font-family: Menlo, Monaco, Consolas, "Andale Mono", "Ubuntu Mono", "Courier New", monospace; direction: ltr; text-align: left; word-spacing: normal; word-break: normal; line-height: 1.5; tab-size: 4; hyphens: none;"
+        >
+          <span
+            style="display: block; background-color: rgba(255, 255, 255, 0.1);"
+          >
+            <span
+              class="linenumber react-syntax-highlighter-line-number"
+              style="display: inline-block; min-width: 3em; padding-right: 1em; text-align: right; user-select: none; color: rgb(106, 153, 85);"
+            >
+              1
+            </span>
+            <span
+              class="token"
+              style="color: rgb(86, 156, 214);"
+            >
+              const
+            </span>
+            <span>
+               a 
+            </span>
+            <span
+              class="token"
+              style="color: rgb(212, 212, 212);"
+            >
+              =
+            </span>
+            <span>
+               
+            </span>
+            <span
+              class="token"
+              style="color: rgb(181, 206, 168);"
+            >
+              1
+            </span>
+            <span
+              class="token"
+              style="color: rgb(212, 212, 212);"
+            >
+              ;
+            </span>
+            <span>
+              
+
+            </span>
+          </span>
+          <span>
+            <span
+              class="linenumber react-syntax-highlighter-line-number"
+              style="display: inline-block; min-width: 3em; padding-right: 1em; text-align: right; user-select: none; color: rgb(106, 153, 85);"
+            >
+              2
+            </span>
+            <span>
+                  
+            </span>
+            <span
+              class="token"
+              style="color: rgb(86, 156, 214);"
+            >
+              const
+            </span>
+            <span>
+               b 
+            </span>
+            <span
+              class="token"
+              style="color: rgb(212, 212, 212);"
+            >
+              =
+            </span>
+            <span>
+               
+            </span>
+            <span
+              class="token"
+              style="color: rgb(181, 206, 168);"
+            >
+              2
+            </span>
+            <span
+              class="token"
+              style="color: rgb(212, 212, 212);"
+            >
+              ;
+            </span>
+            <span>
+              
+
+            </span>
+          </span>
+          <span
+            style="display: block; background-color: rgba(255, 255, 255, 0.1);"
+          >
+            <span
+              class="linenumber react-syntax-highlighter-line-number"
+              style="display: inline-block; min-width: 3em; padding-right: 1em; text-align: right; user-select: none; color: rgb(106, 153, 85);"
+            >
+              3
+            </span>
+            <span>
+                  
+            </span>
+            <span
+              class="token"
+              style="color: rgb(86, 156, 214);"
+            >
+              const
+            </span>
+            <span>
+               c 
+            </span>
+            <span
+              class="token"
+              style="color: rgb(212, 212, 212);"
+            >
+              =
+            </span>
+            <span>
+               a 
+            </span>
+            <span
+              class="token"
+              style="color: rgb(212, 212, 212);"
+            >
+              +
+            </span>
+            <span>
+               b
+            </span>
+            <span
+              class="token"
+              style="color: rgb(212, 212, 212);"
+            >
+              ;
+            </span>
+          </span>
+        </code>
+      </pre>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`CodeBlock 컴포넌트 코드 블록 1, 3번 라인에 하이라이트가 적용된다 1`] = `
+<div>
+  <div
+    class="my-6 overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700"
+  >
+    <div
+      class="flex items-center justify-between bg-gray-100 px-4 py-2 dark:bg-gray-800"
+    >
+      <span
+        class="text-sm font-medium text-gray-600 dark:text-gray-400"
+      >
+        javascript
+      </span>
+      <button
+        class="text-sm font-medium text-gray-600 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
+      >
+        Copy
+      </button>
+    </div>
+    <div
+      class="overflow-x-auto"
+    >
+      <pre
+        style="color: rgb(212, 212, 212); font-size: 0.875rem; text-shadow: none; font-family: Menlo, Monaco, Consolas, "Andale Mono", "Ubuntu Mono", "Courier New", monospace; direction: ltr; text-align: left; white-space: pre; word-spacing: normal; word-break: normal; line-height: 1.5; tab-size: 4; hyphens: none; padding: 1rem; margin: 0px; overflow: auto; background: transparent;"
+      >
+        <code
+          class="language-javascript"
+          style="white-space: pre; color: rgb(156, 220, 254); font-size: 13px; text-shadow: none; font-family: Menlo, Monaco, Consolas, "Andale Mono", "Ubuntu Mono", "Courier New", monospace; direction: ltr; text-align: left; word-spacing: normal; word-break: normal; line-height: 1.5; tab-size: 4; hyphens: none;"
+        >
+          <span
+            style="display: block; background-color: rgba(255, 255, 255, 0.1);"
+          >
+            <span
+              class="linenumber react-syntax-highlighter-line-number"
+              style="display: inline-block; min-width: 3em; padding-right: 1em; text-align: right; user-select: none; color: rgb(106, 153, 85);"
+            >
+              1
+            </span>
+            <span
+              class="token"
+              style="color: rgb(86, 156, 214);"
+            >
+              const
+            </span>
+            <span>
+               a 
+            </span>
+            <span
+              class="token"
+              style="color: rgb(212, 212, 212);"
+            >
+              =
+            </span>
+            <span>
+               
+            </span>
+            <span
+              class="token"
+              style="color: rgb(181, 206, 168);"
+            >
+              1
+            </span>
+            <span
+              class="token"
+              style="color: rgb(212, 212, 212);"
+            >
+              ;
+            </span>
+            <span>
+              
+
+            </span>
+          </span>
+          <span>
+            <span
+              class="linenumber react-syntax-highlighter-line-number"
+              style="display: inline-block; min-width: 3em; padding-right: 1em; text-align: right; user-select: none; color: rgb(106, 153, 85);"
+            >
+              2
+            </span>
+            <span>
+                  
+            </span>
+            <span
+              class="token"
+              style="color: rgb(86, 156, 214);"
+            >
+              const
+            </span>
+            <span>
+               b 
+            </span>
+            <span
+              class="token"
+              style="color: rgb(212, 212, 212);"
+            >
+              =
+            </span>
+            <span>
+               
+            </span>
+            <span
+              class="token"
+              style="color: rgb(181, 206, 168);"
+            >
+              2
+            </span>
+            <span
+              class="token"
+              style="color: rgb(212, 212, 212);"
+            >
+              ;
+            </span>
+            <span>
+              
+
+            </span>
+          </span>
+          <span
+            style="display: block; background-color: rgba(255, 255, 255, 0.1);"
+          >
+            <span
+              class="linenumber react-syntax-highlighter-line-number"
+              style="display: inline-block; min-width: 3em; padding-right: 1em; text-align: right; user-select: none; color: rgb(106, 153, 85);"
+            >
+              3
+            </span>
+            <span>
+                  
+            </span>
+            <span
+              class="token"
+              style="color: rgb(86, 156, 214);"
+            >
+              const
+            </span>
+            <span>
+               c 
+            </span>
+            <span
+              class="token"
+              style="color: rgb(212, 212, 212);"
+            >
+              =
+            </span>
+            <span>
+               a 
+            </span>
+            <span
+              class="token"
+              style="color: rgb(212, 212, 212);"
+            >
+              +
+            </span>
+            <span>
+               b
+            </span>
+            <span
+              class="token"
+              style="color: rgb(212, 212, 212);"
+            >
+              ;
+            </span>
+          </span>
+        </code>
+      </pre>
+    </div>
+  </div>
+</div>
+`;
