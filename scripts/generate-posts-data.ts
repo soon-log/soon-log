@@ -1,8 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
 
-import { omit } from 'es-toolkit';
-
 import { PostMetadata } from '@/types/mdx';
 
 /**
@@ -83,9 +81,8 @@ export async function generatePostsJson(
     if (!groupedByCategory[category]) {
       groupedByCategory[category] = [];
     }
-    const postWithoutCategory = omit(post, ['category']);
-    postWithoutCategory.thumbnail = await getThumbnailPath(post.key);
-    groupedByCategory[category].push(postWithoutCategory);
+    post.thumbnail = await getThumbnailPath(post.key);
+    groupedByCategory[category].push(post);
   }
 
   for (const category in groupedByCategory) {
