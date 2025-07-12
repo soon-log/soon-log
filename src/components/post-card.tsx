@@ -22,10 +22,10 @@ export function PostCard({ post }: PostCardProps) {
           className="focus-visible:ring-primary block overflow-hidden rounded-xl py-6 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
           aria-label={`${title} 게시물 읽기`}
         >
-          <div className="flex h-full flex-col md:flex-row">
+          <div className="flex h-full flex-col items-center md:flex-row">
             {/* 썸네일 영역 - 모바일: 상단, 데스크톱: 좌측 */}
             {thumbnail && (
-              <div className="relative aspect-video w-full overflow-hidden md:aspect-auto md:w-48 md:flex-shrink-0">
+              <div className="relative aspect-[4/3] w-full overflow-hidden md:ml-6 md:aspect-[3/4] md:w-24 md:flex-shrink-0">
                 <Image
                   src={thumbnail}
                   alt={`${title} 썸네일 이미지`}
@@ -48,7 +48,7 @@ export function PostCard({ post }: PostCardProps) {
             )}
 
             {/* 컨텐츠 영역 - 모바일: 하단, 데스크톱: 우측 */}
-            <div className="mt-4 flex min-h-0 flex-1 flex-col md:mt-0">
+            <div className="mt-4 flex min-h-0 flex-1 flex-col gap-2 md:mt-0 md:gap-3">
               <CardHeader className="flex-shrink-0 space-y-3">
                 {/* 카테고리 (썸네일이 없을 때만 표시) */}
                 {!thumbnail && category && (
@@ -64,12 +64,12 @@ export function PostCard({ post }: PostCardProps) {
                 )}
 
                 {/* 제목 */}
-                <CardTitle className="group-hover:text-primary mb-2 line-clamp-3 text-xl leading-tight transition-colors">
+                <CardTitle className="group-hover:text-primary line-clamp-3 text-xl leading-tight transition-colors">
                   <h2>{title}</h2>
                 </CardTitle>
               </CardHeader>
 
-              <CardContent className="flex flex-1 flex-col space-y-2">
+              <CardContent className="flex flex-col gap-2 md:gap-3">
                 {/* 요약 */}
                 {summary && (
                   <p
@@ -82,7 +82,7 @@ export function PostCard({ post }: PostCardProps) {
                 )}
 
                 {/* 날짜와 태그 */}
-                <div className="flex flex-wrap items-center gap-4">
+                <div className="flex flex-wrap items-center gap-3 md:gap-4">
                   {/* 날짜 */}
                   <time
                     className="text-muted-foreground/80 inline-flex items-center gap-1.5 text-xs font-medium"
