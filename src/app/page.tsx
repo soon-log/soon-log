@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 
-import { PostList } from '@/components/post-list';
+import { FilteredPostList } from '@/components/filtered-post-list';
 import { PostMetadata } from '@/types/mdx';
 
 interface PostsData {
@@ -32,7 +32,7 @@ export default async function Home() {
     return (
       <div className="container mx-auto px-4 py-8">
         <h1 className="mb-8 text-4xl font-bold">Soon Log</h1>
-        <PostList initialPosts={posts} />
+        <FilteredPostList initialPosts={posts} />
       </div>
     );
   } catch {

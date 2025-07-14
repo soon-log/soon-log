@@ -35,10 +35,10 @@ describe('useInfiniteScroll', () => {
   test('요소가 교차할 때 콜백이 호출된다', () => {
     // Given
     const onIntersect = jest.fn();
-    // const ref = { current: document.createElement('div') };
+    const ref = { current: document.createElement('div') };
 
     // When
-    // const { result } = renderHook(() => useInfiniteScroll(ref, onIntersect));
+    renderHook(() => useInfiniteScroll(ref, onIntersect));
 
     // 옵저버 콜백 함수 가져오기
     const observerCallback = (global.IntersectionObserver as jest.Mock).mock.calls[0][0];

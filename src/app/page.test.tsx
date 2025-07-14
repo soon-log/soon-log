@@ -2,6 +2,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 
 import { render, screen, waitFor } from '@testing-library/react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import HomePage from './page';
 
@@ -17,6 +18,12 @@ jest.mock('path', () => ({
   join: jest.fn()
 }));
 
+// Next.js 모킹 (FilteredPostList에서 사용)
+jest.mock('next/navigation', () => ({
+  useRouter: jest.fn(),
+  useSearchParams: jest.fn()
+}));
+
 // IntersectionObserver mock
 const mockObserve = jest.fn();
 const mockUnobserve = jest.fn();
@@ -27,7 +34,7 @@ global.IntersectionObserver = jest.fn().mockImplementation((callback) => ({
   unobserve: mockUnobserve,
   disconnect: mockDisconnect,
   callback
-})) as unknown as IntersectionObserver;
+}));
 
 const mockPostsData = {
   etc: [
@@ -67,9 +74,20 @@ const generateManyPosts = (count: number) => {
 };
 
 describe('홈페이지', () => {
+  const mockPush = jest.fn();
+  const mockReplace = jest.fn();
+  const mockRouter = {
+    push: mockPush,
+    replace: mockReplace
+  };
+
   beforeEach(() => {
     (fs.readFile as jest.Mock).mockClear();
     (path.join as jest.Mock).mockClear();
+
+    // Next.js mocks 설정
+    (useRouter as jest.Mock).mockReturnValue(mockRouter);
+    (useSearchParams as jest.Mock).mockReturnValue(new URLSearchParams());
   });
 
   test('사용자가 모든 게시물 목록을 최신순으로 볼 수 있다', async () => {
