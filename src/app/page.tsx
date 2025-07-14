@@ -2,6 +2,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 
 import { FilteredPostList } from '@/components/filtered-post-list';
+import { Header } from '@/components/header';
 import { PostMetadata } from '@/types/mdx';
 
 interface PostsData {
@@ -31,14 +32,14 @@ export default async function Home() {
 
     return (
       <div className="container mx-auto px-4 py-8">
-        <h1 className="mb-8 text-4xl font-bold">Soon Log</h1>
+        <Header />
         <FilteredPostList initialPosts={posts} />
       </div>
     );
   } catch {
     return (
       <div className="container mx-auto px-4 py-8">
-        <h1 className="mb-8 text-4xl font-bold">Soon Log</h1>
+        <Header />
         <p className="text-center text-red-500">게시물을 불러오는데 실패했습니다.</p>
       </div>
     );
