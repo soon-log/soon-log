@@ -36,8 +36,8 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@next/eslint-plugin-next": "^15.3.3",
-    "@stagewise-plugins/react": "^0.5.2",
-    "@stagewise/toolbar-next": "^0.5.2",
+    "@stagewise-plugins/react": "^0.6.0",
+    "@stagewise/toolbar-next": "^0.6.0",
     "@tailwindcss/postcss": "^4",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
