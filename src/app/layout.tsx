@@ -3,6 +3,9 @@ import ReactPlugin from '@stagewise-plugins/react';
 import type { Metadata } from 'next';
 import { Nanum_Myeongjo, Noto_Sans_KR } from 'next/font/google';
 
+import { ThemeProvider } from '@/components/theme-provider';
+import { ThemeScript } from '@/components/theme-script';
+
 import './globals.css';
 
 const nanumMyeongjo = Nanum_Myeongjo({
@@ -30,14 +33,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
+    <html lang="ko" suppressHydrationWarning className="no-transition">
+      <head>
+        <ThemeScript />
+      </head>
       <body className={`${nanumMyeongjo.variable} ${notoSansKR.variable} antialiased`}>
-        {children}
-        <StagewiseToolbar
-          config={{
-            plugins: [ReactPlugin]
-          }}
-        />
+        <ThemeProvider>
+          {children}
+          <StagewiseToolbar
+            config={{
+              plugins: [ReactPlugin]
+            }}
+          />
+        </ThemeProvider>
       </body>
     </html>
   );
