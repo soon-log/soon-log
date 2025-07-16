@@ -55,9 +55,11 @@ export function FilterBar({
     <div className="bg-background space-y-4 rounded-lg border p-4">
       {/* 카테고리 선택 */}
       <div className="space-y-2">
-        <label className="pl-1 text-sm font-medium">카테고리</label>
+        <label id="category-label" className="pl-1 text-sm font-medium">
+          카테고리
+        </label>
         <Select value={filters.category || 'all'} onValueChange={handleCategoryChange}>
-          <SelectTrigger className="mt-2 w-full" aria-label="카테고리 선택">
+          <SelectTrigger className="mt-2 w-full" aria-labelledby="category-label">
             <SelectValue placeholder="모든 카테고리" />
           </SelectTrigger>
           <SelectContent>

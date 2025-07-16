@@ -83,20 +83,20 @@ describe('FilteredPostList', () => {
     expect(filterButton).toBeInTheDocument();
 
     // 초기에는 필터바가 접혀있어야 함
-    expect(screen.queryByLabelText('카테고리')).not.toBeInTheDocument();
+    expect(screen.queryByText('카테고리')).not.toBeInTheDocument();
 
     // 버튼 클릭 시 필터바가 펼쳐져야 함
     fireEvent.click(filterButton);
 
     await waitFor(() => {
-      expect(screen.getByLabelText('카테고리')).toBeInTheDocument();
+      expect(screen.getByText('카테고리')).toBeInTheDocument();
     });
 
     // 다시 클릭 시 필터바가 접혀야 함
     fireEvent.click(filterButton);
 
     await waitFor(() => {
-      expect(screen.queryByLabelText('카테고리')).not.toBeInTheDocument();
+      expect(screen.queryByText('카테고리')).not.toBeInTheDocument();
     });
   });
 
@@ -153,13 +153,13 @@ describe('FilteredPostList', () => {
 
     // Then
     await waitFor(() => {
-      expect(screen.getByLabelText('카테고리')).toBeInTheDocument();
+      expect(screen.getByText('카테고리')).toBeInTheDocument();
     });
 
     // 태그 버튼들이 있는지 확인 (더 구체적인 selector 사용)
-    expect(screen.getByRole('button', { name: 'React' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'TypeScript' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Node.js' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Vue' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'React (1)' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'TypeScript (1)' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Node.js (1)' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Vue (1)' })).toBeInTheDocument();
   });
 });
