@@ -15,7 +15,7 @@ export function PostCard({ post }: PostCardProps) {
   const { key, title, date, tags, category, summary, thumbnail } = post;
 
   return (
-    <Card className="group p-0 transition-all duration-300 hover:shadow-md hover:shadow-black/5">
+    <Card className="p-0 transition-all duration-300 hover:shadow-md hover:shadow-black/5">
       <article>
         <Link
           href={`/post/${key}`}
@@ -25,12 +25,12 @@ export function PostCard({ post }: PostCardProps) {
           <div className="flex h-full flex-col items-center md:flex-row">
             {/* 썸네일 영역 - 모바일: 상단, 데스크톱: 좌측 */}
             {thumbnail && (
-              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-md border-2 md:ml-6 md:aspect-[3/4] md:w-24 md:flex-shrink-0">
+              <div className="relative aspect-[4/3] w-full overflow-hidden border-t-1 border-b-1 md:ml-6 md:aspect-[3/4] md:w-24 md:flex-shrink-0 md:rounded-md md:border-1">
                 <Image
                   src={thumbnail}
                   alt={`${title} 썸네일 이미지`}
                   fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-103"
+                  className="object-cover"
                 />
                 {/* 썸네일 위 카테고리 배지 */}
                 {category && (
