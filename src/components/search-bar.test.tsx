@@ -17,7 +17,7 @@ const mockUseSearch = {
   error: null
 };
 
-jest.mock('@/hooks/use-search', () => ({
+jest.mock('../hooks/use-search', () => ({
   useSearch: () => mockUseSearch
 }));
 
