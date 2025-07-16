@@ -25,7 +25,7 @@ export function PostCard({ post }: PostCardProps) {
           <div className="flex h-full flex-col items-center md:flex-row">
             {/* 썸네일 영역 - 모바일: 상단, 데스크톱: 좌측 */}
             {thumbnail && (
-              <div className="relative aspect-[4/3] w-full overflow-hidden md:ml-6 md:aspect-[3/4] md:w-24 md:flex-shrink-0">
+              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-md border-2 md:ml-6 md:aspect-[3/4] md:w-24 md:flex-shrink-0">
                 <Image
                   src={thumbnail}
                   alt={`${title} 썸네일 이미지`}
