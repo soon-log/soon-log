@@ -5,8 +5,21 @@ import { parseCodeMeta } from '@/lib/code';
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
-    h1: (props) => <h1 className="text-3xl font-bold" {...props} />,
-    p: (props) => <p {...props} className="mb-3 leading-relaxed tracking-normal break-keep" />,
+    h1: (props) => <h1 className="mt-12 mb-6 text-4xl font-bold" {...props} />,
+    h2: (props) => <h2 className="mt-10 mb-5 text-3xl font-bold" {...props} />,
+    h3: (props) => <h3 className="mt-8 mb-4 text-2xl font-bold" {...props} />,
+    h4: (props) => <h4 className="mt-6 mb-3 text-xl font-semibold" {...props} />,
+    h5: (props) => <h5 className="mt-5 mb-2 text-lg font-semibold" {...props} />,
+    h6: (props) => <h6 className="mt-4 mb-1 text-base font-semibold" {...props} />,
+    p: (props) => <p {...props} className="mb-4 leading-relaxed tracking-normal break-keep" />,
+    ul: (props) => <ul className="mb-4 list-disc pl-6" {...props} />,
+    ol: (props) => <ol className="mb-4 list-decimal pl-6" {...props} />,
+    li: (props) => <li className="mb-2" {...props} />,
+    a: (props) => <a className="text-blue-600 hover:underline" {...props} />,
+    blockquote: (props) => (
+      <blockquote className="border-l-4 border-gray-300 pl-4 italic" {...props} />
+    ),
+    hr: (props) => <hr className="my-8 border-gray-200" {...props} />,
     code: ({ children, className, ...props }) => {
       if (className && className.startsWith('language-')) {
         const { language, highlightLines } = parseCodeMeta(className);
@@ -16,8 +29,6 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
           </CodeBlock>
         );
       }
-
-      // className이 없고 언어가 없으면 인라인 코드로 처리
       return <InlineCode {...props}>{children}</InlineCode>;
     },
     ...components

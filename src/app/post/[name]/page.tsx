@@ -1,5 +1,9 @@
+import fs from 'fs';
+import path from 'path';
+
 import { Metadata } from 'next';
 
+import PostLayout from '@/components/post-layout';
 import { PostMetadata } from '@/types/mdx';
 
 export async function generateMetadata({
@@ -67,5 +71,22 @@ export async function generateMetadata({
 export default async function PostNamePage({ params }: { params: Promise<{ name: string }> }) {
   const { name } = await params;
   const { default: Post } = await import(`../../../../posts/${name}/index.mdx`);
-  return <Post />;
+  const { meta } = await import(`../../../../posts/${name}/meta.ts`);
+
+  const thumbnailDir = path.join(process.cwd(), 'public', 'posts', meta.key);
+  try {
+    const files = fs.readdirSync(thumbnailDir);
+    const thumbnailFile = files.find((file) => file.startsWith('thumbnail.'));
+    if (thumbnailFile) {
+      meta.thumbnail = `/posts/${meta.key}/${thumbnailFile}`;
+    }
+  } catch {
+    // 썸네일 디렉토리가 없는 경우 무시
+  }
+
+  return (
+    <PostLayout meta={meta}>
+      <Post />
+    </PostLayout>
+  );
 }

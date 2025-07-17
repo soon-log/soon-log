@@ -3,7 +3,7 @@
 import { Search } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 
 import { SearchBar } from '@/components/search-bar';
 import { Button } from '@/components/ui/button';
@@ -165,5 +165,9 @@ function SearchResultsContent() {
 }
 
 export default function SearchPage() {
-  return <SearchResultsContent />;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SearchResultsContent />
+    </Suspense>
+  );
 }

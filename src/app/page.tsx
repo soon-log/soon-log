@@ -1,6 +1,8 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 
+import { Suspense } from 'react';
+
 import { FilteredPostList } from '@/components/filtered-post-list';
 import { Header } from '@/components/header';
 import { PostMetadata } from '@/types/mdx';
@@ -33,7 +35,9 @@ export default async function Home() {
     return (
       <div className="container mx-auto px-4 py-8">
         <Header />
-        <FilteredPostList initialPosts={posts} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <FilteredPostList initialPosts={posts} />
+        </Suspense>
       </div>
     );
   } catch {
