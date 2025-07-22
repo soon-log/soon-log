@@ -119,7 +119,7 @@
   }
 }
 
-/* 사용자가 명시적으로 선택한 라이트 모드 */
+/* 라이트 모드 스타일 */
 :root[data-theme='light'] {
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
@@ -154,7 +154,7 @@
   --sidebar-ring: oklch(0.705 0.015 286.067);
 }
 
-/* 사용자가 명시적으로 선택한 다크 모드 또는 기존 .dark 클래스 지원 */
+/* 다크 모드 스타일 */
 :root[data-theme='dark'],
 .dark {
   --background: oklch(0.141 0.005 285.823);
@@ -216,8 +216,7 @@ html.dark {
     border-color 0.3s ease;
 }
 
-/* 초기 로드 시 transition 비활성화 */
-html.no-transition * {
+.no-transition * {
   transition: none !important;
 }
 

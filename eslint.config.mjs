@@ -84,7 +84,10 @@ const eslintConfig = [
   // Testing Library 설정 (테스트 파일에만 적용)
   {
     files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
-    ...eslintPluginTestingLibrary.configs['flat/react']
+    ...eslintPluginTestingLibrary.configs['flat/react'],
+    rules: {
+      'testing-library/no-node-access': 'off'
+    }
   },
   {
     files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],

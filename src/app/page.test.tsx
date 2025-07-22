@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import { ThemeProvider } from '@/components/theme-provider';
+import { ThemeProvider } from '@/components/theme/theme-provider';
 
 import Page from './page';
 

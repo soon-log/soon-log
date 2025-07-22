@@ -1,26 +1,12 @@
 import { StagewiseToolbar } from '@stagewise/toolbar-next';
 import ReactPlugin from '@stagewise-plugins/react';
 import type { Metadata } from 'next';
-import { Nanum_Myeongjo, Noto_Sans_KR } from 'next/font/google';
 
-import { ThemeProvider } from '@/components/theme-provider';
-import { ThemeScript } from '@/components/theme-script';
+import { ThemeInitializer } from '@/components/theme/theme-initializer';
+import { ThemeProvider } from '@/components/theme/theme-provider';
+import { nanumMyeongjo, notoSansKR } from '@/lib/fonts';
 
 import './globals.css';
-
-const nanumMyeongjo = Nanum_Myeongjo({
-  weight: '800',
-  display: 'swap',
-  variable: '--font-nanum-myeongjo',
-  subsets: ['latin']
-});
-
-const notoSansKR = Noto_Sans_KR({
-  variable: '--font-noto-sans-kr',
-  subsets: ['latin'],
-  weight: ['100', '400', '500', '700'],
-  display: 'swap'
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
@@ -47,7 +33,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'ko_KR',
-    url: '/',
+    url: process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
     title: 'Soon Log',
     description: '개발 지식과 경험을 공유하는 기술 블로그',
     siteName: 'Soon Log',
@@ -82,7 +68,7 @@ export default function RootLayout({
   return (
     <html lang="ko" suppressHydrationWarning className="no-transition">
       <head>
-        <ThemeScript />
+        <ThemeInitializer />
       </head>
       <body className={`${nanumMyeongjo.variable} ${notoSansKR.variable} antialiased`}>
         <ThemeProvider>

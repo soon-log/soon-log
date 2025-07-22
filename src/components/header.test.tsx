@@ -3,7 +3,7 @@
 import { render, screen } from '@testing-library/react';
 
 import { Header } from './header';
-import { ThemeProvider } from './theme-provider';
+import { ThemeProvider } from './theme/theme-provider';
 
 // Next.js 모킹
 jest.mock('next/navigation', () => ({
