@@ -2,6 +2,7 @@ import { StagewiseToolbar } from '@stagewise/toolbar-next';
 import ReactPlugin from '@stagewise-plugins/react';
 import type { Metadata } from 'next';
 
+import { Header } from '@/components/header';
 import { ThemeInitializer } from '@/components/theme/theme-initializer';
 import { ThemeProvider } from '@/components/theme/theme-provider';
 import { nanumMyeongjo, notoSansKR } from '@/lib/fonts';
@@ -72,7 +73,10 @@ export default function RootLayout({
       </head>
       <body className={`${nanumMyeongjo.variable} ${notoSansKR.variable} antialiased`}>
         <ThemeProvider>
-          {children}
+          <div className="container mx-auto px-4">
+            <Header />
+            {children}
+          </div>
           <StagewiseToolbar
             config={{
               plugins: [ReactPlugin]

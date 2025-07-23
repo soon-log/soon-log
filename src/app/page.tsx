@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 
 import { FilteredPostList } from '@/components/filtered-post-list';
-import { Header } from '@/components/header';
+import { NotFoundLottieAnimation } from '@/components/not-found-lottie-animation/not-found-lottie-animation';
 
 export default async function Home() {
   try {
@@ -10,18 +10,15 @@ export default async function Home() {
     );
 
     return (
-      <div className="container mx-auto px-4 py-8">
-        <Header />
-        <Suspense fallback={<div>Loading...</div>}>
-          <FilteredPostList initialPosts={posts} />
-        </Suspense>
-      </div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <FilteredPostList initialPosts={posts} />
+      </Suspense>
     );
   } catch {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <Header />
-        <p className="text-center text-red-500">게시물을 불러오는데 실패했습니다.</p>
+      <div className="absolute inset-0 z-[-10] flex flex-col items-center justify-center gap-4">
+        <NotFoundLottieAnimation className="h-96 w-full max-w-96" />
+        <p className="text-center text-xl font-bold">게시물을 불러오는데 실패했습니다.</p>
       </div>
     );
   }
