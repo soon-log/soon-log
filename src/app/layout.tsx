@@ -2,7 +2,7 @@ import { StagewiseToolbar } from '@stagewise/toolbar-next';
 import ReactPlugin from '@stagewise-plugins/react';
 import type { Metadata } from 'next';
 
-import { Header } from '@/components/header';
+import { Header } from '@/components/header/header';
 import { ThemeInitializer } from '@/components/theme/theme-initializer';
 import { ThemeProvider } from '@/components/theme/theme-provider';
 import { nanumMyeongjo, notoSansKR } from '@/lib/fonts';

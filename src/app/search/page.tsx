@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { Suspense, useEffect, useState } from 'react';
 
-import { SearchBar } from '@/components/search-bar';
+import { SearchBar } from '@/components/header/search-bar';
 import { Button } from '@/components/ui/button';
 import { useSearch } from '@/hooks/use-search';
 import { SearchResult } from '@/types/mdx';
