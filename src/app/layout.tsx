@@ -1,5 +1,3 @@
-import { StagewiseToolbar } from '@stagewise/toolbar-next';
-import ReactPlugin from '@stagewise-plugins/react';
 import type { Metadata } from 'next';
 
 import { Header } from '@/components/header/header';
@@ -77,11 +75,6 @@ export default function RootLayout({
             <Header />
             {children}
           </div>
-          <StagewiseToolbar
-            config={{
-              plugins: [ReactPlugin]
-            }}
-          />
         </ThemeProvider>
       </body>
     </html>
