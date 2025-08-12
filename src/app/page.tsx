@@ -5,9 +5,8 @@ import { NotFoundLottieAnimation } from '@/components/not-found-lottie-animation
 
 export default async function Home() {
   try {
-    const posts = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts`).then((res) =>
-      res.json()
-    );
+    const base = process.env.NEXT_PUBLIC_BASE_URL || 'localhost:3000';
+    const posts = await fetch(`${base}/api/posts`).then((res) => res.json());
 
     return (
       <Suspense fallback={<div>Loading...</div>}>
