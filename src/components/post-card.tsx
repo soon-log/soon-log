@@ -1,10 +1,9 @@
-import { Calendar } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import DateViewer from '@/components/date-viewer';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { formatDateToKorean } from '@/lib/date';
 import { PostMetadata } from '@/types/mdx';
 
 interface PostCardProps {
@@ -84,14 +83,7 @@ export function PostCard({ post }: PostCardProps) {
                 {/* 날짜와 태그 */}
                 <div className="flex flex-wrap items-center gap-3 md:gap-4">
                   {/* 날짜 */}
-                  <time
-                    className="text-muted-foreground/80 inline-flex items-center gap-1.5 text-xs font-medium"
-                    dateTime={date}
-                    aria-label={`게시일: ${formatDateToKorean(date)}`}
-                  >
-                    <Calendar className="h-3.5 w-3.5" aria-hidden="true" />
-                    <span className="tracking-wide">{formatDateToKorean(date)}</span>
-                  </time>
+                  <DateViewer date={date} />
 
                   {/* 태그 */}
                   {tags && tags.length > 0 && (

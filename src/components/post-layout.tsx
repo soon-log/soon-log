@@ -1,8 +1,6 @@
-import { Calendar } from 'lucide-react';
-import Image from 'next/image';
 import React from 'react';
 
-import { formatDateToKorean } from '@/lib/date';
+import DateViewer from '@/components/date-viewer';
 import { PostMetadata } from '@/types/mdx';
 
 interface PostLayoutProps {
@@ -12,22 +10,16 @@ interface PostLayoutProps {
 
 export default function PostLayout({ meta, children }: PostLayoutProps) {
   return (
-    <article className="prose dark:prose-invert mx-auto max-w-3xl p-6">
-      <header className="mb-8">
+    <article>
+      <div>
         {meta.thumbnail && (
-          <div className="relative mb-8 h-96 w-full">
-            <Image src={meta.thumbnail} alt={meta.title} fill className="rounded-lg object-cover" />
-          </div>
+          <div
+            className="relative mb-8 h-96 w-full rounded-lg bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: `url(${meta.thumbnail})` }}
+          ></div>
         )}
         <div className="flex items-center justify-between">
-          <time
-            className="text-muted-foreground/80 inline-flex items-center gap-1.5 text-xs font-medium"
-            dateTime={meta.date}
-            aria-label={`게시일: ${formatDateToKorean(meta.date)}`}
-          >
-            <Calendar className="h-3.5 w-3.5" aria-hidden="true" />
-            <span className="tracking-wide">{formatDateToKorean(meta.date)}</span>
-          </time>
+          <DateViewer date={meta.date} />
           <div>
             {meta.tags?.map((tag) => (
               <span
@@ -39,7 +31,7 @@ export default function PostLayout({ meta, children }: PostLayoutProps) {
             ))}
           </div>
         </div>
-      </header>
+      </div>
       <div className="prose-lg">{children}</div>
     </article>
   );
