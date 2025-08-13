@@ -14,47 +14,29 @@ export async function generateMetadata({
   const { name } = await params;
 
   try {
-    // 포스트 메타데이터 동적 import
-    const { meta }: { meta: PostMetadata } = await import(`../../../../posts/${name}/meta.ts`);
+    const { meta }: { meta: PostMetadata } = await import(`/posts/${name}/meta.ts`);
 
-    const fullTitle = `${meta.title} | Soon Log`;
-    const description = meta.summary || 'Soon Log에서 개발 지식과 경험을 공유합니다.';
-    const canonical = `/post/${meta.key}`;
-    const publishedTime = new Date(meta.date).toISOString();
-
+    const title = `${meta.title} | Soon Log`;
+    const description = meta.summary;
     // 썸네일 이미지 처리
-    const imageUrl = meta.thumbnail || '/default-og-image.jpg';
+    const imageUrl = meta.thumbnail;
+    console.log(imageUrl);
 
     return {
-      title: fullTitle,
+      title,
       description,
       robots: 'index, follow',
-      alternates: {
-        canonical
-      },
       openGraph: {
-        title: fullTitle,
+        title,
         description,
         images: [
           {
-            url: imageUrl,
+            url: imageUrl || '',
             width: 1200,
             height: 630,
             alt: meta.title
           }
-        ],
-        url: canonical,
-        type: 'article',
-        siteName: 'Soon Log',
-        locale: 'ko_KR',
-        publishedTime,
-        tags: meta.tags
-      },
-      twitter: {
-        card: 'summary_large_image',
-        title: fullTitle,
-        description,
-        images: [imageUrl]
+        ]
       }
     };
   } catch (error) {

@@ -8,34 +8,16 @@ import { nanumMyeongjo, notoSansKR } from '@/lib/fonts';
 import './globals.css';
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'),
   title: {
     default: 'Soon Log',
     template: '%s | Soon Log'
   },
   description: '개발 지식과 경험을 공유하는 기술 블로그',
-  keywords: ['개발', '프로그래밍', '기술 블로그', 'React', 'Next.js', 'TypeScript'],
-  authors: [{ name: 'Soon Log' }],
-  creator: 'Soon Log',
-  publisher: 'Soon Log',
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1
-    }
-  },
   openGraph: {
-    type: 'website',
-    locale: 'ko_KR',
-    url: process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
     title: 'Soon Log',
     description: '개발 지식과 경험을 공유하는 기술 블로그',
-    siteName: 'Soon Log',
+    url: process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000',
     images: [
       {
         url: '/default-og-image.jpg',
@@ -44,18 +26,6 @@ export const metadata: Metadata = {
         alt: 'Soon Log'
       }
     ]
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Soon Log',
-    description: '개발 지식과 경험을 공유하는 기술 블로그',
-    images: ['/default-og-image.jpg']
-  },
-  alternates: {
-    canonical: '/'
-  },
-  verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
   }
 };
 
@@ -71,7 +41,7 @@ export default function RootLayout({
       </head>
       <body className={`${nanumMyeongjo.variable} ${notoSansKR.variable} antialiased`}>
         <ThemeProvider>
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto max-w-4xl px-4">
             <Header />
             {children}
           </div>
