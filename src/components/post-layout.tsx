@@ -14,21 +14,26 @@ export default function PostLayout({ meta, children }: PostLayoutProps) {
       <div>
         {meta.thumbnail && (
           <div
-            className="relative mb-8 h-96 w-full rounded-lg bg-cover bg-center bg-no-repeat"
+            className="relative mb-4 h-96 w-full rounded-lg bg-cover bg-center bg-no-repeat md:mb-6"
             style={{ backgroundImage: `url(${meta.thumbnail})` }}
           ></div>
         )}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-4">
           <DateViewer date={meta.date} />
           <div>
-            {meta.tags?.map((tag) => (
+            {meta.tags?.slice(0, 2).map((tag) => (
               <span
                 key={tag}
-                className="mr-2 inline-block rounded-full bg-gray-200 px-3 py-1 text-sm font-semibold text-gray-700 dark:bg-gray-700 dark:text-gray-200"
+                className="ml-2 inline-block rounded-full bg-gray-200 px-3 py-1 text-xs font-semibold text-gray-700 dark:bg-gray-700 dark:text-gray-200"
               >
                 {tag}
               </span>
             ))}
+            {meta.tags && meta.tags.length > 2 && (
+              <span className="ml-2 inline-block rounded-full bg-gray-200 px-3 py-1 text-xs font-semibold text-gray-700 dark:bg-gray-700 dark:text-gray-200">
+                +{meta.tags.length - 2}
+              </span>
+            )}
           </div>
         </div>
       </div>
