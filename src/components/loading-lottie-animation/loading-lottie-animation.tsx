@@ -5,13 +5,13 @@ import { useState } from 'react';
 
 import { cn } from '@/lib/utils';
 
-import animationData from './404-error-animation.json';
+import animationData from './loading-animation.json';
 
-interface NotFoundLottieAnimationProps {
+interface LoadingLottieAnimationProps {
   className?: string;
 }
 
-export function NotFoundLottieAnimation({ className }: NotFoundLottieAnimationProps) {
+export function LoadingLottieAnimation({ className }: LoadingLottieAnimationProps) {
   const [hasError, setHasError] = useState(false);
 
   if (hasError) {
@@ -22,22 +22,18 @@ export function NotFoundLottieAnimation({ className }: NotFoundLottieAnimationPr
           className
         )}
         role="img"
-        aria-label="404 오류 애니메이션"
+        aria-label="로딩 애니메이션"
       >
         <div className="text-center">
-          <div className="text-6xl font-bold">404</div>
-          <div className="mt-2 text-sm">애니메이션을 불러올 수 없습니다</div>
+          <div className="text-6xl font-bold">Loading...</div>
+          <div className="mt-2 text-sm">애니메이션을 불러오는 중입니다</div>
         </div>
       </div>
     );
   }
 
   return (
-    <div
-      className={cn('h-64 w-64', className)}
-      role="img"
-      aria-label="404 페이지를 찾을 수 없음 애니메이션"
-    >
+    <div className={cn('h-64 w-64', className)} role="img" aria-label="로딩 애니메이션">
       <Lottie
         animationData={animationData}
         loop

@@ -1,7 +1,8 @@
 import { Suspense } from 'react';
 
-import { FilteredPostList } from '@/components/filtered-post-list';
+import { LoadingPage } from '@/components/loading-page';
 import { NotFoundLottieAnimation } from '@/components/not-found-lottie-animation/not-found-lottie-animation';
+import { PostList } from '@/components/post-list';
 
 export default async function Home() {
   try {
@@ -9,8 +10,8 @@ export default async function Home() {
     const posts = await fetch(`${base}/api/posts`).then((res) => res.json());
 
     return (
-      <Suspense fallback={<div>Loading...</div>}>
-        <FilteredPostList initialPosts={posts} />
+      <Suspense fallback={<LoadingPage />}>
+        <PostList data={posts} />
       </Suspense>
     );
   } catch {
