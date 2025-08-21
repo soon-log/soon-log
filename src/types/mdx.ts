@@ -10,15 +10,9 @@ export interface PostMetadata {
 
 // 필터링 관련 타입 추가
 export interface FilterState {
-  category?: string;
+  category: string | null;
   tags: string[];
-  search?: string;
-}
-
-export interface PostFilterHookResult {
-  filteredPosts: PostMetadata[];
-  availableCategories: string[];
-  availableTags: string[];
+  search: string | null;
 }
 
 // 검색 인덱스 관련 타입 추가

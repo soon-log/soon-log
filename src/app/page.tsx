@@ -1,17 +1,27 @@
+import qs from 'query-string';
 import { Suspense } from 'react';
 
 import { LoadingPage } from '@/components/loading-page';
 import { NotFoundLottieAnimation } from '@/components/not-found-lottie-animation/not-found-lottie-animation';
+import { PostFilter } from '@/components/post-filter';
 import { PostList } from '@/components/post-list';
+import { FilterState } from '@/types/mdx';
 
-export default async function Home() {
+export default async function Home({ searchParams }: { searchParams: Promise<FilterState> }) {
+  const { tags, category, search } = await searchParams;
+
   try {
     const base = process.env.NEXT_PUBLIC_BASE_URL || 'localhost:3000';
-    const posts = await fetch(`${base}/api/posts`).then((res) => res.json());
+    const posts = await fetch(
+      `${base}/api/posts${tags && category && search ? `?${qs.stringify({ tags, category, search })}` : ''}`
+    ).then((res) => res.json());
 
     return (
       <Suspense fallback={<LoadingPage />}>
-        <PostList data={posts} />
+        <div className="space-y-6" data-testid="filtered-post-list">
+          <PostFilter posts={posts} />
+          <PostList posts={posts} />
+        </div>
       </Suspense>
     );
   } catch {

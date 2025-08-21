@@ -19,9 +19,7 @@
         "details": "1. 필요한 MDX 종속성 설치:\n```bash\nnpm install @next/mdx @mdx-js/loader @mdx-js/react gray-matter next-mdx-remote remark-gfm rehype-slug rehype-autolink-headings\n```\n2. Next.js를 처리하도록 설정하여 next.config.js에서 MDX 파일 처리\n3. `/lib/mdx.ts`에서 유틸리티 함수를 만들어 다음을 수행합니다.\n   - 게시물 디렉토리에서 MDX 파일 읽기\n   - gray-matter를 사용하여 프론트매터 파싱\n   - 메타데이터(키, 제목, 날짜, 태그, 카테고리, 요약) 추출\n   - 필요한 필드 유효성 검사\n4. 다음과 같은 게시물/[키] 동적 경로를 구현합니다.\n   - 키 매개변수를 기반으로 특정 MDX 파일 가져오기\n   - next-mdx-remote를 사용하여 MDX 컨텐츠 렌더링\n   - 기본 스타일을 적용한 렌더링 컨텐츠\n5. Prism.js를 사용하여 코드 블록에 구문 강조 추가:\n```bash\nnpm install prismjs\n```\n6. 특정 요소를 강조하여 렌더링하는 사용자 지정 MDX 컴포넌트 맵 만들기",
         "testStrategy": "1. 다양한 프론트매터 구성으로 테스트 MDX 파일 만들기\n2. Jest를 사용하여 MDX 파싱 유틸리티 함수에 대한 유닛 테스트 작성\n3. 다른 게시물 키를 사용하여 경로 테스트 테스트하여 올바른 렌더링 확인\n4. 다른 프로그래밍 언어에 대한 구문 강조가 정상적으로 작동하는지 확인\n5. 누락되거나 오류가 있는 MDX 파일에 대한 오류 처리 테스트\n6. 모든 필요한 메타데이터 필드가 정상적으로 추출되고 사용되는지 확인",
         "priority": "high",
-        "dependencies": [
-          1
-        ],
+        "dependencies": [1],
         "status": "done",
         "subtasks": [
           {
@@ -36,9 +34,7 @@
             "id": 2,
             "title": "컨텐츠 파싱 유틸리티 개발",
             "description": "gray-matter 및 compileMDX 라이브러리를 사용하여 MDX 파일을 파싱하고 프론트매터 및 컨텐츠를 추출하는 유틸리티를 구현합니다.",
-            "dependencies": [
-              1
-            ],
+            "dependencies": [1],
             "details": "파일 시스템에서 MDX 파일을 읽고 프론트매터 메타데이터를 파싱하고 렌더링을 위해 준비하는 함수를 만듭니다. 유형 안전성과 오류 처리를 위해 파일을 유효성 검사합니다.",
             "status": "done"
           },
@@ -46,9 +42,7 @@
             "id": 3,
             "title": "MDX 컨텐츠에 대한 동적 경로 처리 구현",
             "description": "URL 매개변수를 기반으로 MDX 컨텐츠를 제공하는 동적 라우팅을 설정합니다. 각 MDX 파일에 대한 개별 페이지를 활성화합니다.",
-            "dependencies": [
-              2
-            ],
+            "dependencies": [2],
             "details": "동적 경로(예: Next.js의 [slug].tsx)를 구성하고 적절한 MDX 파일을 기반으로 경로를 가져오고 파싱된 컨텐츠를 페이지 컴포넌트 내에서 렌더링합니다.",
             "status": "done"
           },
@@ -56,9 +50,7 @@
             "id": 4,
             "title": "코드 구문 강조 통합",
             "description": "rehype-prism 또는 remark-prism 라이브러리를 사용하여 MDX 컨텐츠 내에서 코드 블록에 대한 구문 강조 지원을 추가합니다.",
-            "dependencies": [
-              3
-            ],
+            "dependencies": [3],
             "details": "MDX 구성을 업데이트하여 구문 강조 플러그인을 포함하고 필요에 따라 스타일을 사용자 지정하고 MDX 파일 내에서 렌더링된 코드 블록이 정상적으로 구문 강조되는지 확인합니다.",
             "status": "done"
           }
@@ -69,9 +61,7 @@
         "title": "빌드 시간에 게시물 메타데이터 JSON 생성",
         "description": "게시물 디렉토리를 순회하고 모든 MDX 파일에서 메타데이터를 추출하고 게시물 목록 및 필터링에 사용할 구조화된 posts.json 파일을 생성하는 빌드 스크립트를 만듭니다.",
         "status": "done",
-        "dependencies": [
-          2
-        ],
+        "dependencies": [2],
         "priority": "high",
         "details": "1. `/scripts/generate-posts-data.js`에서 다음을 수행하는 Node.js 스크립트 만들기\n   - 재귀적으로 `/posts` 디렉토리 순회\n   - 모든 index.mdx 파일 식별\n   - gray-matter를 사용하여 메타데이터 추출\n   - 카테고리별로 게시물 정렬\n   - 날짜(최신순)으로 게시물 정렬\n   - `/public/data/posts.json`에 구조화된 posts.json 파일 출력\n2. posts.json 구조는 PRD에서 지정한 형식을 따라야 합니다.\n```json\n{\n  \"[categoryName]\": [\n    {\n      \"key\": \"...\",\n      \"title\": \"...\",\n      \"date\": \"...\",\n      \"tags\": [\"...\"],\n      \"category\": \"...\",\n      \"summary\": \"...\"\n    }\n  ]\n}\n```\n3. package.json의 prebuild 후크를 추가하여 이 스크립트를 실행합니다.\n```json\n\"scripts\": {\n  \"prebuild\": \"node scripts/generate-posts-data.js\",\n  ...\n}\n```\n4. 변경된 파일만 처리하는 더 빠른 증분 빌드를 위해 캐싱을 구현합니다",
         "testStrategy": "1. 메타데이터 추출 함수에 대한 유닛 테스트 작성\n2. 다양한 게시물 구조와 올바른 JSON 출력을 확인하는 테스트 픽스처 만들기\n3. 스크립트를 에지 사례와 함께 테스트합니다.\n   - 빈 게시물 디렉토리\n   - 필요한 프론트매터 필드 누락\n   - 메타데이터에 특수 문자\n   - 매우 많은 게시물 수\n4. JSON 출력이 유효하고 예상된 구조를 따르는지 확인\n5. 변경되지 않은 파일에 대한 증분 빌드 기능을 테스트합니다",
@@ -90,9 +80,7 @@
             "title": "게시물에서 메타데이터 추출 및 유효성 검사",
             "description": "각 게시물 파일에서 필요한 메타데이터 필드(예: 제목, 날짜, 태그)를 추출하고 필요한 스키마에 따라 유효성을 검사합니다. 누락되거나 오류가 있는 메타데이터에 대한 로그 또는 보고서를 작성하고 완전하지 않은 메타데이터에 대한 폴백 동작을 결정합니다.",
             "status": "done",
-            "dependencies": [
-              1
-            ],
+            "dependencies": [1],
             "details": "각 파일에서 meta.ts 파일에서 메타데이터 형식을 구문 분석합니다. 스키마를 사용하여 필드를 유효성 검사합니다(예: JSON 스키마 유효성 검사기 사용). 유효성 검사 오류를 로그하거나 완전하지 않은 메타데이터에 대한 폴백 동작을 결정합니다.",
             "testStrategy": ""
           },
@@ -101,9 +89,7 @@
             "title": "빌드 프로세스에 메타데이터 생성 통합",
             "description": "메타데이터 추출 논리를 빌드 프로세스에 통합하여 빌드 시간에 메타데이터 JSON을 생성합니다. 변경되지 않은 파일에 대한 중복 작업을 방지하는 캐싱 메커니즘을 구현합니다. 증분 빌드를 지원합니다.",
             "status": "done",
-            "dependencies": [
-              2
-            ],
+            "dependencies": [2],
             "details": "빌드 파이프라인(예: 데이터 로더 또는 빌드 스크립트)에 메타데이터 생성을 통합합니다. 파일 수정 시간 또는 해시를 저장하고 비교하여 재생성이 필요한지 결정합니다. 최종 메타데이터를 JSON 파일로 출력하여 애플리케이션에서 사용합니다.",
             "testStrategy": ""
           },
@@ -121,12 +107,7 @@
             "title": "실제 포스트 검증 완료",
             "description": "실제 포스트를 사용하여 메타데이터 생성 스크립트의 기능을 검증했습니다.",
             "status": "done",
-            "dependencies": [
-              1,
-              2,
-              3,
-              4
-            ],
+            "dependencies": [1, 2, 3, 4],
             "details": "현재 2개의 포스트(test, test2)를 성공적으로 처리하고 PRD 명세에 맞는 JSON 구조를 생성했습니다. 생성된 JSON은 카테고리별로 그룹화되고 날짜 내림차순으로 정렬되었으며, 필수 필드가 모두 포함되었습니다.",
             "testStrategy": ""
           }
@@ -139,9 +120,7 @@
         "details": "1. `/components/post-card.tsx`에 PostCard 구성 요소를 만듭니다. 개별 게시물 세부 정보를 표시하는 데 사용됩니다.\n   - 게시물 제목\n   - 게시 날짜(형식화)\n   - 태그\n   - 요약\n   - 카테고리 뱃지\n2. `/app/page.tsx`에서 다음을 구현합니다.\n   - 게시물 데이터를 가져옵니다.\n   - 모든 카테고리를 단일 배열로 평탄화합니다.\n   - 날짜(최신순)로 게시물 정렬\n   - PostCard 구성 요소를 사용하여 게시물 그리드 렌더링\n3. 무한 스크롤 기능 추가:\n   - 초기에 제한된 수의 게시물 렌더링(예: 10)\n   - IntersectionObserver를 사용하여 사용자가 하단에 가까이 스크롤할 때 추가 게시물 로드\n```typescript\n// Example IntersectionObserver implementation\nconst observer = new IntersectionObserver((entries) => {\n  if (entries[0].isIntersecting && hasMorePosts) {\n    loadMorePosts();\n  }\n}, { threshold: 0.1 });\n\nif (loadMoreRef.current) {\n  observer.observe(loadMoreRef.current);\n}\n```\n4. 더 많은 게시물이 로드될 때 로딩 인디케이터 추가\n5. 다양한 화면 크기에 대한 Tailwind CSS를 사용하여 반응형 그리드 레이아웃 구현",
         "testStrategy": "1. PostCard 구성 요소 렌더링을 다양한 메타데이터 조합으로 테스트\n2. 게시물이 날짜에 따라 정렬되는지 확인\n3. 무한 스크롤을 모의 IntersectionObserver 및 더 많은 게시물 로드 확인을 통해 테스트\n4. 다양한 화면 크기(모바일, 태블릿, 데스크탑)에서 반응형 레이아웃 테스트\n5. 많은 게시물이 있는 경우 성능 테스트\n6. 게시물이 없는 경우와 같은 에지 사례 테스트",
         "priority": "high",
-        "dependencies": [
-          3
-        ],
+        "dependencies": [3],
         "status": "done",
         "subtasks": [
           {
@@ -156,9 +135,7 @@
             "id": 2,
             "title": "데이터 가져오기를 통한 홈페이지 구현",
             "description": "PostCard 구성 요소를 사용하여 게시물 목록을 가져오고 표시하는 홈페이지 레이아웃을 구축합니다. 초기 데이터 가져오기 논리와 로드 및 오류 상태를 통합합니다.",
-            "dependencies": [
-              1
-            ],
+            "dependencies": [1],
             "details": "게시물 상태 관리, 로드 및 오류를 설정합니다. API에서 첫 페이지의 게시물을 가져와 PostCard 구성 요소를 사용하여 렌더링합니다. 필요에 따라 로드 및 오류 메시지를 표시합니다.",
             "status": "done"
           },
@@ -166,9 +143,7 @@
             "id": 3,
             "title": "무한 스크롤 기능 구현",
             "description": "IntersectionObserver API 또는 적절한 라이브러리를 사용하여 무한 스크롤을 홈페이지에 추가합니다. 사용자가 목록의 하단에 가까이 스크롤할 때 추가 데이터를 자동으로 가져오고 추가합니다.",
-            "dependencies": [
-              2
-            ],
+            "dependencies": [2],
             "details": "사용자가 목록 끝에 접근할 때 추가 데이터를 가져오는 로직을 구현합니다. 성능을 최적화하여 대규모 데이터 세트를 처리하고 중복 요청을 방지합니다.",
             "status": "done"
           }
@@ -181,9 +156,7 @@
         "details": "1. `/components/filter-bar.tsx`에 FilterBar 구성 요소를 만듭니다. 포함:\n   - 카테고리 드롭다운 선택기\n   - 태그 다중 선택 구성 요소\n   - 필터 초기화 버튼\n2. 홈페이지를 수정하여:\n   - URL 쿼리 문자열에서 필터 매개변수 읽기(?category=, ?tags=)\n   - 게시물 목록에 필터 적용\n   - 필터 변경 시 URL 업데이트(Next.js 라우터 사용)\n3. `/hooks/use-post-filter.ts`에서 클라이언트 측 필터링 논리 구현:\n```typescript\nexport function usePostFilter(allPosts, initialFilters) {\n  const [filters, setFilters] = useState(initialFilters);\n  const [filteredPosts, setFilteredPosts] = useState([]);\n\n  useEffect(() => {\n    const filtered = allPosts.filter(post => {\n      // Filter by category if specified\n      if (filters.category && post.category !== filters.category) {\n        return false;\n      }\n      \n      // Filter by tags if specified\n      if (filters.tags && filters.tags.length > 0) {\n        const hasAllTags = filters.tags.every(tag => \n          post.tags.includes(tag)\n        );\n        if (!hasAllTags) return false;\n      }\n      \n      return true;\n    });\n    \n    setFilteredPosts(filtered);\n  }, [filters, allPosts]);\n\n  return { filteredPosts, filters, setFilters };\n}\n```\n4. URL 동기화를 통해 주소 표시줄에서 필터 상태 유지\n5. 모든 가능한 태그를 표시하는 TagCloud 구성 요소 만들기",
         "testStrategy": "1. FilterBar 구성 요소를 다양한 필터 조합으로 테스트\n2. URL 쿼리 매개변수가 현재 필터를 정확하게 반영하는지 확인\n3. 필터 매개변수가 있는 URL을 공유하여 페이지가 필터가 적용된 상태로 로드되는지 확인\n4. 다양한 카테고리 및 태그 조합으로 필터링 논리 테스트\n5. 모든 필터 초기화 버튼이 모든 필터를 초기화하는지 확인\n6. 일치하는 결과가 없는 경우와 같은 에지 사례 테스트",
         "priority": "medium",
-        "dependencies": [
-          4
-        ],
+        "dependencies": [4],
         "status": "done",
         "subtasks": [
           {
@@ -198,9 +171,7 @@
             "id": 2,
             "title": "URL 매개변수와 필터 상태 동기화",
             "description": "필터 상태(선택된 카테고리 및 태그)를 URL 쿼리 매개변수와 동기화하는 로직을 구현합니다. 필터 선택이 URL을 업데이트하고 매개변수가 있는 URL을 로드할 때 올바른 필터 상태를 복원할 수 있는지 확인합니다.",
-            "dependencies": [
-              1
-            ],
+            "dependencies": [1],
             "details": "브라우저 기록 업데이트, 깊은 링크 및 뒤로/앞으로 탐색을 처리합니다. URL이 현재 필터 상태를 반영하는지 확인하고 공유 및 북마크 가능성을 보장합니다.\n<info added on 2025-07-14T12:57:04.894Z>\nuseFilterUrlSync 훅 구현이 완료되었습니다. 이 훅은 필터 상태와 URL 쿼리 파라미터 간의 양방향 동기화를 제공합니다. URL 쿼리 파라미터에서 필터 상태를 읽고, 필터가 변경될 때 URL을 자동으로 업데이트합니다. 특수 문자 인코딩/디코딩 처리로 모든 문자가 올바르게 처리됩니다. 브라우저의 뒤로/앞으로 버튼과 완벽하게 호환되어 사용자가 이전 필터 상태로 쉽게 돌아갈 수 있습니다. 모든 기능에 대한 8개의 테스트가 작성되었으며, 100% 테스트 커버리지를 달성했습니다.\n</info added on 2025-07-14T12:57:04.894Z>",
             "status": "done"
           },
@@ -208,9 +179,7 @@
             "id": 3,
             "title": "필터링 논리 구현",
             "description": "선택된 카테고리 및 태그를 데이터 세트에 적용하는 효율적인 필터링 논리를 개발합니다. 논리가 대규모 데이터 세트를 지원하고 에지 사례와 같은 유효성 검사를 처리할 수 있는지 확인합니다.",
-            "dependencies": [
-              2
-            ],
+            "dependencies": [2],
             "details": "성능을 최적화하기 위해 메모화 또는 서버 측 필터링을 사용할 수 있습니다. 한 번에 하나의 카테고리만 선택할 수 있지만 여러 태그를 결합할 수 있는지 확인합니다.",
             "status": "done"
           },
@@ -218,9 +187,7 @@
             "id": 4,
             "title": "TagCloud 시각화 구현",
             "description": "가능한 태그를 시각적으로 표현하는 TagCloud 구성 요소를 만듭니다. 현재 필터 선택에 따라 동적으로 업데이트되고 태그를 시각적으로 표시합니다.",
-            "dependencies": [
-              3
-            ],
+            "dependencies": [3],
             "details": "현재 필터 선택에 따라 동적으로 업데이트되고 태그를 시각적으로 표시합니다.",
             "status": "done"
           }
@@ -233,9 +200,7 @@
         "details": "1. Lunr.js 설치:\n```bash\nnpm install lunr\n```\n2. `/scripts/generate-search-index.js`에서 다음을 수행하는 빌드 스크립트 만들기\n   - 모든 MDX 파일 읽기\n   - 컨텐츠 및 메타데이터 추출\n   - Lunr.js 검색 인덱스 만들기\n   - 인덱스를 `/public/data/lunr-index.json`에 저장\n3. package.json의 prebuild 후크에 이 스크립트 추가\n4. `/components/search-bar.tsx`에 SearchBar 구성 요소를 만듭니다.\n   - 검색 아이콘이 있는 입력 필드\n   - 드롭다운 결과 패널\n   - 키보드 탐색 지원\n5. `/hooks/use-search.ts`에서 검색 기능을 구현합니다.\n```typescript\nexport function useSearch() {\n  const [query, setQuery] = useState('');\n  const [results, setResults] = useState([]);\n  const [index, setIndex] = useState(null);\n  const [isLoading, setIsLoading] = useState(false);\n\n  useEffect(() => {\n    // 컴포넌트 마운트 시 검색 인덱스 로드\n    async function loadSearchIndex() {\n      setIsLoading(true);\n      try {\n        const response = await fetch('/data/lunr-index.json');\n        const data = await response.json();\n        setIndex(lunr.Index.load(data.index));\n      } catch (error) {\n        console.error('검색 인덱스 로드 실패:', error);\n      } finally {\n        setIsLoading(false);\n      }\n    }\n    \n    loadSearchIndex();\n  }, []);\n\n  useEffect(() => {\n    if (!index || !query.trim()) {\n      setResults([]);\n      return;\n    }\n    \n    try {\n      const searchResults = index.search(query);\n      // 검색 결과를 실제 게시물 데이터에 매핑\n      // ...\n      setResults(mappedResults);\n    } catch (error) {\n      console.error('검색 오류:', error);\n      setResults([]);\n    }\n  }, [query, index]);\n\n  return { query, setQuery, results, isLoading };\n}\n```\n6. 사이트 헤더에 SearchBar 추가\n7. `/app/search/page.tsx`에서 검색 결과 페이지 추가",
         "testStrategy": "1. 검색 인덱스 생성을 다양한 게시물 컨텐츠와 테스트\n2. 브라우저에서 검색 인덱스가 정상적으로 로드되는지 확인\n3. 다양한 쿼리(정확한 일치, 부분 일치, 대소문자 구분)를 사용하여 검색 기능 테스트\n4. SearchBar 구성 요소 UI 및 키보드 탐색 테스트\n5. 검색 결과가 관련성이 있고 적절하게 순위가 매겨지는지 확인\n6. 많은 게시물이 있는 경우 성능 테스트\n7. 인덱스 로드 실패에 대한 오류 처리 테스트",
         "priority": "medium",
-        "dependencies": [
-          3
-        ],
+        "dependencies": [3],
         "status": "done",
         "subtasks": [
           {
@@ -250,9 +215,7 @@
             "id": 2,
             "title": "SearchBar 구성 요소 키보드 탐색 구현",
             "description": "사용자 쿼리를 캡처하고 키보드 탐색(예: 화살표 키, 엔터로 제출)을 지원하고 검색 작업을 트리거하는 재사용 가능한 SearchBar UI 구성 요소를 개발합니다. 접근성 및 반응형 디자인을 보장합니다.",
-            "dependencies": [
-              1
-            ],
+            "dependencies": [1],
             "details": "SearchBar는 입력을 디보우하고 포커스/블러 이벤트를 처리하고 활성 선택에 대한 시각적 피드백을 제공해야 합니다. 검색 후크와 실시간 결과를 통합합니다.",
             "status": "done"
           },
@@ -260,10 +223,7 @@
             "id": 3,
             "title": "고급 Lunr.js 쿼리 구문 및 결과 반환을 위한 검색 후크 개발",
             "description": "비동기적으로 Lunr.js 인덱스와 저장 JSON 파일을 로드하고 로드/오류 상태를 관리하고 주어진 쿼리에 대한 관련 결과를 반환하는 사용자 지정 React 후크(또는 등가)를 개발합니다.",
-            "dependencies": [
-              1,
-              2
-            ],
+            "dependencies": [1, 2],
             "details": "후크는 비동기 가져오기, 인덱스 역직렬화 및 효율적인 쿼리를 처리해야 합니다. 고급 Lunr.js 쿼리 구문을 지원해야 하며 저장에서 연관된 메타데이터를 반환해야 합니다.",
             "status": "done"
           },
@@ -271,11 +231,7 @@
             "id": 4,
             "title": "관련성 및 성능 최적화를 위한 검색 결과 페이지 디자인 및 구현",
             "description": "검색 후크에서 결과를 표시하는 검색 결과 페이지를 디자인하고 구현합니다. 관련성에 따라 결과를 정렬하고 대규모 결과 집합에 대한 빠른 렌더링, 페이지네이션 또는 무한 스크롤을 제공하고 컨텍스트에서 일치하는 용어를 강조합니다.",
-            "dependencies": [
-              1,
-              2,
-              3
-            ],
+            "dependencies": [1, 2, 3],
             "details": "페이지는 제목, 스니펫, 각 결과에 대한 링크를 표시해야 하며 빈 상태를 적절하게 처리하고 사이트로 명확한 탐색을 제공해야 합니다. 성능과 사용자 경험을 최적화합니다.",
             "status": "done"
           }
@@ -288,9 +244,7 @@
         "details": "1. React Context를 사용하여 `/components/theme-provider.tsx`에 ThemeProvider 구성 요소 만들기\n```typescript\nconst ThemeContext = createContext({\n  theme: 'light',\n  setTheme: (theme: 'light' | 'dark' | 'system') => {}\n});\n\nexport function ThemeProvider({ children }) {\n  const [theme, setTheme] = useState('system');\n  \n  useEffect(() => {\n    // 저장된 선호도 확인\n    const storedTheme = localStorage.getItem('theme');\n    if (storedTheme) {\n      setTheme(storedTheme);\n    }\n  }, []);\n  \n  useEffect(() => {\n    // 테마를 문서에 적용\n    if (theme === 'system') {\n      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';\n      document.documentElement.classList.toggle('dark', systemTheme === 'dark');\n    } else {\n      document.documentElement.classList.toggle('dark', theme === 'dark');\n    }\n    \n    // 선호도 저장\n    localStorage.setItem('theme', theme);\n  }, [theme]);\n  \n  return (\n    <ThemeContext.Provider value={{ theme, setTheme }}>\n      {children}\n    </ThemeContext.Provider>\n  );\n}\n```\n2. `/components/theme-toggle.tsx`에 ThemeToggle 구성 요소 만들기\n3. tailwind.config.js에서 어두운 모드를 위해 Tailwind CSS 설정:\n```javascript\nmodule.exports = {\n  darkMode: 'class',\n  // ...\n}\n```\n4. 모든 UI 구성 요소에 어두운 모드 변형 추가\n5. 사이트 헤더에 ThemeToggle 추가\n6. 시스템 선호도 감지 및 동기화 구현",
         "testStrategy": "1. ThemeProvider를 다양한 초기 상태로 테스트\n2. 테마 토글이 모드를 정확하게 전환하는지 확인\n3. 미디어 쿼리를 모의하여 시스템 선호도 감지 테스트\n4. 저장된 선호도가 localStorage에 지속되는지 확인\n5. 모든 UI 구성 요소가 어두운 모드 스타일을 정확하게 적용하는지 확인\n6. 다양한 저장된 선호도를 사용하여 초기 로드 동작 테스트",
         "priority": "low",
-        "dependencies": [
-          1
-        ],
+        "dependencies": [1],
         "status": "done",
         "subtasks": []
       },
@@ -301,10 +255,7 @@
         "details": "1. `/components/seo.tsx`에 SEO 구성 요소를 만듭니다. 적절한 메타 태그를 동적으로 생성하고 삽입합니다.\n```typescript\nexport function SEO({ title, description, ogImage, url, type = 'article' }) {\n  const siteTitle = 'soon-log';\n  const fullTitle = title ? `${title} | ${siteTitle}` : siteTitle;\n  \n  return (\n    <Head>\n      <title>{fullTitle}</title>\n      <meta name=\"description\" content={description} />\n      <meta property=\"og:title\" content={fullTitle} />\n      <meta property=\"og:description\" content={description} />\n      <meta property=\"og:image\" content={ogImage} />\n      <meta property=\"og:url\" content={url} />\n      <meta property=\"og:type\" content={type} />\n      <meta name=\"twitter:card\" content=\"summary_large_image\" />\n      <meta name=\"twitter:title\" content={fullTitle} />\n      <meta name=\"twitter:description\" content={description} />\n      <meta name=\"twitter:image\" content={ogImage} />\n    </Head>\n  );\n}\n```\n2. `/scripts/generate-sitemap.js`에서 빌드 시간에 sitemap.xml을 생성하는 스크립트 만들기\n3. `/scripts/generate-rss.js`에서 빌드 시간에 RSS 피드를 생성하는 스크립트 만들기\n4. 블로그 게시물에 대한 구조화된 데이터(JSON-LD) 추가:\n```typescript\nexport function BlogPostSchema({ post, url }) {\n  const schema = {\n    \"@context\": \"https://schema.org\",\n    \"@type\": \"BlogPosting\",\n    \"headline\": post.title,\n    \"datePublished\": post.date,\n    \"author\": {\n      \"@type\": \"Person\",\n      \"name\": \"Author Name\"\n    },\n    \"description\": post.summary,\n    \"url\": url\n  };\n  \n  return (\n    <script\n      type=\"application/ld+json\"\n      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}\n    />\n  );\n}\n```\n5. 이 스크립트를 package.json의 prebuild 후크에 추가합니다\n6. 게시물 세부 정보를 기반으로 페이지 세부 정보에 동적 메타 태그 구현",
         "testStrategy": "1. 각 페이지가 브라우저 개발 도구를 사용하여 적절한 메타 태그를 가지는지 확인\n2. sitemap.xml 생성을 다양한 게시물 구조와 테스트\n3. 온라인 유효성 검사 도구를 사용하여 sitemap.xml 및 RSS 피드 유효성 검사\n4. Google의 Structured Data Testing Tool을 사용하여 구조화된 데이터 테스트\n5. Open Graph 태그가 다양한 게시물 유형에 대해 정확하게 채워지는지 확인\n6. Facebook 및 Twitter와 같은 플랫폼의 디버깅 도구를 사용하여 소셜 미디어 미리보기 렌더링 테스트",
         "priority": "medium",
-        "dependencies": [
-          2,
-          3
-        ],
+        "dependencies": [2, 3],
         "status": "done",
         "subtasks": [
           {
@@ -319,9 +270,7 @@
             "id": 2,
             "title": "Sitemap 및 RSS 피드 생성",
             "description": "모든 관련 사이트 컨텐츠를 반영하는 XML sitemap 및 RSS 피드를 생성하고 업데이트하는 자동화된 프로세스를 만듭니다. 컨텐츠가 변경될 때 이러한 파일을 검색 엔진 및 사용자에게 액세스할 수 있고 업데이트합니다.",
-            "dependencies": [
-              1
-            ],
+            "dependencies": [1],
             "details": "sitemap은 모든 인덱스 가능한 페이지를 포함해야 하며 마지막으로 수정된 날짜를 포함해야 합니다. RSS 피드는 최근 컨텐츠를 구독해야 합니다. 출력 두 개를 유효성 검사하여 표준을 준수합니다.",
             "status": "done"
           },
@@ -329,9 +278,7 @@
             "id": 3,
             "title": "구조화된 데이터(스키마 마크업) 통합",
             "description": "schema.org 마크업(JSON-LD)을 사용하여 키 컨텐츠 유형(기사, 제품 등)에 대한 구조화된 데이터를 구현하여 검색 결과 모양과 자격을 향상시키고 풍부한 결과를 위한 태그를 추가합니다.",
-            "dependencies": [
-              1
-            ],
+            "dependencies": [1],
             "details": "관련 스키마 유형을 식별하고 컨텐츠 필드를 스키마 속성에 매핑하고 JSON-LD를 페이지 헤드에 주입합니다. Google의 Rich Results Test를 사용하여 유효성 검사를 테스트합니다.",
             "status": "done"
           }
@@ -344,9 +291,7 @@
         "details": "1. `/components/layout.tsx`에 Layout 구성 요소를 만듭니다. 포함:\n   - 로고, 검색 바 및 테마 토글이 있는 헤더\n   - 데스크탑 보기에 대한 사이드바(md 브레이크포인트 및 위에서 숨겨짐)\n   - 모바일 보기에 대한 드로어 메뉴(md 브레이크포인트 및 위에서 숨겨짐)\n   - 메인 컨텐츠 영역\n   - 푸터\n2. `/components/sidebar.tsx`에 Sidebar 구성 요소 구현:\n   - 카테고리 탐색 링크\n   - 최근 게시물 섹션\n   - 인기 태그 섹션\n3. `/components/mobile-drawer.tsx`에 MobileDrawer 구성 요소 구현:\n   - 헤더의 햄버거 메뉴 토글\n   - 탐색 링크를 포함하는 슬라이드 드로어\n   - 닫기 버튼\n4. Tailwind CSS를 사용하여 반응형 스타일 적용:\n```typescript\n<div className=\"flex flex-col md:flex-row\">\n  {/* Sidebar - hidden on mobile */}\n  <aside className=\"hidden md:block md:w-64 lg:w-72 shrink-0 border-r\">\n    <Sidebar categories={categories} recentPosts={recentPosts} popularTags={popularTags} />\n  </aside>\n  \n  {/* Mobile drawer - visible only on mobile */}\n  <MobileDrawer isOpen={isDrawerOpen} onClose={() => setDrawerOpen(false)} />\n  \n  {/* Main content */}\n  <main className=\"flex-1 p-4 md:p-6\">\n    {children}\n  </main>\n</div>\n```\n5. CSS 전환을 사용하여 모바일 드로어를 부드럽게 적용\n6. 모든 대화형 요소에 적절한 호버 및 포커스 상태 보장",
         "testStrategy": "1. 다양한 기기 크기(모바일, 태블릿, 데스크탑)에서 레이아웃 테스트\n2. 사이드바가 모바일에서 숨겨지고 드로어에 액세스할 수 있는지 확인\n3. 드로어 열기/닫기 기능 테스트\n4. 모든 탐색 링크가 정확하게 작동하는지 확인\n5. 키보드 액세스 테스트\n6. 레이아웃이 창이 변경될 때 정확하게 적용되는지 확인\n7. 모바일 기기의 터치 상호작용 테스트",
         "priority": "medium",
-        "dependencies": [
-          1
-        ],
+        "dependencies": [1],
         "status": "done",
         "subtasks": [
           {
@@ -361,9 +306,7 @@
             "id": 2,
             "title": "데스크탑 사이드바 탐색 구현",
             "description": "데스크탑 화면에 최적화된 사이드바 탐색 구성 요소를 개발합니다. 접근성, 키보드 탐색 가능성 및 레이아웃 구조와 통합합니다.",
-            "dependencies": [
-              1
-            ],
+            "dependencies": [1],
             "details": "상대 단위를 사용하여 더 큰 화면에서 지속되는 영구 사이드바를 만듭니다. 탐색 링크, 아이콘 및 적절한 간격과 포커스 상태를 포함합니다.",
             "status": "done"
           },
@@ -371,9 +314,7 @@
             "id": 3,
             "title": "모바일 드로어 메뉴 개발",
             "description": "모바일에서 측면에서 들어오는 드로어를 만듭니다. 데스크탑 사이드바를 작은 화면에서 대체하는 모바일 드로어 메뉴를 만듭니다. 부드러운 전환, 터치 접근성 및 키보드 탐색을 보장합니다.",
-            "dependencies": [
-              1
-            ],
+            "dependencies": [1],
             "details": "햄버거 메뉴 버튼을 구현하여 드로어를 토글합니다. 드로어는 콘텐츠를 덮거나 밀거나 해야 하며 접근성 표준을 유지해야 합니다.",
             "status": "done"
           },
@@ -381,11 +322,7 @@
             "id": 4,
             "title": "Tailwind CSS를 사용한 반응형 스타일 적용",
             "description": "Tailwind CSS를 사용하여 반응형 스타일을 적용하여 레이아웃, 사이드바 및 드로어를 다양한 브레이크포인트에서 원활하게 적용합니다. 간격, 글꼴 및 다양한 기기에 대한 가시성을 처리합니다.",
-            "dependencies": [
-              1,
-              2,
-              3
-            ],
+            "dependencies": [1, 2, 3],
             "details": "Tailwind의 반응형 유틸리티 클래스를 사용하여 다양한 브레이크포인트에서 가시성, 간격 및 레이아웃을 제어합니다. 기기를 통해 테스트하여 일관된 모양과 사용성을 보장합니다.",
             "status": "done"
           }
@@ -398,11 +335,7 @@
         "details": "1. 프로젝트에 대한 GitHub 저장소 설정\n2. `.github/workflows/ci.yml`에 GitHub Actions 워크플로우 파일 만들기:\n```yaml\nname: CI/CD Pipeline\n\non:\n  push:\n    branches: [main]\n  pull_request:\n    branches: [main]\n\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v3\n      - uses: actions/setup-node@v3\n        with:\n          node-version: '18'\n          cache: 'npm'\n      - run: npm ci\n      - run: npm run lint\n      - run: npm run test\n      \n  build:\n    needs: test\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v3\n      - uses: actions/setup-node@v3\n        with:\n          node-version: '18'\n          cache: 'npm'\n      - run: npm ci\n      - run: npm run build\n      - name: Upload build artifacts\n        uses: actions/upload-artifact@v3\n        with:\n          name: build-output\n          path: .next\n          \n  deploy:\n    if: github.ref == 'refs/heads/main'\n    needs: build\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v3\n      - uses: actions/setup-node@v3\n        with:\n          node-version: '18'\n      - uses: vercel/actions/cli@master\n        with:\n          vercel-token: ${{ secrets.VERCEL_TOKEN }}\n          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}\n          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}\n          vercel-args: '--prod'\n```\n3. Vercel 계정 및 프로젝트 설정\n4. GitHub 저장소에 환경 변수 구성\n5. Jest 및 React Testing Library 추가:\n```bash\nnpm install -D jest @testing-library/react @testing-library/jest-dom jest-environment-jsdom\n```\n6. jest.config.js에서 Jest 구성\n7. package.json에 테스트 스크립트 추가:\n```json\n\"scripts\": {\n  \"test\": \"jest\",\n  \"test:watch\": \"jest --watch\",\n  \"lint\": \"next lint\"\n}\n```",
         "testStrategy": "1. GitHub Actions 워크플로우가 push 및 pull 요청에서 성공적으로 실행되는지 확인\n2. 빌드 단계 전에 linting 및 테스트가 실행되는지 확인\n3. 빌드 아티팩트가 정확하게 업로드되는지 확인\n4. 주 브랜치에 대한 변경 사항을 테스트하여 Vercel에 배포\n5. 배포된 사이트가 예상된 출력과 일치하는지 확인\n6. 배포 실패에 대한 롤백 기능 테스트\n7. 환경 변수가 빌드 프로세스에 성공적으로 전달되는지 확인",
         "priority": "medium",
-        "dependencies": [
-          1,
-          2,
-          3
-        ],
+        "dependencies": [1, 2, 3],
         "status": "pending",
         "subtasks": [
           {
@@ -417,9 +350,7 @@
             "id": 2,
             "title": "GitHub Actions 워크플로우 구성",
             "description": "저장소에 대한 GitHub Actions 워크플로우를 설정하여 CI/CD 작업을 자동화합니다.",
-            "dependencies": [
-              1
-            ],
+            "dependencies": [1],
             "details": "`.github/workflows` 디렉토리에 워크플로우 YAML 파일을 만들어 종속성 설치, 테스트, 코드 린팅 및 빌드 아티팩트 준비를 위한 작업을 정의합니다. 필요한 경우 환경 변수 및 비밀을 구성합니다.",
             "status": "pending"
           },
@@ -427,9 +358,7 @@
             "id": 3,
             "title": "Vercel 배포 통합",
             "description": "GitHub 저장소를 Vercel에 연결하고 푸시 또는 pull 요청 이벤트에 대한 자동화된 배포를 활성화하는 통합을 설정합니다.",
-            "dependencies": [
-              2
-            ],
+            "dependencies": [2],
             "details": "Vercel을 승인하여 GitHub 저장소에 액세스하고 배포 트리거를 설정하고 프로덕션 배포에 대한 환경 변수 및 비밀을 관리하고 성공적인 전체 종단 배포를 확인합니다.",
             "status": "pending"
           }

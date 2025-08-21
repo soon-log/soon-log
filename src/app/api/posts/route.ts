@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 
+import { filterPosts } from '@/lib/post';
 import { PostMetadata } from '@/types/mdx';
 
 interface PostsData {
@@ -8,7 +9,11 @@ interface PostsData {
 
 export async function GET(request: Request) {
   try {
-    const { origin } = new URL(request.url);
+    const { origin, searchParams } = new URL(request.url);
+    const tags = searchParams.get('tags')?.split(',') || [];
+    const category = searchParams.get('category');
+    const search = searchParams.get('search');
+
     const res = await fetch(`${origin}/posts/posts.json`);
     if (!res.ok) {
       return NextResponse.json({ message: 'posts.json 응답 실패' }, { status: 500 });
@@ -16,12 +21,13 @@ export async function GET(request: Request) {
 
     // 모든 카테고리 게시물 평탄화
     const data: PostsData = await res.json();
-
     const allPosts = Object.values(data).flat();
+
+    const filteredPosts = filterPosts({ posts: allPosts, filters: { tags, category, search } });
 
     // 날짜 기준 최신순 정렬
     return NextResponse.json(
-      allPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+      filteredPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     );
   } catch (error) {
     console.error('[API 오류] posts.json 읽기 실패:', error);

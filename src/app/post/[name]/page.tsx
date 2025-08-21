@@ -20,7 +20,6 @@ export async function generateMetadata({
     const description = meta.summary;
     // 썸네일 이미지 처리
     const imageUrl = meta.thumbnail;
-    console.log(imageUrl);
 
     return {
       title,
