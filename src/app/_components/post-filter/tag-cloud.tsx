@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { PostMetadata } from '@/types/mdx';
 
 interface TagCloudProps {
-  allPosts: PostMetadata[];
+  posts: PostMetadata[];
   selectedTags: string[];
   onTagClick: (tag: string) => void;
 }
@@ -14,35 +14,44 @@ interface TagInfo {
   count: number;
 }
 
-export function TagCloud({ allPosts, selectedTags, onTagClick }: TagCloudProps) {
-  // 태그별 빈도 계산 및 정렬
+export function TagCloud({ posts, selectedTags, onTagClick }: TagCloudProps) {
+  console.log({ posts, selectedTags });
   const sortedTags = useMemo(() => {
     const tagCounts = new Map<string, number>();
-
-    // 모든 게시물에서 태그 추출하여 빈도 계산
-    for (const post of allPosts) {
-      if (post.tags) {
-        for (const tag of post.tags) {
-          tagCounts.set(tag, (tagCounts.get(tag) || 0) + 1);
-        }
+    for (const post of posts) {
+      if (!post.tags) {
+        continue;
+      }
+      for (const tag of post.tags) {
+        tagCounts.set(tag, (tagCounts.get(tag) || 0) + 1);
       }
     }
 
-    // TagInfo 배열로 변환하고 정렬 (빈도 높은 순, 같으면 알파벳 순)
-    const tags: TagInfo[] = Array.from(tagCounts.entries()).map(([name, count]) => ({
+    const tags: TagInfo[] = Array.from(tagCounts).map(([name, count]) => ({
       name,
       count
     }));
 
     return tags.sort((a, b) => {
-      if (a.count !== b.count) {
-        return b.count - a.count; // 빈도 높은 순
-      }
-      return a.name.localeCompare(b.name); // 알파벳 순
-    });
-  }, [allPosts]);
+      // selectedTags에 포함된 태그를 최우선으로 정렬
+      const aSelected = selectedTags.includes(a.name);
+      const bSelected = selectedTags.includes(b.name);
 
-  // 태그가 없는 경우
+      if (aSelected && !bSelected) {
+        return -1;
+      }
+      if (!aSelected && bSelected) {
+        return 1;
+      }
+
+      // 둘 다 선택되었거나 둘 다 선택되지 않은 경우, 기존 정렬 로직 적용
+      if (a.count !== b.count) {
+        return b.count - a.count;
+      }
+      return a.name.localeCompare(b.name);
+    });
+  }, [posts, selectedTags]);
+
   if (sortedTags.length === 0) {
     return (
       <div className="py-8 text-center">
@@ -65,8 +74,6 @@ export function TagCloud({ allPosts, selectedTags, onTagClick }: TagCloudProps) 
               size="sm"
               onClick={() => onTagClick(tag.name)}
               aria-pressed={isSelected}
-              role="button"
-              tabIndex={0}
               className="text-sm"
             >
               {tag.name} ({tag.count})

@@ -3,9 +3,10 @@ import { Suspense } from 'react';
 
 import { LoadingPage } from '@/components/loading-page';
 import { NotFoundLottieAnimation } from '@/components/not-found-lottie-animation/not-found-lottie-animation';
-import { PostFilter } from '@/components/post-filter';
-import { PostList } from '@/components/post-list';
 import { FilterState } from '@/types/mdx';
+
+import { PostFilter } from './_components/post-filter/post-filter';
+import { PostList } from './_components/post-list/post-list';
 
 export default async function Home({ searchParams }: { searchParams: Promise<FilterState> }) {
   const { tags, category, search } = await searchParams;
@@ -13,7 +14,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Fil
   try {
     const base = process.env.NEXT_PUBLIC_BASE_URL || 'localhost:3000';
     const posts = await fetch(
-      `${base}/api/posts${tags && category && search ? `?${qs.stringify({ tags, category, search })}` : ''}`
+      `${base}/api/posts${tags || category || search ? `?${qs.stringify({ tags, category, search })}` : ''}`
     ).then((res) => res.json());
 
     return (

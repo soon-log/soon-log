@@ -2,7 +2,7 @@
 
 import { useState, useRef, useMemo } from 'react';
 
-import { PostCard } from '@/components/post-card';
+import { PostCard } from '@/app/_components/post-list/post-card';
 import { useInfiniteScroll } from '@/hooks/use-infinite-scroll';
 import { PostMetadata } from '@/types/mdx';
 

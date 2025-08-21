@@ -1,4 +1,4 @@
-import { useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import qs from 'query-string';
 import { useState, useEffect, useCallback, useMemo } from 'react';
 
@@ -12,6 +12,7 @@ interface FilterStateResult {
 export function useFilterState(): FilterStateResult {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
 
   const filtersFromUrl = useMemo((): FilterState => {
     const category = searchParams.get('category');
@@ -51,11 +52,11 @@ export function useFilterState(): FilterStateResult {
       }
 
       const queryString = qs.stringify(query);
-      const url = queryString ? `?${queryString}` : '';
+      const url = queryString ? `${pathname}?${queryString}` : pathname;
 
       router.replace(url);
     },
-    [router]
+    [router, pathname]
   );
 
   useEffect(() => {

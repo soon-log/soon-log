@@ -3,14 +3,20 @@
 import { ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 
+import { Button } from '@/components/ui/button';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select';
 import { useFilterState } from '@/hooks/use-filter-state';
 import { usePostFilter } from '@/hooks/use-post-filter';
 import { PostMetadata } from '@/types/mdx';
 
 import { TagCloud } from './tag-cloud';
-import { Button } from './ui/button';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './ui/collapsible';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 
 type PostFilterProps = {
   posts: PostMetadata[];
@@ -94,7 +100,7 @@ export function FilterBar({ posts }: FilterBarProps) {
           </SelectContent>
         </Select>
       </div>
-      <TagCloud allPosts={posts} selectedTags={filters.tags} onTagClick={handleTagToggle} />
+      <TagCloud posts={posts} selectedTags={filters.tags} onTagClick={handleTagToggle} />
       <div className="flex justify-end">
         <Button
           variant="outline"

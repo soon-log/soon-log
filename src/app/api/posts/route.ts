@@ -10,9 +10,11 @@ interface PostsData {
 export async function GET(request: Request) {
   try {
     const { origin, searchParams } = new URL(request.url);
-    const tags = searchParams.get('tags')?.split(',') || [];
+    const tags = (searchParams.get('tags')?.split(',') || []).map((tag) => decodeURIComponent(tag));
     const category = searchParams.get('category');
+    const decodedCategory = typeof category === 'string' ? decodeURIComponent(category) : null;
     const search = searchParams.get('search');
+    const decodedSearch = typeof search === 'string' ? decodeURIComponent(search) : null;
 
     const res = await fetch(`${origin}/posts/posts.json`);
     if (!res.ok) {
@@ -23,7 +25,10 @@ export async function GET(request: Request) {
     const data: PostsData = await res.json();
     const allPosts = Object.values(data).flat();
 
-    const filteredPosts = filterPosts({ posts: allPosts, filters: { tags, category, search } });
+    const filteredPosts = filterPosts({
+      posts: allPosts,
+      filters: { tags, category: decodedCategory, search: decodedSearch }
+    });
 
     // 날짜 기준 최신순 정렬
     return NextResponse.json(
