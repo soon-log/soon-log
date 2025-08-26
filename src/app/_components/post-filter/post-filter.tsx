@@ -13,16 +13,15 @@ import {
   SelectValue
 } from '@/components/ui/select';
 import { useFilterState } from '@/hooks/use-filter-state';
-import { usePostFilter } from '@/hooks/use-post-filter';
-import { PostMetadata } from '@/types/mdx';
 
 import { TagCloud } from './tag-cloud';
 
 type PostFilterProps = {
-  posts: PostMetadata[];
+  categories: string[];
+  tags: string[];
 };
 
-export function PostFilter({ posts }: PostFilterProps) {
+export function PostFilter({ categories, tags }: PostFilterProps) {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const toggle = () => setIsFilterOpen((open) => !open);
@@ -38,19 +37,19 @@ export function PostFilter({ posts }: PostFilterProps) {
         </Button>
       </CollapsibleTrigger>
       <CollapsibleContent className="mt-4">
-        <FilterBar posts={posts} />
+        <FilterBar categories={categories} tags={tags} />
       </CollapsibleContent>
     </Collapsible>
   );
 }
 
 interface FilterBarProps {
-  posts: PostMetadata[];
+  categories: string[];
+  tags: string[];
 }
 
-export function FilterBar({ posts }: FilterBarProps) {
+export function FilterBar({ categories, tags }: FilterBarProps) {
   const { filters, updateFilters } = useFilterState();
-  const { availableCategories } = usePostFilter({ posts });
 
   const hasActiveFilters = filters.category || filters.tags.length > 0;
 
@@ -92,7 +91,7 @@ export function FilterBar({ posts }: FilterBarProps) {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">모든 카테고리</SelectItem>
-            {availableCategories.map((category) => (
+            {categories.map((category) => (
               <SelectItem key={category} value={category}>
                 {category}
               </SelectItem>
@@ -100,7 +99,7 @@ export function FilterBar({ posts }: FilterBarProps) {
           </SelectContent>
         </Select>
       </div>
-      <TagCloud posts={posts} selectedTags={filters.tags} onTagClick={handleTagToggle} />
+      <TagCloud tags={tags} selectedTags={filters.tags} onTagClick={handleTagToggle} />
       <div className="flex justify-end">
         <Button
           variant="outline"
