@@ -15,7 +15,7 @@ import { extractMetadataFromFile } from './generate-posts-data';
 function preprocessTextForSearch(text: string): string {
   if (!text) return '';
 
-  const processed: string[] = [];
+  const processed: Array<string> = [];
 
   // 1. 원본 텍스트 추가
   processed.push(text);
@@ -112,7 +112,7 @@ export async function createSearchablePost(
  * @returns 검색 인덱스 데이터
  */
 export async function generateSearchIndex(
-  searchablePosts: SearchablePost[]
+  searchablePosts: Array<SearchablePost>
 ): Promise<SearchIndexData> {
   // 게시물 저장소 생성
   const store: Record<string, SearchablePost> = {};
@@ -155,9 +155,9 @@ export async function generateSearchIndex(
  * 모든 게시물에서 검색 가능한 데이터를 수집합니다
  * @returns 모든 검색 가능한 게시물
  */
-export async function collectAllSearchablePosts(): Promise<SearchablePost[]> {
+export async function collectAllSearchablePosts(): Promise<Array<SearchablePost>> {
   const postsDir = path.join(process.cwd(), 'posts');
-  const searchablePosts: SearchablePost[] = [];
+  const searchablePosts: Array<SearchablePost> = [];
 
   try {
     const postFolders = await fs.readdir(postsDir, { withFileTypes: true });

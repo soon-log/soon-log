@@ -2,7 +2,7 @@ export interface PostMetadata {
   key: string;
   title: string;
   date: string;
-  tags?: string[];
+  tags?: Array<string>;
   category?: string;
   summary?: string;
   thumbnail?: string | null;
@@ -11,7 +11,7 @@ export interface PostMetadata {
 // 필터링 관련 타입 추가
 export interface FilterState {
   category: string | null;
-  tags: string[];
+  tags: Array<string>;
   search: string | null;
 }
 
@@ -21,7 +21,7 @@ export interface SearchablePost {
   title: string;
   content: string;
   summary?: string;
-  tags?: string[];
+  tags?: Array<string>;
   category?: string;
   date: string;
 }
@@ -36,7 +36,7 @@ export interface SearchResult {
   title: string;
   summary?: string;
   category?: string;
-  tags?: string[];
+  tags?: Array<string>;
   score: number; // 검색 점수
-  highlights?: string[]; // 하이라이트된 텍스트 스니펫
+  highlights?: Array<string>; // 하이라이트된 텍스트 스니펫
 }

@@ -1,6 +1,6 @@
 import { PostMetadata } from '@/types/mdx';
 
-export function generateSitemap(posts: PostMetadata[], siteUrl: string): string {
+export function generateSitemap(posts: Array<PostMetadata>, siteUrl: string): string {
   const staticPages = [
     {
       url: '/',

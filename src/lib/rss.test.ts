@@ -137,7 +137,7 @@ describe('generateRSSFeed', () => {
 
   test('XML 특수 문자를 올바르게 이스케이프한다', () => {
     // Given
-    const postsWithSpecialChars: PostMetadata[] = [
+    const postsWithSpecialChars: Array<PostMetadata> = [
       {
         key: 'special-chars-post',
         title: 'HTML & CSS <guide> "for" beginners',

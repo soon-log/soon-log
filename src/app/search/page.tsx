@@ -16,7 +16,7 @@ function SearchResultsContent() {
   const query = searchParams.get('q') || '';
 
   const { results, isLoading, error, setQuery } = useSearch();
-  const [displayResults, setDisplayResults] = useState<SearchResult[]>([]);
+  const [displayResults, setDisplayResults] = useState<Array<SearchResult>>([]);
 
   // URL의 쿼리 파라미터로 검색 실행
   useEffect(() => {

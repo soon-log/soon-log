@@ -10,7 +10,7 @@ function escapeXml(text: string): string {
     .replace(/'/g, '&#39;');
 }
 
-export function generateRSSFeed(posts: PostMetadata[], siteUrl: string): string {
+export function generateRSSFeed(posts: Array<PostMetadata>, siteUrl: string): string {
   const siteName = 'Soon Log';
   const siteDescription = '개발 지식과 경험을 공유하는 기술 블로그';
 

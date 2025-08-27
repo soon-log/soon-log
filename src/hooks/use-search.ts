@@ -6,7 +6,7 @@ import { SearchResult, SearchIndexData } from '@/types/mdx';
 interface UseSearchResult {
   query: string;
   setQuery: (query: string) => void;
-  results: SearchResult[];
+  results: Array<SearchResult>;
   isLoading: boolean;
   error: string | null;
 }
@@ -16,9 +16,9 @@ interface UseSearchResult {
  * @param query - 사용자 입력 검색어
  * @returns 변환된 검색 쿼리들
  */
-function createKoreanSearchQueries(query: string): string[] {
+function createKoreanSearchQueries(query: string): Array<string> {
   const trimmedQuery = query.trim().toLowerCase();
-  const queries: string[] = [];
+  const queries: Array<string> = [];
 
   console.log('🔧 쿼리 변환 시작:', trimmedQuery);
 
@@ -62,7 +62,7 @@ function createKoreanSearchQueries(query: string): string[] {
  */
 export function useSearch(): UseSearchResult {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<SearchResult[]>([]);
+  const [results, setResults] = useState<Array<SearchResult>>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searchIndex, setSearchIndex] = useState<lunr.Index | null>(null);

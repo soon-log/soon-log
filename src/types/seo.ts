@@ -17,7 +17,7 @@ export interface OpenGraphMetadata {
   locale: string;
   publishedTime?: string;
   modifiedTime?: string;
-  tags?: string[];
+  tags?: Array<string>;
 }
 
 export interface TwitterMetadata {
@@ -33,7 +33,7 @@ export interface BlogPostSEO {
   title: string;
   description: string;
   publishedDate: string;
-  tags?: string[];
+  tags?: Array<string>;
   category?: string;
   thumbnail?: string;
 }

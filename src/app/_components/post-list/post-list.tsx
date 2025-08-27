@@ -1,77 +1,119 @@
 'use client';
 
-import { useState, useRef, useMemo } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useState, useRef, useCallback, useEffect } from 'react';
 
 import { PostCard } from '@/app/_components/post-list/post-card';
 import { useInfiniteScroll } from '@/hooks/use-infinite-scroll';
+import { parsePostsQueryParams } from '@/lib/url';
+import { Pagination } from '@/types/base';
 import { PostMetadata } from '@/types/mdx';
 
 interface PostListProps {
-  posts: PostMetadata[];
+  posts: Pagination<PostMetadata>;
 }
-
-const POSTS_PER_PAGE = 10;
 
 export function PostList({ posts }: PostListProps) {
   const loadMoreRef = useRef<HTMLDivElement>(null);
-  const [visibleCount, setVisibleCount] = useState(POSTS_PER_PAGE);
+  const searchParams = useSearchParams();
+  const [allPosts, setAllPosts] = useState<Array<PostMetadata>>(posts.results);
+  const [nextPage, setNextPage] = useState<number | null>(posts.nextPage);
 
-  const visiblePosts = useMemo(() => {
-    return posts.slice(0, visibleCount);
-  }, [posts, visibleCount]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const perPage = posts.perPage || 10;
+  const hasMore = nextPage !== null;
 
-  const hasMore = visibleCount < posts.length;
-  const isLoading = hasMore && visiblePosts.length < visibleCount;
+  const loadMore = useCallback(async () => {
+    if (isLoading || !hasMore) return;
 
-  const loadMore = () => {
-    if (hasMore) {
-      setVisibleCount((prev) => Math.min(prev + POSTS_PER_PAGE, posts.length));
+    setIsLoading(true);
+    try {
+      const params = new URLSearchParams();
+      const { tags, category, search } = parsePostsQueryParams(searchParams);
+
+      if (tags?.length > 0) params.set('tags', tags.join(','));
+      if (category) params.set('category', category);
+      if (search) params.set('search', search);
+      params.set('page', String(nextPage));
+      params.set('perPage', String(perPage));
+
+      const res = await fetch(`/api/posts?${params.toString()}`);
+      const data: Pagination<PostMetadata> = await res.json();
+
+      setAllPosts((prev) => [...prev, ...data.results]);
+      setNextPage(data.nextPage);
+
+      // URL 동기화(네비게이션 없이)
+      if (typeof window !== 'undefined') {
+        const url = new URL(window.location.href);
+        url.searchParams.set('page', String(data.page));
+        url.searchParams.set('perPage', String(perPage));
+        window.history.replaceState(null, '', url.toString());
+      }
+    } finally {
+      setIsLoading(false);
     }
-  };
+  }, [hasMore, isLoading, nextPage, perPage, searchParams]);
 
-  useInfiniteScroll(loadMoreRef, loadMore);
+  useInfiniteScroll({ targetRef: loadMoreRef, onIntersect: loadMore, isLoading });
 
-  // 상태별 메시지 결정
-  const getEmptyMessage = () => {
-    if (posts.length === 0) {
-      return '아직 작성된 게시물이 없습니다.';
+  // 새로고침 시 page를 1로 초기화
+  useEffect(() => {
+    const pageParam = searchParams.get('page');
+    const initialPage = pageParam ? parseInt(pageParam) : posts.page;
+
+    if (initialPage > 1) {
+      (async () => {
+        setIsLoading(true);
+        try {
+          const params = new URLSearchParams();
+
+          const tags = searchParams.get('tags');
+          const category = searchParams.get('category');
+          const search = searchParams.get('search');
+
+          if (tags) params.set('tags', tags);
+          if (category) params.set('category', category);
+          if (search) params.set('search', search);
+
+          params.set('page', '1');
+          params.set('perPage', String(perPage));
+
+          const res = await fetch(`/api/posts?${params.toString()}`);
+          const data: Pagination<PostMetadata> = await res.json();
+
+          setAllPosts(data.results);
+          setNextPage(data.nextPage);
+
+          if (typeof window !== 'undefined') {
+            const url = new URL(window.location.href);
+            url.searchParams.set('page', '1');
+            url.searchParams.set('perPage', String(perPage));
+            window.history.replaceState(null, '', url.toString());
+          }
+        } finally {
+          setIsLoading(false);
+        }
+      })();
     }
-    if (posts.length === 0) {
-      return '필터 조건에 맞는 게시물이 없습니다.';
-    }
-    return null;
-  };
-
-  const emptyMessage = getEmptyMessage();
+    // 의도적으로 최초 마운트 시에만 실행
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <div className="space-y-6" data-testid="filtered-post-list">
-      {emptyMessage && <p className="text-center text-gray-500">{emptyMessage}</p>}
-
-      {posts.length > 0 && (
+    <div className="space-y-6">
+      {allPosts.length === 0 ? (
+        <p className="text-center text-gray-500">게시물이 없습니다.</p>
+      ) : (
         <div>
-          <ul className="flex flex-col gap-4">
-            {visiblePosts.map((post) => (
+          <ul className="flex flex-col gap-4 pb-10">
+            {allPosts.map((post) => (
               <li key={post.key}>
                 <PostCard post={post} />
               </li>
             ))}
           </ul>
-
-          {/* 무한 스크롤 트리거 */}
-          {hasMore && (
-            <div
-              ref={loadMoreRef}
-              className="flex justify-center py-8"
-              data-testid="load-more-trigger"
-            >
-              {isLoading ? (
-                <p className="text-muted-foreground">더 많은 게시물 로드 중...</p>
-              ) : (
-                <p className="text-muted-foreground">스크롤하여 더 많은 게시물 보기</p>
-              )}
-            </div>
-          )}
+          {hasMore && <div ref={loadMoreRef} className="flex justify-center py-8" />}
         </div>
       )}
     </div>

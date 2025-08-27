@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 
+import { parsePostsQueryParams } from '@/lib/url';
+
 import { getProcessedPosts } from '../services';
-import { parsePostsQueryParams } from '../utils';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);

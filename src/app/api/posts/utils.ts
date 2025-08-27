@@ -1,35 +1,19 @@
+import { Pagination } from '@/types/base';
 import { FilterState, PostMetadata } from '@/types/mdx';
 
 import { PostsData } from './types';
 
 /**
- * URL 검색 파라미터에서 posts 필터링 조건을 파싱합니다.
- */
-export function parsePostsQueryParams(searchParams: URLSearchParams): FilterState {
-  const tags = (searchParams.get('tags')?.split(',') || []).map((tag) => decodeURIComponent(tag));
-  const category = searchParams.get('category');
-  const decodedCategory = typeof category === 'string' ? decodeURIComponent(category) : null;
-  const search = searchParams.get('search');
-  const decodedSearch = typeof search === 'string' ? decodeURIComponent(search) : null;
-
-  return {
-    tags,
-    category: decodedCategory,
-    search: decodedSearch
-  };
-}
-
-/**
  * 게시물 배열을 날짜 기준 최신순으로 정렬합니다.
  */
-export function sortPostsByDate(posts: PostMetadata[]): PostMetadata[] {
+export function sortPostsByDate(posts: Array<PostMetadata>): Array<PostMetadata> {
   return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
 /**
  * 카테고리별로 구조화된 posts 데이터를 평탄화합니다.
  */
-export function flattenPostsData(data: PostsData): PostMetadata[] {
+export function flattenPostsData(data: PostsData): Array<PostMetadata> {
   return Object.values(data).flat();
 }
 
@@ -43,9 +27,9 @@ export const filterPosts = ({
   posts,
   filters
 }: {
-  posts: PostMetadata[];
+  posts: Array<PostMetadata>;
   filters: FilterState;
-}): PostMetadata[] => {
+}): Array<PostMetadata> => {
   return posts.filter((post) => {
     if (filters.category && post.category !== filters.category) {
       return false;
@@ -68,4 +52,31 @@ export const filterPosts = ({
 
     return true;
   });
+};
+
+type PaginatePostsParams = {
+  posts: Array<PostMetadata>;
+  page: number;
+  perPage: number;
+};
+
+export const paginatePosts = ({
+  posts,
+  page,
+  perPage
+}: PaginatePostsParams): Pagination<PostMetadata> => {
+  const start = (page - 1) * perPage;
+  const end = start + perPage;
+  const results = posts.slice(start, end);
+  const nextPage = end < posts.length ? page + 1 : null;
+  const prevPage = start > 0 ? page - 1 : null;
+
+  return {
+    results,
+    page,
+    perPage,
+    nextPage,
+    prevPage,
+    total: posts.length
+  };
 };

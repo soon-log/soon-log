@@ -228,7 +228,7 @@ interface SearchResultsDropdownProps {
   isOpen: boolean;
   isLoading: boolean;
   error: string | null;
-  results: SearchResult[];
+  results: Array<SearchResult>;
   query: string;
   selectedIndex: number;
   onResultClick: (result: SearchResult) => void;

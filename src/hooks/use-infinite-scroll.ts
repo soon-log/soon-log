@@ -1,18 +1,26 @@
 import { useEffect, useCallback, RefObject } from 'react';
 
-export function useInfiniteScroll(
-  targetRef: RefObject<HTMLElement | null>,
-  onIntersect: () => void,
-  options?: IntersectionObserverInit
-) {
+type UseInfiniteScrollProps = {
+  targetRef: RefObject<HTMLElement | null>;
+  onIntersect: () => void;
+  isLoading: boolean;
+  options?: IntersectionObserverInit;
+};
+
+export function useInfiniteScroll({
+  targetRef,
+  onIntersect,
+  isLoading,
+  options
+}: UseInfiniteScrollProps) {
   const handleIntersect = useCallback(
-    (entries: IntersectionObserverEntry[]) => {
+    (entries: Array<IntersectionObserverEntry>) => {
       const [entry] = entries;
-      if (entry?.isIntersecting) {
+      if (entry?.isIntersecting && !isLoading) {
         onIntersect();
       }
     },
-    [onIntersect]
+    [onIntersect, isLoading]
   );
 
   useEffect(() => {
@@ -29,5 +37,5 @@ export function useInfiniteScroll(
     return () => {
       observer.disconnect();
     };
-  }, [targetRef, handleIntersect, options]);
+  }, [handleIntersect, options, targetRef]);
 }

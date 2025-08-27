@@ -21,7 +21,7 @@ export async function fetchPostsData(): Promise<PostsData> {
 /**
  * 게시물을 가져와서 필터링하고 정렬하여 반환합니다.
  */
-export async function getProcessedPosts(filters: FilterState): Promise<PostMetadata[]> {
+export async function getProcessedPosts(filters: FilterState): Promise<Array<PostMetadata>> {
   const posts = await fetchPostsData();
   const flattenedPosts = flattenPostsData(posts);
   const filteredPosts = filterPosts({ posts: flattenedPosts, filters });

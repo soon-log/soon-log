@@ -3,7 +3,7 @@ import { PostMetadata } from '@/types/mdx';
 import { generateSitemap } from './sitemap';
 
 describe('generateSitemap', () => {
-  const mockPosts: PostMetadata[] = [
+  const mockPosts: Array<PostMetadata> = [
     {
       key: 'javascript-fundamentals',
       title: 'JavaScript 기초',

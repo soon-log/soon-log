@@ -7,7 +7,7 @@ import { generateSitemap } from '@/lib/sitemap';
 import { PostMetadata } from '@/types/mdx';
 
 interface PostsData {
-  [category: string]: PostMetadata[];
+  [category: string]: Array<PostMetadata>;
 }
 
 export async function GET() {

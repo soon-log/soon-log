@@ -17,8 +17,8 @@ import { useFilterState } from '@/hooks/use-filter-state';
 import { TagCloud } from './tag-cloud';
 
 type PostFilterProps = {
-  categories: string[];
-  tags: string[];
+  categories: Array<string>;
+  tags: Array<string>;
 };
 
 export function PostFilter({ categories, tags }: PostFilterProps) {
@@ -44,8 +44,8 @@ export function PostFilter({ categories, tags }: PostFilterProps) {
 }
 
 interface FilterBarProps {
-  categories: string[];
-  tags: string[];
+  categories: Array<string>;
+  tags: Array<string>;
 }
 
 export function FilterBar({ categories, tags }: FilterBarProps) {

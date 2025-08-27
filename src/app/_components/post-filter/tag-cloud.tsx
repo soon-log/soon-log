@@ -3,8 +3,8 @@ import { useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 
 interface TagCloudProps {
-  tags: string[];
-  selectedTags: string[];
+  tags: Array<string>;
+  selectedTags: Array<string>;
   onTagClick: (tag: string) => void;
 }
 
@@ -53,13 +53,13 @@ export function TagCloud({ tags, selectedTags, onTagClick }: TagCloudProps) {
   );
 }
 
-const getTagInfos = (tags: string[]): TagInfo[] => {
+const getTagInfos = (tags: Array<string>): Array<TagInfo> => {
   const tagCounts = new Map<string, number>();
   for (const tag of tags) {
     tagCounts.set(tag, (tagCounts.get(tag) || 0) + 1);
   }
 
-  const tagInfos: TagInfo[] = Array.from(tagCounts).map(([name, count]) => ({
+  const tagInfos: Array<TagInfo> = Array.from(tagCounts).map(([name, count]) => ({
     name,
     count
   }));
@@ -73,7 +73,7 @@ const getTagInfos = (tags: string[]): TagInfo[] => {
  * @param selectedTags 선택된 태그 배열
  * @returns 정렬된 태그 정보 배열
  */
-const sortTags = (tagInfos: TagInfo[], selectedTags: string[]): TagInfo[] => {
+const sortTags = (tagInfos: Array<TagInfo>, selectedTags: Array<string>): Array<TagInfo> => {
   return tagInfos.sort((a, b) => {
     // selectedTags에 포함된 태그를 최우선으로 정렬
     const aSelected = selectedTags.includes(a.name);

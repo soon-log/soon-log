@@ -7,7 +7,7 @@ import { generateRSSFeed } from '@/lib/rss';
 import { PostMetadata } from '@/types/mdx';
 
 interface PostsData {
-  [category: string]: PostMetadata[];
+  [category: string]: Array<PostMetadata>;
 }
 
 export async function GET() {
