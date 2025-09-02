@@ -23,7 +23,6 @@ export default async function Home({
     const posts = await fetch(
       `${base}/api/posts${tags || category || search || page || perPage ? `?${qs.stringify({ tags, category, search, page, perPage })}` : ''}`
     ).then((res) => res.json());
-    console.log(posts);
 
     return (
       <Suspense fallback={<LoadingPage />}>

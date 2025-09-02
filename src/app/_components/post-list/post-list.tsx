@@ -1,5 +1,6 @@
 'use client';
 
+import { isEqual } from 'es-toolkit';
 import { useSearchParams } from 'next/navigation';
 import { useState, useRef, useCallback, useEffect } from 'react';
 
@@ -7,17 +8,18 @@ import { PostCard } from '@/app/_components/post-list/post-card';
 import { useInfiniteScroll } from '@/hooks/use-infinite-scroll';
 import { parsePostsQueryParams } from '@/lib/url';
 import { Pagination } from '@/types/base';
-import { PostMetadata } from '@/types/mdx';
+import { FilterState, PostMetadata } from '@/types/mdx';
 
 interface PostListProps {
   posts: Pagination<PostMetadata>;
 }
 
 export function PostList({ posts }: PostListProps) {
-  const loadMoreRef = useRef<HTMLDivElement>(null);
   const searchParams = useSearchParams();
   const [allPosts, setAllPosts] = useState<Array<PostMetadata>>(posts.results);
   const [nextPage, setNextPage] = useState<number | null>(posts.nextPage);
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+  const prevFilters = useRef<FilterState | null>(null);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const perPage = posts.perPage || 10;
@@ -99,6 +101,25 @@ export function PostList({ posts }: PostListProps) {
     // 의도적으로 최초 마운트 시에만 실행
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    const { tags, category, search } = parsePostsQueryParams(searchParams);
+    if (prevFilters.current === null) {
+      prevFilters.current = { tags, category, search };
+    } else {
+      const { tags: prevTags, category: prevCategory, search: prevSearch } = prevFilters.current;
+      if (
+        isEqual(tags, prevTags) &&
+        isEqual(category, prevCategory) &&
+        isEqual(search, prevSearch)
+      ) {
+        return;
+      }
+      setAllPosts(posts.results);
+      setNextPage(posts.nextPage);
+      prevFilters.current = { tags, category, search };
+    }
+  }, [searchParams, posts]);
 
   return (
     <div className="space-y-6">
