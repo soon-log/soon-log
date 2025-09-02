@@ -43,13 +43,11 @@ export function PostList({ posts }: PostListProps) {
 
       setAllPosts((prev) => [...prev, ...data.results]);
       setNextPage(data.nextPage);
-      router.replace(`/?${params.toString()}`);
+      router.replace(`/?${params.toString()}`, { scroll: false });
     } finally {
       setIsLoading(false);
     }
   }, [category, hasMore, isLoading, nextPage, perPage, router, search, tags]);
-
-  useInfiniteScroll({ targetRef: loadMoreRef, onIntersect: loadMore, isLoading });
 
   // 새로고침 시 page를 1로 초기화
   useEffect(() => {
@@ -71,7 +69,7 @@ export function PostList({ posts }: PostListProps) {
           setAllPosts(data.results);
           setNextPage(data.nextPage);
 
-          router.replace(`/?${params.toString()}`);
+          router.replace(`/?${params.toString()}`, { scroll: false });
         } finally {
           setIsLoading(false);
         }
@@ -97,6 +95,8 @@ export function PostList({ posts }: PostListProps) {
       prevFilters.current = { tags, category, search };
     }
   }, [searchParams, posts, tags, category, search]);
+
+  useInfiniteScroll({ targetRef: loadMoreRef, onIntersect: loadMore, isLoading });
 
   return (
     <div className="space-y-6">
