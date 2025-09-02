@@ -60,6 +60,13 @@ type PaginatePostsParams = {
   perPage: number;
 };
 
+/**
+ * 게시물을 페이지네이션합니다.
+ * @param posts 게시물 배열
+ * @param page 페이지 번호
+ * @param perPage 페이지당 게시물 수
+ * @returns 페이지네이션된 게시물 배열
+ */
 export const paginatePosts = ({
   posts,
   page,

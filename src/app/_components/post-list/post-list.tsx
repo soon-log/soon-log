@@ -1,12 +1,12 @@
 'use client';
 
 import { isEqual } from 'es-toolkit';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useRef, useCallback, useEffect } from 'react';
 
 import { PostCard } from '@/app/_components/post-list/post-card';
 import { useInfiniteScroll } from '@/hooks/use-infinite-scroll';
-import { parsePostsQueryParams } from '@/lib/url';
+import { buildPostsQueryString, parsePostsQueryParams } from '@/lib/url';
 import { Pagination } from '@/types/base';
 import { FilterState, PostMetadata } from '@/types/mdx';
 
@@ -16,6 +16,9 @@ interface PostListProps {
 
 export function PostList({ posts }: PostListProps) {
   const searchParams = useSearchParams();
+  const { tags, category, search } = parsePostsQueryParams(searchParams);
+
+  const router = useRouter();
   const [allPosts, setAllPosts] = useState<Array<PostMetadata>>(posts.results);
   const [nextPage, setNextPage] = useState<number | null>(posts.nextPage);
   const loadMoreRef = useRef<HTMLDivElement>(null);
@@ -27,15 +30,11 @@ export function PostList({ posts }: PostListProps) {
 
   const loadMore = useCallback(async () => {
     if (isLoading || !hasMore) return;
-
-    setIsLoading(true);
     try {
-      const params = new URLSearchParams();
-      const { tags, category, search } = parsePostsQueryParams(searchParams);
+      setIsLoading(true);
 
-      if (tags?.length > 0) params.set('tags', tags.join(','));
-      if (category) params.set('category', category);
-      if (search) params.set('search', search);
+      const params = buildPostsQueryString({ tags, category, search });
+
       params.set('page', String(nextPage));
       params.set('perPage', String(perPage));
 
@@ -44,42 +43,27 @@ export function PostList({ posts }: PostListProps) {
 
       setAllPosts((prev) => [...prev, ...data.results]);
       setNextPage(data.nextPage);
-
-      // URL 동기화(네비게이션 없이)
-      if (typeof window !== 'undefined') {
-        const url = new URL(window.location.href);
-        url.searchParams.set('page', String(data.page));
-        url.searchParams.set('perPage', String(perPage));
-        window.history.replaceState(null, '', url.toString());
-      }
+      router.replace(`/?${params.toString()}`);
     } finally {
       setIsLoading(false);
     }
-  }, [hasMore, isLoading, nextPage, perPage, searchParams]);
+  }, [category, hasMore, isLoading, nextPage, perPage, router, search, tags]);
 
   useInfiniteScroll({ targetRef: loadMoreRef, onIntersect: loadMore, isLoading });
 
   // 새로고침 시 page를 1로 초기화
   useEffect(() => {
     const pageParam = searchParams.get('page');
-    const initialPage = pageParam ? parseInt(pageParam) : posts.page;
 
-    if (initialPage > 1) {
+    if (pageParam && parseInt(pageParam) > 1) {
       (async () => {
-        setIsLoading(true);
         try {
-          const params = new URLSearchParams();
+          setIsLoading(true);
 
-          const tags = searchParams.get('tags');
-          const category = searchParams.get('category');
-          const search = searchParams.get('search');
+          const params = buildPostsQueryString({ tags, category, search });
 
-          if (tags) params.set('tags', tags);
-          if (category) params.set('category', category);
-          if (search) params.set('search', search);
-
-          params.set('page', '1');
-          params.set('perPage', String(perPage));
+          params.delete('page');
+          params.delete('perPage');
 
           const res = await fetch(`/api/posts?${params.toString()}`);
           const data: Pagination<PostMetadata> = await res.json();
@@ -87,23 +71,16 @@ export function PostList({ posts }: PostListProps) {
           setAllPosts(data.results);
           setNextPage(data.nextPage);
 
-          if (typeof window !== 'undefined') {
-            const url = new URL(window.location.href);
-            url.searchParams.set('page', '1');
-            url.searchParams.set('perPage', String(perPage));
-            window.history.replaceState(null, '', url.toString());
-          }
+          router.replace(`/?${params.toString()}`);
         } finally {
           setIsLoading(false);
         }
       })();
     }
-    // 의도적으로 최초 마운트 시에만 실행
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    const { tags, category, search } = parsePostsQueryParams(searchParams);
     if (prevFilters.current === null) {
       prevFilters.current = { tags, category, search };
     } else {
@@ -119,7 +96,7 @@ export function PostList({ posts }: PostListProps) {
       setNextPage(posts.nextPage);
       prevFilters.current = { tags, category, search };
     }
-  }, [searchParams, posts]);
+  }, [searchParams, posts, tags, category, search]);
 
   return (
     <div className="space-y-6">

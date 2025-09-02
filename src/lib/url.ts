@@ -16,3 +16,19 @@ export function parsePostsQueryParams(searchParams: URLSearchParams): FilterStat
     search: decodedSearch
   };
 }
+
+/**
+ * 게시물 필터링 조건을 URLSearchParams로 변환합니다.
+ * @param filters 게시물 필터링 조건
+ * @returns URLSearchParams
+ */
+export function buildPostsQueryString(filters: FilterState): URLSearchParams {
+  const params = new URLSearchParams();
+  const { tags, category, search } = filters;
+
+  if (tags && tags.length > 0) params.set('tags', tags.join(','));
+  if (category) params.set('category', category);
+  if (search) params.set('search', search);
+
+  return params;
+}
