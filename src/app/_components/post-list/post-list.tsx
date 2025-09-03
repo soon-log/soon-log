@@ -1,102 +1,66 @@
 'use client';
 
-import { isEqual } from 'es-toolkit';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
+import { useSearchParams } from 'next/navigation';
+import { useCallback, useMemo, useRef } from 'react';
 
 import { PostCard } from '@/app/_components/post-list/post-card';
+import { QUERY_KEY } from '@/constants/query-key';
 import { useInfiniteScroll } from '@/hooks/use-infinite-scroll';
+import { buildAbsoluteUrl } from '@/lib/http';
 import { buildPostsQueryString, parsePostsQueryParams } from '@/lib/url';
 import { Pagination } from '@/types/base';
-import { FilterState, PostMetadata } from '@/types/mdx';
+import { PostMetadata } from '@/types/mdx';
 
-interface PostListProps {
-  posts: Pagination<PostMetadata>;
+const DEFAULT_PER_PAGE = 10;
+
+async function fetchPostsPage(args: {
+  pageParam: number | undefined;
+  perPage: number;
+  filters: { tags: Array<string>; category: string | null; search: string | null };
+}): Promise<Pagination<PostMetadata>> {
+  const { pageParam, perPage, filters } = args;
+  const params = buildPostsQueryString(filters);
+  params.set('page', String(pageParam ?? 1));
+  params.set('perPage', String(perPage));
+
+  const res = await fetch(buildAbsoluteUrl(`/api/posts?${params.toString()}`));
+  if (!res.ok) {
+    throw new Error('게시물 로딩 실패');
+  }
+  return (await res.json()) as Pagination<PostMetadata>;
 }
 
-export function PostList({ posts }: PostListProps) {
+export function PostList() {
   const searchParams = useSearchParams();
   const { tags, category, search } = parsePostsQueryParams(searchParams);
 
-  const router = useRouter();
-  const [allPosts, setAllPosts] = useState<Array<PostMetadata>>(posts.results);
-  const [nextPage, setNextPage] = useState<number | null>(posts.nextPage);
+  const perPage = DEFAULT_PER_PAGE;
+
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } =
+    useSuspenseInfiniteQuery({
+      queryKey: QUERY_KEY.POSTS({ tags, category, search, perPage }),
+      queryFn: ({ pageParam }) =>
+        fetchPostsPage({ pageParam, perPage, filters: { tags, category, search } }),
+      initialPageParam: 1,
+      getNextPageParam: (lastPage) => lastPage.nextPage
+    });
+
+  const allPosts = useMemo(() => data.pages.flatMap((page) => page.results), [data.pages]);
+
   const loadMoreRef = useRef<HTMLDivElement>(null);
-  const prevFilters = useRef<FilterState | null>(null);
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const perPage = posts.perPage || 10;
-  const hasMore = nextPage !== null;
-
-  const loadMore = useCallback(async () => {
-    if (isLoading || !hasMore) return;
-    try {
-      setIsLoading(true);
-
-      const params = buildPostsQueryString({ tags, category, search });
-
-      params.set('page', String(nextPage));
-      params.set('perPage', String(perPage));
-
-      const res = await fetch(`/api/posts?${params.toString()}`);
-      const data: Pagination<PostMetadata> = await res.json();
-
-      setAllPosts((prev) => [...prev, ...data.results]);
-      setNextPage(data.nextPage);
-      router.replace(`/?${params.toString()}`, { scroll: false });
-    } finally {
-      setIsLoading(false);
+  const handleIntersect = useCallback(() => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
     }
-  }, [category, hasMore, isLoading, nextPage, perPage, router, search, tags]);
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
-  // 새로고침 시 page를 1로 초기화
-  useEffect(() => {
-    const pageParam = searchParams.get('page');
-
-    if (pageParam && parseInt(pageParam) > 1) {
-      (async () => {
-        try {
-          setIsLoading(true);
-
-          const params = buildPostsQueryString({ tags, category, search });
-
-          params.delete('page');
-          params.delete('perPage');
-
-          const res = await fetch(`/api/posts?${params.toString()}`);
-          const data: Pagination<PostMetadata> = await res.json();
-
-          setAllPosts(data.results);
-          setNextPage(data.nextPage);
-
-          router.replace(`/?${params.toString()}`, { scroll: false });
-        } finally {
-          setIsLoading(false);
-        }
-      })();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (prevFilters.current === null) {
-      prevFilters.current = { tags, category, search };
-    } else {
-      const { tags: prevTags, category: prevCategory, search: prevSearch } = prevFilters.current;
-      if (
-        isEqual(tags, prevTags) &&
-        isEqual(category, prevCategory) &&
-        isEqual(search, prevSearch)
-      ) {
-        return;
-      }
-      setAllPosts(posts.results);
-      setNextPage(posts.nextPage);
-      prevFilters.current = { tags, category, search };
-    }
-  }, [searchParams, posts, tags, category, search]);
-
-  useInfiniteScroll({ targetRef: loadMoreRef, onIntersect: loadMore, isLoading });
+  useInfiniteScroll({
+    targetRef: loadMoreRef,
+    onIntersect: handleIntersect,
+    isLoading: isFetching
+  });
 
   return (
     <div className="space-y-6">
@@ -111,7 +75,7 @@ export function PostList({ posts }: PostListProps) {
               </li>
             ))}
           </ul>
-          {hasMore && <div ref={loadMoreRef} className="flex justify-center py-8" />}
+          {hasNextPage && <div ref={loadMoreRef} className="flex justify-center py-8" />}
         </div>
       )}
     </div>

@@ -1,7 +1,8 @@
 'use client';
 
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { ChevronDown } from 'lucide-react';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -12,16 +13,18 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select';
+import { QUERY_KEY } from '@/constants/query-key';
 import { useFilterState } from '@/hooks/use-filter-state';
+import { buildAbsoluteUrl } from '@/lib/http';
 
 import { TagCloud } from './tag-cloud';
 
-type PostFilterProps = {
-  categories: Array<string>;
-  tags: Array<string>;
+const fetchFilters = async () => {
+  const response = await fetch(buildAbsoluteUrl('/api/posts/filters'));
+  return response.json();
 };
 
-export function PostFilter({ categories, tags }: PostFilterProps) {
+export function PostFilter() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const toggle = () => setIsFilterOpen((open) => !open);
@@ -37,18 +40,23 @@ export function PostFilter({ categories, tags }: PostFilterProps) {
         </Button>
       </CollapsibleTrigger>
       <CollapsibleContent className="mt-4">
-        <FilterBar categories={categories} tags={tags} />
+        <Suspense
+          fallback={<div className="bg-background space-y-4 rounded-lg border p-4">로딩중...</div>}
+        >
+          <FilterBar />
+        </Suspense>
       </CollapsibleContent>
     </Collapsible>
   );
 }
 
-interface FilterBarProps {
-  categories: Array<string>;
-  tags: Array<string>;
-}
+export function FilterBar() {
+  const { data } = useSuspenseQuery<{ categories: Array<string>; tags: Array<string> }>({
+    queryKey: QUERY_KEY.FILTERS,
+    queryFn: fetchFilters
+  });
+  const { categories, tags } = data;
 
-export function FilterBar({ categories, tags }: FilterBarProps) {
   const { filters, updateFilters } = useFilterState();
 
   const hasActiveFilters = filters.category || filters.tags.length > 0;
@@ -82,7 +90,7 @@ export function FilterBar({ categories, tags }: FilterBarProps) {
   return (
     <div className="bg-background space-y-4 rounded-lg border p-4">
       <div className="space-y-2">
-        <label id="category-label" className="pl-1 text-sm font-medium">
+        <label id="category-label" className="font-nanum-myeongjo pb-1 pl-1 text-lg font-medium">
           카테고리
         </label>
         <Select value={filters.category || 'all'} onValueChange={handleCategoryChange}>

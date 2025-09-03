@@ -30,7 +30,7 @@ export function TagCloud({ tags, selectedTags, onTagClick }: TagCloudProps) {
 
   return (
     <div className="space-y-4">
-      <h3 className="text-lg font-semibold">태그</h3>
+      <h3 className="font-nanum-myeongjo mb-1 pl-1 text-lg">태그</h3>
       <div className="flex flex-wrap gap-2">
         {sortedTags.map((tag) => {
           const isSelected = selectedTags.includes(tag.name);
