@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { SearchBar } from '@/components/header/search-bar';
+import { SearchBar } from '@/components/header/search-bar/search-bar';
 import { ThemeToggleButton } from '@/components/theme/theme-toggle-button';
 
 export function Header() {
