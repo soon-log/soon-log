@@ -20,6 +20,9 @@ import typescript from 'react-syntax-highlighter/dist/cjs/languages/prism/typesc
 import yaml from 'react-syntax-highlighter/dist/cjs/languages/prism/yaml';
 import { vscDarkPlus, oneLight } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 
+import { useTheme } from '@/components/theme/theme-provider';
+import { Theme } from '@/constants/theme';
+
 (function registerSupportedLanguages() {
   const languages = {
     javascript,
@@ -94,24 +97,12 @@ export function CodeBlock({
   highlightLines = []
 }: CodeBlockProps) {
   const [isMounted, setIsMounted] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
-    if (typeof document === 'undefined') return false;
-    return document.documentElement.classList.contains('dark');
-  });
+  const { resolvedTheme } = useTheme();
+  const isDarkMode = resolvedTheme === Theme.DARK;
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
-
-  useEffect(() => {
-    if (!isMounted) return;
-    if (typeof document === 'undefined') return;
-    const update = () => setIsDarkMode(document.documentElement.classList.contains('dark'));
-    update();
-    const observer = new MutationObserver(update);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-    return () => observer.disconnect();
-  }, [isMounted]);
 
   const [isCopied, setIsCopied] = useState(false);
 

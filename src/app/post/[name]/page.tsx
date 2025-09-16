@@ -3,6 +3,7 @@ import path from 'path';
 
 import { Metadata } from 'next';
 
+import Giscus from '@/components/giscus';
 import PostLayout from '@/components/post-layout';
 import { PostMetadata } from '@/types/mdx';
 
@@ -68,6 +69,9 @@ export default async function PostNamePage({ params }: { params: Promise<{ name:
   return (
     <PostLayout meta={meta}>
       <Post />
+      <div className="pt-4">
+        <Giscus />
+      </div>
     </PostLayout>
   );
 }
