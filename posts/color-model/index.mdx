@@ -150,7 +150,7 @@ LCH와 OKLCH는 채도와 색조를 고정한 채 명도를 조절하거나, 명
 ## 고급 사용법 : from 문법 + calc 문법 혼합
 `from` 키워드를 사용하면 기준 색상을 지정하고, 그 색상의 l, c, h 값을 변수처럼 가져와 `calc()` 함수로 동적인 색상을 만들 수 있다.
 
-```css
+```css{3}
 .btn-oklch-9 {
 	--base-color: rgb(100, 50, 100); 
 	background-color: oklch(from var(--base-color) calc(l + 0.1) c h);

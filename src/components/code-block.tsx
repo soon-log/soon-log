@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
 import bash from 'react-syntax-highlighter/dist/cjs/languages/prism/bash';
 import cpp from 'react-syntax-highlighter/dist/cjs/languages/prism/cpp';
@@ -18,7 +18,7 @@ import sql from 'react-syntax-highlighter/dist/cjs/languages/prism/sql';
 import tsx from 'react-syntax-highlighter/dist/cjs/languages/prism/tsx';
 import typescript from 'react-syntax-highlighter/dist/cjs/languages/prism/typescript';
 import yaml from 'react-syntax-highlighter/dist/cjs/languages/prism/yaml';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
+import { vscDarkPlus, oneLight } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 
 (function registerSupportedLanguages() {
   const languages = {
@@ -51,9 +51,13 @@ import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
   }
 })();
 
+type SyntaxTheme = Record<string, React.CSSProperties>;
+
 const DEFAULT_LANGUAGE = 'text';
-const SYNTAX_HIGHLIGHTER_STYLE = vscDarkPlus;
-const HIGHLIGHT_LINE_COLOR = 'rgba(255, 255, 255, 0.1)';
+const DARK_STYLE: SyntaxTheme = vscDarkPlus as unknown as SyntaxTheme;
+const LIGHT_STYLE: SyntaxTheme = oneLight as unknown as SyntaxTheme;
+const HIGHLIGHT_LINE_COLOR_DARK = 'rgba(255, 255, 255, 0.08)';
+const HIGHLIGHT_LINE_COLOR_LIGHT = 'rgba(255, 255, 0, 0.08)';
 
 const customSyntaxHighlighterStyle: React.CSSProperties = {
   margin: 0,
@@ -63,10 +67,15 @@ const customSyntaxHighlighterStyle: React.CSSProperties = {
   lineHeight: '1.5'
 };
 
+const codeTagInlineStyle: React.CSSProperties = {
+  background: 'transparent',
+  textShadow: 'none'
+};
+
 const lineNumberSyntaxHighlighterStyle: React.CSSProperties = {
   minWidth: '3em',
   paddingRight: '1em',
-  color: '#6B7280',
+  color: 'var(--muted-foreground)',
   userSelect: 'none'
 };
 
@@ -75,17 +84,35 @@ interface CodeBlockProps {
   language?: string;
   highlightLines?: Array<number>;
   className?: string;
-  theme?: any;
   showLineNumbers?: boolean;
 }
 
 export function CodeBlock({
   children,
   language = DEFAULT_LANGUAGE,
-  theme = SYNTAX_HIGHLIGHTER_STYLE,
   showLineNumbers = true,
   highlightLines = []
 }: CodeBlockProps) {
+  const [isMounted, setIsMounted] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    if (typeof document === 'undefined') return false;
+    return document.documentElement.classList.contains('dark');
+  });
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isMounted) return;
+    if (typeof document === 'undefined') return;
+    const update = () => setIsDarkMode(document.documentElement.classList.contains('dark'));
+    update();
+    const observer = new MutationObserver(update);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    return () => observer.disconnect();
+  }, [isMounted]);
+
   const [isCopied, setIsCopied] = useState(false);
 
   const handleCopy = useCallback(() => {
@@ -108,40 +135,47 @@ export function CodeBlock({
         return {
           style: {
             display: 'block',
-            backgroundColor: HIGHLIGHT_LINE_COLOR
+            backgroundColor: isDarkMode ? HIGHLIGHT_LINE_COLOR_DARK : HIGHLIGHT_LINE_COLOR_LIGHT
           }
         };
       }
       return {};
     },
-    [highlightLines]
+    [highlightLines, isDarkMode]
   );
+
+  const resolvedStyle: SyntaxTheme = isDarkMode ? DARK_STYLE : LIGHT_STYLE;
 
   return (
     <div className="my-6 overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
       <div className="flex items-center justify-between bg-gray-100 px-4 py-2 dark:bg-gray-800">
         <span className="text-sm font-medium text-gray-600 dark:text-gray-400">{language}</span>
-        <button
-          onClick={handleCopy}
-          className="text-sm font-medium text-gray-600 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
-          disabled={isCopied}
-        >
-          {isCopied ? 'Copied!' : 'Copy'}
-        </button>
+        {isMounted && (
+          <button
+            onClick={handleCopy}
+            className="text-sm font-medium text-gray-600 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
+            disabled={isCopied}
+          >
+            {isCopied ? 'Copied!' : 'Copy'}
+          </button>
+        )}
       </div>
 
       <div className="overflow-x-auto">
-        <SyntaxHighlighter
-          language={language}
-          style={theme}
-          customStyle={customSyntaxHighlighterStyle}
-          showLineNumbers={showLineNumbers}
-          lineNumberStyle={lineNumberSyntaxHighlighterStyle}
-          wrapLines={highlightLines.length > 0}
-          lineProps={getLineProps}
-        >
-          {children.trim()}
-        </SyntaxHighlighter>
+        {isMounted && (
+          <SyntaxHighlighter
+            language={language}
+            style={resolvedStyle}
+            customStyle={customSyntaxHighlighterStyle}
+            codeTagProps={{ style: codeTagInlineStyle }}
+            showLineNumbers={showLineNumbers}
+            lineNumberStyle={lineNumberSyntaxHighlighterStyle}
+            wrapLines={highlightLines.length > 0}
+            lineProps={getLineProps}
+          >
+            {children.trim()}
+          </SyntaxHighlighter>
+        )}
       </div>
     </div>
   );

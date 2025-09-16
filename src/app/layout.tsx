@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 
-import { FallbackPage } from '@/components/fallback.tsx/fallback-page';
+import { FallbackPage } from '@/components/fallback/fallback-page';
 import { Header } from '@/components/header/header';
 import { LoadingPage } from '@/components/loading/loading-page';
 import { ReactQueryProvider } from '@/components/react-query/react-query-provider';

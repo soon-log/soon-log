@@ -15,6 +15,10 @@ describe('CodeBlock 컴포넌트', () => {
       writable: true,
       configurable: true
     });
+
+    // 라이트 모드로 초기화
+    document.documentElement.classList.remove('dark');
+    document.documentElement.setAttribute('data-theme', 'light');
   });
 
   afterEach(() => {
@@ -47,8 +51,9 @@ describe('CodeBlock 컴포넌트', () => {
     // Given & When
     const { container } = render(<CodeBlock {...defaultProps} highlightLines={[1, 3]} />);
 
-    // Then
-    expect(container).toMatchSnapshot();
+    // Then - 배경색 스타일이 적용된 줄(하이라이트)이 2개 존재해야 한다
+    const highlighted = container.querySelectorAll('code > span[style*="background-color"]');
+    expect(highlighted.length).toBe(2);
   });
 
   test('언어가 없는 경우 기본값인 "text"가 표시된다.', () => {
