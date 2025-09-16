@@ -30,6 +30,7 @@ export function PostCard({ post }: PostCardProps) {
                   src={thumbnail}
                   alt={`${title} 썸네일 이미지`}
                   fill
+                  sizes="(max-width: 768px) 100vw, 25vw"
                   className="object-cover"
                 />
                 {/* 썸네일 위 카테고리 배지 */}
