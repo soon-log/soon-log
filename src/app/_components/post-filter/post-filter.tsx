@@ -2,7 +2,7 @@
 
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { ChevronDown } from 'lucide-react';
-import { Suspense, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -16,6 +16,7 @@ import {
 import { QUERY_KEY } from '@/constants/query-key';
 import { useFilterState } from '@/hooks/use-filter-state';
 import { buildAbsoluteUrl } from '@/lib/http';
+import { queryClient } from '@/lib/react-query';
 
 import { TagCloud } from './tag-cloud';
 
@@ -28,6 +29,13 @@ export function PostFilter() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const toggle = () => setIsFilterOpen((open) => !open);
+
+  useEffect(() => {
+    queryClient.prefetchQuery({
+      queryKey: QUERY_KEY.FILTERS,
+      queryFn: fetchFilters
+    });
+  }, []);
 
   return (
     <Collapsible open={isFilterOpen} onOpenChange={toggle}>
