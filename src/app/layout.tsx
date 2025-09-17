@@ -1,3 +1,4 @@
+import { GoogleAnalytics } from '@next/third-parties/google';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
@@ -40,6 +41,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || '';
+
   return (
     <html lang="ko" suppressHydrationWarning className="no-transition">
       <head>
@@ -58,6 +61,7 @@ export default function RootLayout({
             </Suspense>
           </ErrorBoundary>
         </ReactQueryProvider>
+        <GoogleAnalytics gaId={gaId} />
       </body>
     </html>
   );
