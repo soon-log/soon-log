@@ -7,6 +7,13 @@ import Giscus from '@/components/giscus';
 import PostLayout from '@/components/post-layout';
 import { PostMetadata } from '@/types/mdx';
 
+import postsData from '../../../../public/posts/posts.json';
+
+export async function generateStaticParams() {
+  const posts = Object.values(postsData).flat();
+  return posts.map((post) => ({ key: post.key }));
+}
+
 export async function generateMetadata({
   params
 }: {
@@ -50,10 +57,10 @@ export async function generateMetadata({
   }
 }
 
-export default async function PostNamePage({ params }: { params: Promise<{ name: string }> }) {
-  const { name } = await params;
-  const { default: Post } = await import(`../../../../posts/${name}/index.mdx`);
-  const { meta } = await import(`../../../../posts/${name}/meta.ts`);
+export default async function PostNamePage({ params }: { params: Promise<{ key: string }> }) {
+  const { key } = await params;
+  const { default: Post } = await import(`../../../../posts/${key}/index.mdx`);
+  const { meta } = await import(`../../../../posts/${key}/meta.ts`);
 
   const thumbnailDir = path.join(process.cwd(), 'public', 'posts', meta.key);
   try {
