@@ -17,12 +17,12 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params
 }: {
-  params: Promise<{ name: string }>;
+  params: Promise<{ key: string }>;
 }): Promise<Metadata> {
-  const { name } = await params;
+  const { key } = await params;
 
   try {
-    const { meta }: { meta: PostMetadata } = await import(`/posts/${name}/meta.ts`);
+    const { meta }: { meta: PostMetadata } = await import(`/posts/${key}/meta.ts`);
 
     const title = `${meta.title} | Soon Log`;
     const description = meta.summary;

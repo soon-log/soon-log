@@ -1,0 +1,30 @@
+import Image from "next/image";
+import ssg from "/public/posts/blog-ssg/ssg.png";
+
+# 블로그 상세 페이지 SSG 방식으로 렌더링하기
+블로그의 상세 페이지는 내용이 자주 바뀌지 않으므로, 빌드 시점에 미리 HTML 페이지를 생성해두는 SSG 방식을 적용하는 것이 효율적이다. 이 방식은 빠른 페이지 로딩 속도를 보장하여 사용자 경험을 향상시키고 SEO에도 긍정적인 영향을 준다.
+## generateStaticParams 함수 적용
+Next.JS의 App Router 환경에서 SSG를 적용하려면 `page.tsx` 파일 내에서 `generateStaticParams` 함수를 export 해야 한다. 이 함수는 빌드 시점에 정적으로 생성할 모든 경로의 파라미터를 객체 배열 형태로 반환해야 한다.
+- ex) `/product/[id]` 라면 `{ id: string }[]` 타입 반환
+- ex) `/products/[category]/[product]` 라면 `{ category: string, product: string }[]` 타입 반환
+
+## 내 블로그의 구현 코드
+> `app/post/[key]/page.tsx`
+
+모든 게시물의 정보를 담고 있는 `public/posts/posts.json` 파일로부터 각 게시물의 `key` 값을 읽어와 동적 경로 배열을 생성한다. 
+```tsx
+import postsData from '../../../../public/posts/posts.json';
+
+export async function generateStaticParams() {
+	const posts = Object.values(postsData).flat();
+	return posts.map((post) => ({ key: post.key }));
+}
+```
+- `posts.json` 파일이 카테고리별로 그룹화되어 2차원 배열이기에 flat으로 1차원 배열로 만듬
+
+구현이 완료된 후, `npm run build` 또는 `yarn build` 명령어를 실행하여 SSG가 올바르게 적용되었는지 확인할 수 있다.
+빌드 결과 로그에서 `/post/[key]` 경로 옆에 채워진 원(●) 기호가 표시된다면 해당 경로들이 빌드 시점에 정적 페이지로 잘 생성된 것이다.
+<Image src={ssg} alt="SSG 렌더링" />
+
+# 출처(참고문헌)
+- [generateStaticParams - NextJS](https://nextjs.org/docs/app/api-reference/functions/generate-static-params)
