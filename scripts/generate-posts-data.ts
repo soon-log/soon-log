@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 
-import { PostMetadata } from '@/types/mdx';
+import { PostMetadata } from '@/app/(blog)/_types/mdx';
 
 /**
  * meta.ts 파일에서 메타데이터를 추출합니다.

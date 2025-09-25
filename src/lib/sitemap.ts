@@ -1,4 +1,4 @@
-import { PostMetadata } from '@/types/mdx';
+import { PostMetadata } from '@/app/(blog)/_types/mdx';
 
 export function generateSitemap(posts: Array<PostMetadata>, siteUrl: string): string {
   const staticPages = [

@@ -1,7 +1,7 @@
 import type { MDXComponents } from 'mdx/types';
 
 import { CodeBlock, InlineCode } from '@/components/code-block';
-import { parseCodeMeta } from '@/lib/code';
+import { parseCodeMeta } from '@/utils/code';
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {

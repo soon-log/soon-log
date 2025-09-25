@@ -1,4 +1,4 @@
-import { SearchablePost } from '@/types/mdx';
+import { SearchablePost } from '@/app/(blog)/_types/mdx';
 
 describe('검색 인덱스 생성 스크립트', () => {
   beforeEach(() => {

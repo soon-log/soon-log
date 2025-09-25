@@ -3,8 +3,8 @@ import path from 'path';
 
 import { NextResponse } from 'next/server';
 
-import { generateRSSFeed } from '@/lib/rss';
-import { PostMetadata } from '@/types/mdx';
+import { PostMetadata } from '@/app/(blog)/_types/mdx';
+import { generateRSSFeed } from '@/utils/rss';
 
 interface PostsData {
   [category: string]: Array<PostMetadata>;

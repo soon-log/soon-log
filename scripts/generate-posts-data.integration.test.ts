@@ -2,7 +2,7 @@ import fs from 'fs/promises';
 import os from 'os';
 import path from 'path';
 
-import { PostMetadata } from '@/types/mdx';
+import { PostMetadata } from '@/app/(blog)/_types/mdx';
 
 import { extractMetadataFromFile } from './generate-posts-data';
 

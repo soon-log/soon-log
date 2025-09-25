@@ -3,8 +3,8 @@ import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 
 import { Header } from '@/app/_components/header/header';
-import { FallbackPage } from '@/components/fallback/fallback-page';
-import { LoadingPage } from '@/components/loading/loading-page';
+import { LoadingPage } from '@/components/loading-page';
+import { FallbackPage } from '@/components/not-found-page';
 import { ThemeInitializer } from '@/components/theme/theme-initializer';
 import { ThemeProvider } from '@/components/theme/theme-provider';
 import { nanumMyeongjo, notoSansKR } from '@/lib/fonts';

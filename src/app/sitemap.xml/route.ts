@@ -3,8 +3,8 @@ import path from 'path';
 
 import { NextResponse } from 'next/server';
 
+import { PostMetadata } from '@/app/(blog)/_types/mdx';
 import { generateSitemap } from '@/lib/sitemap';
-import { PostMetadata } from '@/types/mdx';
 
 interface PostsData {
   [category: string]: Array<PostMetadata>;

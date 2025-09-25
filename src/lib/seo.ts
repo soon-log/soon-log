@@ -1,4 +1,4 @@
-import { PostMetadata } from '@/types/mdx';
+import { PostMetadata } from '@/app/(blog)/_types/mdx';
 import { SEOMetadata } from '@/types/seo';
 
 const SITE_NAME = 'Soon Log';
