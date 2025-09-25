@@ -9,7 +9,7 @@ import { ThemeInitializer } from '@/components/theme/theme-initializer';
 import { ThemeProvider } from '@/components/theme/theme-provider';
 import { nanumMyeongjo, notoSansKR } from '@/lib/fonts';
 
-import { GA } from './_components/GA';
+import { GA } from './_components/ga';
 import { ReactQueryProvider } from './_components/react-query-provider';
 
 import './globals.css';
