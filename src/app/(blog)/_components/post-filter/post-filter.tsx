@@ -15,15 +15,11 @@ import {
 } from '@/components/ui/select';
 import { QUERY_KEY } from '@/constants/query-key';
 import { useFilterState } from '@/hooks/use-filter-state';
-import { buildAbsoluteUrl } from '@/lib/http';
 import { queryClient } from '@/lib/react-query';
 
-import { TagCloud } from './tag-cloud';
+import { fetchFilters } from '../../_service/filter';
 
-const fetchFilters = async () => {
-  const response = await fetch(buildAbsoluteUrl('/api/posts/filters'));
-  return response.json();
-};
+import { TagCloud } from './tag-cloud';
 
 export function PostFilter() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -48,9 +44,7 @@ export function PostFilter() {
         </Button>
       </CollapsibleTrigger>
       <CollapsibleContent className="mt-4">
-        <Suspense
-          fallback={<div className="bg-background space-y-4 rounded-lg border p-4">로딩중...</div>}
-        >
+        <Suspense>
           <FilterBar />
         </Suspense>
       </CollapsibleContent>

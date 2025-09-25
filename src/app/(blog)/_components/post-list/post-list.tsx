@@ -4,13 +4,14 @@ import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import { useCallback, useMemo, useRef } from 'react';
 
-import { PostCard } from '@/app/_components/post-list/post-card';
 import { QUERY_KEY } from '@/constants/query-key';
 import { useInfiniteScroll } from '@/hooks/use-infinite-scroll';
 import { buildAbsoluteUrl } from '@/lib/http';
 import { buildPostsQueryString, parsePostsQueryParams } from '@/lib/url';
 import { Pagination } from '@/types/base';
 import { PostMetadata } from '@/types/mdx';
+
+import { PostCard } from './post-card';
 
 const DEFAULT_PER_PAGE = 10;
 

@@ -1,8 +1,7 @@
-import { PostList } from '@/app/_components/post-list/post-list';
-
 import { PostFilter } from './_components/post-filter/post-filter';
+import { PostList } from './_components/post-list/post-list';
 
-export default async function Home() {
+export default function Home() {
   return (
     <div className="space-y-6">
       <PostFilter />
