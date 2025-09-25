@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 
+import { Header } from '@/app/_components/header/header';
 import { FallbackPage } from '@/components/fallback/fallback-page';
-import { Header } from '@/components/header/header';
 import { LoadingPage } from '@/components/loading/loading-page';
 import { ThemeInitializer } from '@/components/theme/theme-initializer';
 import { ThemeProvider } from '@/components/theme/theme-provider';

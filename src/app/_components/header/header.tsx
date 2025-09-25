@@ -1,7 +1,8 @@
 import Link from 'next/link';
 
-import { SearchBar } from '@/components/header/search-bar/search-bar';
 import { ThemeToggleButton } from '@/components/theme/theme-toggle-button';
+
+import NavLinks from './nav-links';
 
 export function Header() {
   return (
@@ -12,7 +13,7 @@ export function Header() {
         </Link>
         <div className="flex items-center gap-4">
           <ThemeToggleButton />
-          <SearchBar className="hidden w-96 md:block" />
+          <NavLinks />
         </div>
       </div>
     </div>
