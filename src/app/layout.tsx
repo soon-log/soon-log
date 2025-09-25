@@ -5,12 +5,12 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { FallbackPage } from '@/components/fallback/fallback-page';
 import { Header } from '@/components/header/header';
 import { LoadingPage } from '@/components/loading/loading-page';
-import { ReactQueryProvider } from '@/components/react-query/react-query-provider';
 import { ThemeInitializer } from '@/components/theme/theme-initializer';
 import { ThemeProvider } from '@/components/theme/theme-provider';
 import { nanumMyeongjo, notoSansKR } from '@/lib/fonts';
 
 import { GA } from './_components/GA';
+import { ReactQueryProvider } from './_components/react-query-provider';
 
 import './globals.css';
 import 'react-loading-skeleton/dist/skeleton.css';
