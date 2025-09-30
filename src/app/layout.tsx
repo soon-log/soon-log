@@ -52,9 +52,9 @@ export default function RootLayout({
           <ErrorBoundary FallbackComponent={FallbackPage}>
             <Suspense fallback={<LoadingPage />}>
               <ThemeProvider>
-                <div className="container mx-auto max-w-4xl px-4">
+                <div className="container mx-auto flex h-full max-w-4xl flex-col px-4">
                   <Header />
-                  {children}
+                  <main className="flex-1">{children}</main>
                 </div>
               </ThemeProvider>
             </Suspense>
