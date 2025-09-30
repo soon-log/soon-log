@@ -11,7 +11,7 @@ interface PostLayoutProps {
 
 export function PostLayout({ meta, children }: PostLayoutProps) {
   return (
-    <article className="pb-6">
+    <article className="px-2 pb-6">
       <div>
         {meta.thumbnail && (
           <div

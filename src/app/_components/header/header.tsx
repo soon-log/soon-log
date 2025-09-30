@@ -6,7 +6,7 @@ import NavLinks from './nav-links';
 
 export function Header() {
   return (
-    <div className="py-6">
+    <div className="px-2 py-6">
       <div className="flex items-center justify-between gap-4">
         <Link href="/">
           <h1 className="text-4xl font-bold">Soon Log</h1>
