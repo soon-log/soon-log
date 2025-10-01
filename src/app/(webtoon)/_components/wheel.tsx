@@ -3,10 +3,12 @@
 import Image from 'next/image';
 import { useState, useRef, MouseEvent, useEffect, useMemo } from 'react';
 
+import { useRotationVelocity } from '@/app/(webtoon)/_hooks/use-rotation-velocity';
 import { cn } from '@/lib/utils';
 
-const useWheel = () => {
+const useWheelDrag = () => {
   const [rotation, setRotation] = useState(0);
+  const { startTracking, calculateVelocity } = useRotationVelocity();
 
   const isDraggingRef = useRef(false); // 현재 드래그 중인지 여부
   const startXRef = useRef(0); // 드래그 시작 시점의 마우스 X 좌표
@@ -19,6 +21,8 @@ const useWheel = () => {
     startXRef.current = e.clientX;
     startAngleRef.current = rotation;
     currentRotationRef.current = rotation;
+
+    startTracking(rotation); // 속도 추적 시작
 
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseup', handleMouseUp);
@@ -46,6 +50,8 @@ const useWheel = () => {
     isDraggingRef.current = false;
     const latestRotation = currentRotationRef.current;
 
+    const { isFast } = calculateVelocity(latestRotation);
+
     // 최종 각도를 45도에 가깝게 스냅한다.
     // (현재 각도 / 45)를 반올림한 후 다시 45를 곱한다.
     const snappedRotation = Math.round(latestRotation / 45) * 45;
@@ -53,7 +59,10 @@ const useWheel = () => {
     setRotation(snappedRotation);
 
     const page = snappedRotation / 45;
-    console.log(`최종 각도: ${snappedRotation}도, ${page}페이지`);
+    console.log(
+      `최종 각도: ${snappedRotation}도, ${page}페이지\n` +
+        `${isFast ? '빠른 드래그' : '느린 드래그'}`
+    );
 
     window.removeEventListener('mousemove', handleMouseMove);
     window.removeEventListener('mouseup', handleMouseUp);
@@ -77,7 +86,7 @@ const useWheel = () => {
 };
 
 export function Wheel() {
-  const { handleMouseDown, rotation, isDraggingRef } = useWheel();
+  const { handleMouseDown, rotation, isDraggingRef } = useWheelDrag();
 
   const style = useMemo(
     () => ({
