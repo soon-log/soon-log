@@ -4,15 +4,16 @@ import path from 'path';
 import axios from 'axios';
 import { shuffle } from 'es-toolkit';
 
-import { getNaverWeekdayWebtoons } from './services';
+import { getKakaoWebtoons, getNaverWeekdayWebtoons } from './services';
 
 async function main() {
   try {
     const naverWeekdayWebtoons = await getNaverWeekdayWebtoons();
+    const kakaoWeekdayWebtoons = await getKakaoWebtoons();
 
     const allWebtoons = {
       lastUpdated: new Date().toISOString(),
-      webtoons: shuffle([...naverWeekdayWebtoons])
+      webtoons: shuffle([...naverWeekdayWebtoons, ...kakaoWeekdayWebtoons])
     };
     const dirPath = path.join(process.cwd(), 'webtoon');
     const filePath = path.join(dirPath, 'webtoons.json');
