@@ -8,7 +8,7 @@ import { flattenPostsData, sortPostsByDate, filterPosts } from './utils';
  */
 export async function fetchPostsData(): Promise<PostsData> {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL || 'localhost:3000'}/posts/posts.json`
+    `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/posts/posts.json`
   );
 
   if (!res.ok) {
