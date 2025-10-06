@@ -44,10 +44,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" suppressHydrationWarning className="no-transition">
-      <head>
-        <ThemeInitializer />
-      </head>
       <body className={`${nanumMyeongjo.variable} ${notoSansKR.variable} antialiased`}>
+        <ThemeInitializer />
         <ReactQueryProvider>
           <ErrorBoundary FallbackComponent={FallbackPage}>
             <Suspense fallback={<LoadingPage />}>
