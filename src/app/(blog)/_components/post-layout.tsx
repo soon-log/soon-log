@@ -11,11 +11,11 @@ interface PostLayoutProps {
 
 export function PostLayout({ meta, children }: PostLayoutProps) {
   return (
-    <article className="px-2 pb-6">
+    <article className="mx-3 pb-6">
       <div>
         {meta.thumbnail && (
           <div
-            className="relative mb-4 h-96 w-full rounded-lg bg-cover bg-center bg-no-repeat md:mb-6"
+            className="relative mb-4 h-56 w-full rounded-lg bg-cover bg-center bg-no-repeat md:mb-6 md:h-96"
             style={{ backgroundImage: `url(${meta.thumbnail})` }}
           ></div>
         )}

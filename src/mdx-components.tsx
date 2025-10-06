@@ -11,10 +11,10 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     h4: (props) => <h4 className="mt-6 mb-3 text-xl font-semibold" {...props} />,
     h5: (props) => <h5 className="mt-5 mb-2 text-lg font-semibold" {...props} />,
     h6: (props) => <h6 className="mt-4 mb-1 text-base font-semibold" {...props} />,
-    p: (props) => <p {...props} className="mb-4 leading-relaxed tracking-normal break-keep" />,
-    ul: (props) => <ul className="mb-4 list-disc pl-6" {...props} />,
-    ol: (props) => <ol className="mb-4 list-decimal pl-6" {...props} />,
-    li: (props) => <li className="mb-2" {...props} />,
+    p: (props) => <p {...props} className="mb-4 leading-[22pt] tracking-normal break-keep" />,
+    ul: (props) => <ul className="mb-4 list-disc pl-6 [&_ul]:mt-1" {...props} />,
+    ol: (props) => <ol className="mb-4 list-decimal pl-6 [&_ol]:mt-1" {...props} />,
+    li: (props) => <li className="mb-2 leading-relaxed" {...props} />,
     a: (props) => <a className="text-blue-600 hover:underline" {...props} />,
     blockquote: (props) => (
       <blockquote className="border-l-4 border-gray-300 pl-4 italic" {...props} />
