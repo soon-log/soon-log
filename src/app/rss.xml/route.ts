@@ -21,7 +21,7 @@ export async function GET() {
     const allPosts = Object.values(data).flat();
 
     // 사이트 URL 설정
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://soon-log.com';
+    const siteUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 
     // RSS 피드 생성
     const rssXml = generateRSSFeed(allPosts, siteUrl);
