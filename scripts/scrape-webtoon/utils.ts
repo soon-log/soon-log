@@ -1,10 +1,6 @@
-import {
-  DayOfWeek,
-  ResponseKakaoWeekdayWebtoons,
-  ResponseNaverWeekdayWebtoons,
-  Platform,
-  Webtoon
-} from './types';
+import { DayOfWeekType, Webtoon } from '@/app/(webtoon)/_types/webtoon';
+import { ResponseKakaoWeekdayWebtoons, ResponseNaverWeekdayWebtoons } from './types';
+import { PLATFORM } from '@/app/(webtoon)/_constants/platform';
 
 export const transformNaverWeekdayWebtoons = (
   webtoons: ResponseNaverWeekdayWebtoons
@@ -27,7 +23,7 @@ export const transformNaverWeekdayWebtoons = (
           dayOfWeek: convertNaverDayOfWeekToDayOfWeek(dayOfWeek),
           link: `https://comic.naver.com/webtoon/list?titleId=${item.titleId}`,
           thumbnail: item.thumbnailUrl,
-          platform: Platform.naver
+          platform: PLATFORM.naver.value
         };
       });
     })
@@ -36,7 +32,7 @@ export const transformNaverWeekdayWebtoons = (
 
 export const transformKakaoWebtoons = (
   response: ResponseKakaoWeekdayWebtoons,
-  dayOfWeek: DayOfWeek
+  dayOfWeek: DayOfWeekType
 ): Array<Webtoon> => {
   if (!response?.data?.[0]?.cardGroups?.[0]?.cards) {
     return [];
@@ -49,11 +45,11 @@ export const transformKakaoWebtoons = (
     dayOfWeek,
     link: `https://webtoon.kakao.com/content/${card.content.seoId}/${card.content.id}`,
     thumbnail: `${card.content.featuredCharacterImageA}.webp`,
-    platform: Platform.kakao
+    platform: PLATFORM.kakao.value
   }));
 };
 
-const convertNaverDayOfWeekToDayOfWeek = (dayOfWeek: string): DayOfWeek | null => {
+const convertNaverDayOfWeekToDayOfWeek = (dayOfWeek: string): DayOfWeekType | null => {
   switch (dayOfWeek) {
     case 'MONDAY':
       return 'monday';

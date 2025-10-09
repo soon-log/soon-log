@@ -1,12 +1,9 @@
 import axios from 'axios';
 
-import {
-  DayOfWeek,
-  ResponseKakaoWeekdayWebtoons,
-  ResponseNaverWeekdayWebtoons,
-  Webtoon
-} from './types';
+import { ResponseKakaoWeekdayWebtoons, ResponseNaverWeekdayWebtoons } from './types';
 import { transformKakaoWebtoons, transformNaverWeekdayWebtoons } from './utils';
+import { type Webtoon, type DayOfWeekType } from '@/app/(webtoon)/_types/webtoon';
+import { DAY_OF_WEEK } from '@/app/(webtoon)/_constants/day-of-week';
 
 const axiosInstance = axios.create({
   timeout: 10000,
@@ -27,14 +24,14 @@ async function getNaverWeekdayWebtoons(): Promise<Array<Webtoon>> {
   return transformNaverWeekdayWebtoons(data);
 }
 
-const KAKAO_WEBTOON_DAY_OF_WEEK: Record<string, DayOfWeek> = {
-  mon: DayOfWeek.monday,
-  tue: DayOfWeek.tuesday,
-  wed: DayOfWeek.wednesday,
-  thu: DayOfWeek.thursday,
-  fri: DayOfWeek.friday,
-  sat: DayOfWeek.saturday,
-  sun: DayOfWeek.sunday
+const KAKAO_WEBTOON_DAY_OF_WEEK: Record<string, DayOfWeekType> = {
+  mon: DAY_OF_WEEK.monday.value,
+  tue: DAY_OF_WEEK.tuesday.value,
+  wed: DAY_OF_WEEK.wednesday.value,
+  thu: DAY_OF_WEEK.thursday.value,
+  fri: DAY_OF_WEEK.friday.value,
+  sat: DAY_OF_WEEK.saturday.value,
+  sun: DAY_OF_WEEK.sunday.value
 };
 
 async function getKakaoWebtoons(): Promise<Array<Webtoon>> {
