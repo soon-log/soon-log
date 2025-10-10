@@ -1,0 +1,76 @@
+/* Webtoon Card Animations */
+@keyframes rotation_481 {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  100% {
+    transform: rotateZ(360deg);
+  }
+}
+
+@keyframes floating {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-rotation {
+  animation: rotation_481 5000ms infinite linear;
+}
+
+.animate-floating {
+  animation: floating 2600ms infinite linear;
+}
+
+.animate-floating-delay-800 {
+  animation: floating 2600ms infinite linear;
+  animation-delay: -800ms;
+}
+
+.animate-floating-delay-1800 {
+  animation: floating 2600ms infinite linear;
+  animation-delay: -1800ms;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+.webtoon-flip-card {
+  transition: transform 0.3s ease;
+}
+
+.group:hover .webtoon-flip-card {
+  transform: rotateY(180deg);
+}
+
+.webtoon-flip-card > .backface-hidden:first-child {
+  pointer-events: auto;
+}
+
+.webtoon-flip-card > .backface-hidden:last-child {
+  pointer-events: none;
+}
+
+.group:hover .webtoon-flip-card > .backface-hidden:first-child {
+  pointer-events: none;
+}
+
+.group:hover .webtoon-flip-card > .backface-hidden:last-child {
+  pointer-events: auto;
+}
