@@ -9,8 +9,7 @@ import { Webtoon } from '../../_types/webtoon';
 
 export function BackSide({ webtoon }: { webtoon: Webtoon }) {
   return (
-    <div className="absolute h-full w-full rotate-y-180 overflow-hidden rounded-[5px] backface-hidden">
-      {/* Background Image */}
+    <div className="flip-card absolute h-full w-full overflow-hidden rounded-[5px] backface-hidden">
       <Image
         src={webtoon.thumbnail}
         alt={`${webtoon.title} 썸네일`}
@@ -21,12 +20,9 @@ export function BackSide({ webtoon }: { webtoon: Webtoon }) {
         className="object-cover"
       />
 
-      {/* Dark Overlay Filter */}
       <div className="absolute inset-0 bg-black opacity-60" />
 
-      {/* Content Layer */}
       <div className="absolute flex h-full w-full flex-col justify-between p-2.5">
-        {/* Top: Badges */}
         <div className="flex gap-1">
           <Badge className="w-fit rounded-[10px] bg-white px-[4px] py-[1px] text-[8px] text-black">
             {PLATFORM[webtoon.platform].label}
@@ -40,15 +36,15 @@ export function BackSide({ webtoon }: { webtoon: Webtoon }) {
 
         <div className="flex w-full items-center justify-between gap-2 rounded-[5px] bg-black/60 p-2.5 shadow-[0px_0px_10px_5px_rgba(0,0,0,0.53)] backdrop-blur-[5px]">
           <div className="flex-1 overflow-hidden">
-            <p className="line-clamp-2 text-[12px] text-white">{webtoon.title}</p>
-            <p className="mt-1.5 text-[8px] text-[rgba(255,255,255,0.53)]">{webtoon.author}</p>
+            <p className="line-clamp-2 text-[14px] text-white">{webtoon.title}</p>
+            <p className="mt-1.5 text-[10px] text-[rgba(255,255,255,0.53)]">{webtoon.author}</p>
           </div>
 
           <a
             href={webtoon.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="relative z-10 flex h-auto items-center justify-center rounded-md p-1 text-white transition-colors hover:bg-white/10"
+            className="relative flex h-auto items-center justify-center rounded-md p-1 text-white transition-colors hover:bg-white/10"
             aria-label={`${webtoon.title} 웹툰 페이지로 이동`}
           >
             <ExternalLink size={20} />

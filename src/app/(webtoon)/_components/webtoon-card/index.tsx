@@ -1,30 +1,23 @@
 'use client';
-import { useQuery } from '@tanstack/react-query';
 
 import { cn } from '@/lib/utils';
 
-import { QUERY_KEY } from '../../_constants/query-key';
-import { fetchWebtoons } from '../../_service/webtoons';
+import { Webtoon } from '../../_types/webtoon';
 
 import { BackSide } from './back-side';
 import { FrontSide } from './front-side';
 
-export function WebtoonCard({ className }: { className?: string }) {
-  const { data: webtoons } = useQuery({
-    queryKey: QUERY_KEY.WEBTOONS,
-    queryFn: () => fetchWebtoons()
-  });
+type WebtoonCardProps = {
+  isActive?: boolean;
+  webtoon: Webtoon;
+  className?: string;
+};
 
-  const webtoon = webtoons?.webtoons[0];
-
-  if (!webtoon) {
-    return null;
-  }
-
+export function WebtoonCard({ className, webtoon, isActive }: WebtoonCardProps) {
   return (
-    <div className={cn('group h-[300px] w-[240px] overflow-visible', className)}>
-      <div className="webtoon-flip-card preserve-3d h-full w-full">
-        <FrontSide title={webtoon.title} thumbnail={webtoon.thumbnail} />
+    <div className={cn('group h-[300px] w-[240px]', className)}>
+      <div className={cn('h-full w-full transform-3d', isActive && 'webtoon-active-card')}>
+        <FrontSide title={webtoon.title} thumbnail={webtoon.thumbnail} isActive={isActive} />
         <BackSide webtoon={webtoon} />
       </div>
     </div>
