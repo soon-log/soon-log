@@ -38,39 +38,19 @@
   animation-delay: -1800ms;
 }
 
-.preserve-3d {
-  transform-style: preserve-3d;
-}
-
 .backface-hidden {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
 
-.rotate-y-180 {
+.flip-card {
   transform: rotateY(180deg);
 }
 
-.webtoon-flip-card {
+.webtoon-active-card {
   transition: transform 0.3s ease;
 }
 
-.group:hover .webtoon-flip-card {
+.group:hover .webtoon-active-card {
   transform: rotateY(180deg);
-}
-
-.webtoon-flip-card > .backface-hidden:first-child {
-  pointer-events: auto;
-}
-
-.webtoon-flip-card > .backface-hidden:last-child {
-  pointer-events: none;
-}
-
-.group:hover .webtoon-flip-card > .backface-hidden:first-child {
-  pointer-events: none;
-}
-
-.group:hover .webtoon-flip-card > .backface-hidden:last-child {
-  pointer-events: auto;
 }
