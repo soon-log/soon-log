@@ -1,20 +1,47 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
+import { useMemo } from 'react';
 
 import { cn } from '@/lib/utils';
 
 import { QUERY_KEY } from '../../_constants/query-key';
 import { fetchWebtoons } from '../../_service/webtoons';
 import { WebtoonCard } from '../webtoon-card';
+import { useWheelContext } from '../wheel/wheel-provider';
 
-export function WebtoonCoverFlow() {
+const useCoverFlow = () => {
+  const { cardIndex } = useWheelContext();
   const { data } = useQuery({
     queryKey: QUERY_KEY.WEBTOONS,
     queryFn: () => fetchWebtoons()
   });
 
-  if (!data) {
+  const slicedWebtoons = useMemo(() => {
+    if (!data?.webtoons) {
+      return [];
+    }
+
+    const length = data.webtoons.length;
+
+    if (length === 0) {
+      return [];
+    }
+
+    return Array.from({ length: 5 }, (_, i) => {
+      const offset = 2 - i;
+      const index = (((cardIndex + offset) % length) + length) % length;
+      return data.webtoons[index];
+    });
+  }, [data, cardIndex]);
+
+  return { slicedWebtoons };
+};
+
+export function WebtoonCoverFlow() {
+  const { slicedWebtoons } = useCoverFlow();
+
+  if (!slicedWebtoons?.length) {
     return null;
   }
 
@@ -28,7 +55,7 @@ export function WebtoonCoverFlow() {
             'brightness-[.20]'
           )}
         >
-          <WebtoonCard webtoon={data.webtoons[3]!} />
+          <WebtoonCard webtoon={slicedWebtoons[0]!} />
         </li>
         <li
           className={cn(
@@ -37,10 +64,10 @@ export function WebtoonCoverFlow() {
             'brightness-[.50]'
           )}
         >
-          <WebtoonCard webtoon={data.webtoons[1]!} />
+          <WebtoonCard webtoon={slicedWebtoons[1]!} />
         </li>
         <li className="absolute scale-100 transition-all duration-500">
-          <WebtoonCard webtoon={data.webtoons[0]!} isActive />
+          <WebtoonCard webtoon={slicedWebtoons[2]!} isActive />
         </li>
         <li
           className={cn(
@@ -49,7 +76,7 @@ export function WebtoonCoverFlow() {
             'brightness-[.50]'
           )}
         >
-          <WebtoonCard webtoon={data.webtoons[2]!} />
+          <WebtoonCard webtoon={slicedWebtoons[3]!} />
         </li>
         <li
           className={cn(
@@ -58,7 +85,7 @@ export function WebtoonCoverFlow() {
             'brightness-[.20]'
           )}
         >
-          <WebtoonCard webtoon={data.webtoons[4]!} />
+          <WebtoonCard webtoon={slicedWebtoons[4]!} />
         </li>
       </ul>
     </div>
