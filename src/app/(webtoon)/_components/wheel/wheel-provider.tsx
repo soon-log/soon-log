@@ -7,6 +7,7 @@ import { WheelButton } from '@/app/(webtoon)/_components/wheel/wheel-button';
 type WheelContextType = {
   cardIndex: number;
   rotation: number;
+  isDragging: boolean;
 };
 
 const WheelContext = createContext<WheelContextType | null>(null);
@@ -93,7 +94,7 @@ export function WheelProvider({ children }: { children: React.ReactNode }) {
   const { handleMouseDown, rotation, cardIndex, isDraggingRef } = useWheelDrag();
 
   return (
-    <WheelContext.Provider value={{ cardIndex, rotation }}>
+    <WheelContext.Provider value={{ cardIndex, rotation, isDragging: isDraggingRef.current }}>
       {children}
       <WheelButton
         onMouseDown={handleMouseDown}

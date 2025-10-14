@@ -11,7 +11,7 @@ import { WebtoonCard } from '../webtoon-card';
 import { useWheelContext } from '../wheel/wheel-provider';
 
 const useCoverFlow = () => {
-  const { cardIndex } = useWheelContext();
+  const { cardIndex, isDragging } = useWheelContext();
   const { data } = useQuery({
     queryKey: QUERY_KEY.WEBTOONS,
     queryFn: () => fetchWebtoons()
@@ -35,11 +35,11 @@ const useCoverFlow = () => {
     });
   }, [data, cardIndex]);
 
-  return { slicedWebtoons };
+  return { slicedWebtoons, isDragging };
 };
 
 export function WebtoonCoverFlow() {
-  const { slicedWebtoons } = useCoverFlow();
+  const { slicedWebtoons, isDragging } = useCoverFlow();
 
   if (!slicedWebtoons?.length) {
     return null;
@@ -67,7 +67,7 @@ export function WebtoonCoverFlow() {
           <WebtoonCard webtoon={slicedWebtoons[1]!} />
         </li>
         <li className="absolute scale-100 transition-all duration-500">
-          <WebtoonCard webtoon={slicedWebtoons[2]!} isActive />
+          <WebtoonCard webtoon={slicedWebtoons[2]!} isActive={!isDragging} />
         </li>
         <li
           className={cn(
