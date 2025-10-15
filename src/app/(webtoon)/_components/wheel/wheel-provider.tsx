@@ -6,29 +6,29 @@ import { WheelButton } from '@/app/(webtoon)/_components/wheel/wheel-button';
 
 type WheelContextType = {
   cardIndex: number;
-  rotation: number;
+  xDistance: number;
   isDragging: boolean;
 };
 
 const WheelContext = createContext<WheelContextType | null>(null);
 
-const useWheelDrag = () => {
+const useWheelDrag = ({ webtoonsLength }: { webtoonsLength: number }) => {
   // 현재 카드 인덱스
   const [cardIndex, setCardIndex] = useState(0);
-  // 휠의 회전 각도, -면 왼쪽, +면 오른쪽
-  const [rotation, setRotation] = useState(0);
+  // x 이동 길이, -면 왼쪽, +면 오른쪽
+  const [xDistance, setXDistance] = useState(0);
 
   const isDraggingRef = useRef(false); // 현재 드래그 중인지 여부
-  const startXRef = useRef<number>(0); // 드래그 시작 시점의 마우스 X 좌표
-  const startRotationRef = useRef(0); // 드래그 시작 시점의 휠 각도
-  const currentRotationRef = useRef(0); // 현재 휠 각도
+  const startXRef = useRef(0); // 드래그 시작 시점의 마우스 X 좌표
+  const startXDistanceRef = useRef(0); // 드래그 시작 시점의 X 거리
+  const currentXDistanceRef = useRef(0); // 현재 X 거리
 
   const handleMouseDown = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     isDraggingRef.current = true;
     startXRef.current = e.clientX;
-    startRotationRef.current = rotation;
-    currentRotationRef.current = rotation;
+    startXDistanceRef.current = xDistance;
+    currentXDistanceRef.current = xDistance;
 
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseup', handleMouseUp);
@@ -42,33 +42,30 @@ const useWheelDrag = () => {
     // 드래그 해서 움직인 X 좌표 거리
     const draggedX = currentX - startXRef.current;
 
-    // 드래그 민감도. 숫자가 클수록 조금만 움직여도 많이 회전한다.
+    // 드래그 민감도. 숫자가 클수록 조금만 움직여도 많이 움직인다.
     const sensitivity = 0.2;
-    const rotationChange = draggedX * sensitivity;
+    const xDistanceChange = draggedX * sensitivity;
 
-    const newRotation = Math.floor(startRotationRef.current + rotationChange);
-    currentRotationRef.current = newRotation;
+    const newXDistance = Math.round(startXDistanceRef.current + xDistanceChange);
+    currentXDistanceRef.current = newXDistance;
 
-    const currentIndex = Math.round(newRotation / 45);
-    setCardIndex(currentIndex);
-
-    setRotation(newRotation);
+    setXDistance(newXDistance);
   };
 
   // 마우스 버튼을 뗐을 때 호출되는 핸들러
   const handleMouseUp = () => {
     isDraggingRef.current = false;
-    const latestRotation = currentRotationRef.current;
+    const currentXDistance = currentXDistanceRef.current;
 
-    // 최종 각도를 45도에 가깝게 스냅한다.
-    const snappedRotation = Math.round(latestRotation / 45) * 45;
-    currentRotationRef.current = snappedRotation;
+    const tempCardIndex = Math.round(currentXDistance / 45);
+    const cardIndex =
+      tempCardIndex < 0
+        ? webtoonsLength + (tempCardIndex % webtoonsLength)
+        : tempCardIndex === 0
+          ? 0
+          : tempCardIndex % webtoonsLength;
 
-    setRotation(snappedRotation);
-
-    // 현재 페이지 인덱스
-    const index = snappedRotation / 45;
-    setCardIndex(index);
+    setCardIndex(cardIndex);
 
     window.removeEventListener('mousemove', handleMouseMove);
     window.removeEventListener('mouseup', handleMouseUp);
@@ -84,21 +81,26 @@ const useWheelDrag = () => {
 
   return {
     handleMouseDown,
-    rotation,
+    xDistance,
     cardIndex,
     isDraggingRef
   };
 };
 
-export function WheelProvider({ children }: { children: React.ReactNode }) {
-  const { handleMouseDown, rotation, cardIndex, isDraggingRef } = useWheelDrag();
+type WheelProviderProps = {
+  children: React.ReactNode;
+  webtoonsLength: number;
+};
+
+export function WheelProvider({ children, webtoonsLength }: WheelProviderProps) {
+  const { handleMouseDown, xDistance, cardIndex, isDraggingRef } = useWheelDrag({ webtoonsLength });
 
   return (
-    <WheelContext.Provider value={{ cardIndex, rotation, isDragging: isDraggingRef.current }}>
+    <WheelContext.Provider value={{ cardIndex, xDistance, isDragging: isDraggingRef.current }}>
       {children}
       <WheelButton
         onMouseDown={handleMouseDown}
-        rotation={rotation}
+        xDistance={xDistance}
         isDraggingRef={isDraggingRef}
       />
     </WheelContext.Provider>

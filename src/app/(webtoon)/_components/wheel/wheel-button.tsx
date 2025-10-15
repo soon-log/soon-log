@@ -7,17 +7,17 @@ import { cn } from '@/lib/utils';
 
 type WheelButtonProps = {
   onMouseDown: (e: MouseEvent<HTMLButtonElement>) => void;
-  rotation: number;
+  xDistance: number;
   isDraggingRef: RefObject<boolean>;
 };
 
-export function WheelButton({ onMouseDown, rotation, isDraggingRef }: WheelButtonProps) {
+export function WheelButton({ onMouseDown, xDistance, isDraggingRef }: WheelButtonProps) {
   const style = useMemo(
     () => ({
-      transform: `rotate(${rotation}deg)`,
+      transform: `rotate(${xDistance}deg)`,
       transition: isDraggingRef.current ? 'none' : 'transform 0.2s ease-out' // 드래그 중에는 전환 효과를 끔
     }),
-    [rotation, isDraggingRef]
+    [xDistance, isDraggingRef]
   );
 
   return (

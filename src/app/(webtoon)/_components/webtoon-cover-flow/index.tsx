@@ -1,28 +1,17 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 
+import { Webtoon } from '@/app/(webtoon)/_types/webtoon';
 import { cn } from '@/lib/utils';
 
-import { QUERY_KEY } from '../../_constants/query-key';
-import { fetchWebtoons } from '../../_service/webtoons';
 import { WebtoonCard } from '../webtoon-card';
 import { useWheelContext } from '../wheel/wheel-provider';
 
-const useCoverFlow = () => {
+const useCoverFlow = ({ webtoons }: { webtoons: Webtoon[] }) => {
   const { cardIndex, isDragging } = useWheelContext();
-  const { data } = useQuery({
-    queryKey: QUERY_KEY.WEBTOONS,
-    queryFn: () => fetchWebtoons()
-  });
-
   const slicedWebtoons = useMemo(() => {
-    if (!data?.webtoons) {
-      return [];
-    }
-
-    const length = data.webtoons.length;
+    const length = webtoons.length;
 
     if (length === 0) {
       return [];
@@ -31,15 +20,15 @@ const useCoverFlow = () => {
     return Array.from({ length: 5 }, (_, i) => {
       const offset = 2 - i;
       const index = (((cardIndex + offset) % length) + length) % length;
-      return data.webtoons[index];
+      return webtoons[index];
     });
-  }, [data, cardIndex]);
+  }, [webtoons, cardIndex]);
 
   return { slicedWebtoons, isDragging };
 };
 
-export function WebtoonCoverFlow() {
-  const { slicedWebtoons, isDragging } = useCoverFlow();
+export function WebtoonCoverFlow({ webtoons }: { webtoons: Webtoon[] }) {
+  const { slicedWebtoons, isDragging } = useCoverFlow({ webtoons });
 
   if (!slicedWebtoons?.length) {
     return null;
