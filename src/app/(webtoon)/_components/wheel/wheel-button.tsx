@@ -1,23 +1,23 @@
 'use client';
 
 import Image from 'next/image';
-import { MouseEvent, useMemo, RefObject } from 'react';
+import { MouseEvent, useMemo } from 'react';
 
 import { cn } from '@/lib/utils';
 
 type WheelButtonProps = {
   onMouseDown: (e: MouseEvent<HTMLButtonElement>) => void;
   xDistance: number;
-  isDraggingRef: RefObject<boolean>;
+  isDragging: boolean;
 };
 
-export function WheelButton({ onMouseDown, xDistance, isDraggingRef }: WheelButtonProps) {
+export function WheelButton({ onMouseDown, xDistance, isDragging }: WheelButtonProps) {
   const style = useMemo(
     () => ({
       transform: `rotate(${xDistance}deg)`,
-      transition: isDraggingRef.current ? 'none' : 'transform 0.2s ease-out' // 드래그 중에는 전환 효과를 끔
+      transition: isDragging ? 'none' : 'transform 0.2s ease-out' // 드래그 중에는 전환 효과를 끔
     }),
-    [xDistance, isDraggingRef]
+    [xDistance, isDragging]
   );
 
   return (

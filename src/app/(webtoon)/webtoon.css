@@ -54,3 +54,12 @@
 .group:hover .webtoon-active-card {
   transform: rotateY(180deg);
 }
+
+.perspective-distant {
+  perspective: 1000px;
+  perspective-origin: 50% 50%;
+}
+
+.transform-3d {
+  transform-style: preserve-3d;
+}

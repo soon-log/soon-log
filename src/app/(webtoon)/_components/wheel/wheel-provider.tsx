@@ -101,7 +101,7 @@ export function WheelProvider({ children, webtoonsLength }: WheelProviderProps) 
       <WheelButton
         onMouseDown={handleMouseDown}
         xDistance={xDistance}
-        isDraggingRef={isDraggingRef}
+        isDragging={isDraggingRef.current}
       />
     </WheelContext.Provider>
   );
