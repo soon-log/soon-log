@@ -3,7 +3,8 @@ name: Update Webtoon Data
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *'
+    # 매주 월요일 오전 9시에 실행
+    - cron: '0 0 * * 1'
 
 permissions:
   contents: write
