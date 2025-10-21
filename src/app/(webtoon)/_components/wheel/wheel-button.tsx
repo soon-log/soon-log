@@ -30,6 +30,7 @@ export function WheelButton({
     <button
       onMouseDown={onMouseDown}
       onTouchStart={onTouchStart}
+      onContextMenu={(e) => e.preventDefault()}
       className={cn(
         'absolute bottom-[-75vh] left-1/2 z-10 aspect-square h-screen -translate-x-1/2',
         'cursor-grab touch-none active:cursor-grabbing'
@@ -41,7 +42,7 @@ export function WheelButton({
         fill
         alt="휠"
         sizes="100vh"
-        className="object-contain"
+        className="no-touch-callout object-contain"
         draggable={false}
         priority
       />

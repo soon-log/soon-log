@@ -63,3 +63,10 @@
 .transform-3d {
   transform-style: preserve-3d;
 }
+
+.no-touch-callout {
+  user-select: none;
+  user-drag: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+}

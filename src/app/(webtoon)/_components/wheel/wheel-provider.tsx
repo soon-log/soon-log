@@ -78,6 +78,7 @@ export function WheelProvider({ children }: WheelProviderProps) {
 
   const handleMouseMove = useCallback(
     (e: globalThis.MouseEvent) => {
+      e.preventDefault();
       if (!isDragging) return;
 
       const currentX = e.clientX;
