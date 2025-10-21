@@ -9,6 +9,7 @@ import {
   useRef,
   useEffect,
   MouseEvent,
+  TouchEvent,
   ReactNode
 } from 'react';
 
@@ -137,6 +138,88 @@ export function WheelProvider({ children }: WheelProviderProps) {
     setRotationOffset(finalCardIndex);
   }, [isDragging, rotationOffset, webtoons.length]);
 
+  // 터치 이벤트 핸들러
+  const handleTouchStart = useCallback(
+    (e: TouchEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      const touch = e.touches[0];
+      if (!touch) return;
+
+      setIsDragging(true);
+      startXRef.current = touch.clientX;
+      lastXRef.current = touch.clientX;
+      lastTimeRef.current = Date.now();
+      initialXDistanceRef.current = xDistance;
+    },
+    [xDistance]
+  );
+
+  const handleTouchMove = useCallback(
+    (e: globalThis.TouchEvent) => {
+      if (!isDragging) return;
+
+      e.preventDefault();
+      const touch = e.touches[0];
+      if (!touch) return;
+
+      const currentX = touch.clientX;
+      const currentTime = Date.now();
+      const deltaX = currentX - lastXRef.current;
+      const deltaTime = currentTime - lastTimeRef.current;
+
+      // xDistance 업데이트 (누적)
+      const newXDistance = initialXDistanceRef.current + (currentX - startXRef.current);
+      setXDistance(newXDistance);
+
+      // rotationOffset 실시간 계산 (소수점 포함)
+      const newRotationOffset = newXDistance / 45;
+
+      // velocity 계산: 0.1초(100ms) 이내에 X축 절대값 100px 이상 이동
+      if (!isShufflingRef.current && deltaTime > 0 && deltaTime <= 100 && Math.abs(deltaX) >= 100) {
+        // Fast 모드 진입
+        isShufflingRef.current = true;
+        setCardIndex(0);
+        setRotationOffset(0);
+        setIsShuffling(true);
+
+        // API 호출하여 웹툰 재셔플
+        refetch();
+
+        // 1초 후 셔플 완료
+        setTimeout(() => {
+          setIsShuffling(false);
+          isShufflingRef.current = false;
+        }, 1000);
+      } else if (!isShufflingRef.current) {
+        setRotationOffset(newRotationOffset);
+      }
+
+      lastXRef.current = currentX;
+      lastTimeRef.current = currentTime;
+    },
+    [isDragging, refetch]
+  );
+
+  const handleTouchEnd = useCallback(() => {
+    if (!isDragging) return;
+
+    setIsDragging(false);
+
+    // rotationOffset을 반올림하여 최종 cardIndex 확정
+    let finalCardIndex = Math.round(rotationOffset);
+
+    // 모듈러 연산으로 유효한 범위로 변환
+    const webtoonsLength = webtoons.length;
+    if (finalCardIndex < 0) {
+      finalCardIndex = ((finalCardIndex % webtoonsLength) + webtoonsLength) % webtoonsLength;
+    } else if (finalCardIndex >= webtoonsLength) {
+      finalCardIndex = finalCardIndex % webtoonsLength;
+    }
+
+    setCardIndex(finalCardIndex);
+    setRotationOffset(finalCardIndex);
+  }, [isDragging, rotationOffset, webtoons.length]);
+
   // 전역 이벤트 리스너 등록
   useEffect(() => {
     const handleGlobalMouseMove = (e: globalThis.MouseEvent) => {
@@ -147,16 +230,28 @@ export function WheelProvider({ children }: WheelProviderProps) {
       handleMouseUp();
     };
 
+    const handleGlobalTouchMove = (e: globalThis.TouchEvent) => {
+      handleTouchMove(e);
+    };
+
+    const handleGlobalTouchEnd = () => {
+      handleTouchEnd();
+    };
+
     if (typeof window !== 'undefined') {
       window.addEventListener('mousemove', handleGlobalMouseMove);
       window.addEventListener('mouseup', handleGlobalMouseUp);
+      window.addEventListener('touchmove', handleGlobalTouchMove, { passive: false });
+      window.addEventListener('touchend', handleGlobalTouchEnd);
 
       return () => {
         window.removeEventListener('mousemove', handleGlobalMouseMove);
         window.removeEventListener('mouseup', handleGlobalMouseUp);
+        window.removeEventListener('touchmove', handleGlobalTouchMove);
+        window.removeEventListener('touchend', handleGlobalTouchEnd);
       };
     }
-  }, [handleMouseMove, handleMouseUp]);
+  }, [handleMouseMove, handleMouseUp, handleTouchMove, handleTouchEnd]);
 
   useEffect(() => {
     setIsMounted(true);
@@ -171,7 +266,12 @@ export function WheelProvider({ children }: WheelProviderProps) {
       >
         {children}
       </WheelContext.Provider>
-      <WheelButton onMouseDown={handleMouseDown} xDistance={xDistance} isDragging={isDragging} />
+      <WheelButton
+        onMouseDown={handleMouseDown}
+        onTouchStart={handleTouchStart}
+        xDistance={xDistance}
+        isDragging={isDragging}
+      />
     </>
   );
 }

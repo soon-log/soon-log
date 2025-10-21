@@ -1,17 +1,23 @@
 'use client';
 
 import Image from 'next/image';
-import { MouseEvent, useMemo } from 'react';
+import { MouseEvent, TouchEvent, useMemo } from 'react';
 
 import { cn } from '@/lib/utils';
 
 type WheelButtonProps = {
   onMouseDown: (e: MouseEvent<HTMLButtonElement>) => void;
+  onTouchStart: (e: TouchEvent<HTMLButtonElement>) => void;
   xDistance: number;
   isDragging: boolean;
 };
 
-export function WheelButton({ onMouseDown, xDistance, isDragging }: WheelButtonProps) {
+export function WheelButton({
+  onMouseDown,
+  onTouchStart,
+  xDistance,
+  isDragging
+}: WheelButtonProps) {
   const style = useMemo(
     () => ({
       transform: `rotate(${xDistance}deg)`,
@@ -23,6 +29,7 @@ export function WheelButton({ onMouseDown, xDistance, isDragging }: WheelButtonP
   return (
     <button
       onMouseDown={onMouseDown}
+      onTouchStart={onTouchStart}
       className={cn(
         'absolute bottom-[-75vh] left-1/2 z-10 aspect-square h-screen -translate-x-1/2',
         'cursor-grab touch-none active:cursor-grabbing'
