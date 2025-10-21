@@ -1,130 +1,103 @@
 'use client';
 
-import { CSSProperties, useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 
-import { Webtoon } from '@/app/(webtoon)/_types/webtoon';
-
+import { Webtoon } from '../../_types/webtoon';
 import { WebtoonCard } from '../webtoon-card';
-import { useWheelContext } from '../wheel/wheel-provider';
+import { useWheel } from '../wheel/wheel-provider';
 
-type CardStyle = {
-  transform: string;
-  opacity: number;
-  zIndex: number;
-  transition: string;
-};
+export function WebtoonCoverFlow() {
+  const { cardIndex, rotationOffset, isDragging, isShuffling, webtoons } = useWheel();
+  const [visibleCount, setVisibleCount] = useState(5);
 
-// 상대 위치에 따른 스타일 계산
-const getCardStyle = (
-  relativePosition: number,
-  xDistance: number,
-  isDragging: boolean
-): CardStyle => {
-  // 45도 = 1칸 이동, xDistance를 45로 나눈 값이 추가 이동량
-  const offset = (xDistance % 45) / 45;
-  const actualPosition = relativePosition - offset;
+  const halfVisible = Math.floor(visibleCount / 2);
 
-  // 중앙(0)을 기준으로 좌우 대칭 배치
-  const baseSpacing = 210; // 카드 간 기본 간격
-  const translateX = actualPosition * baseSpacing;
+  // 드래그 중에는 rotationOffset, 아니면 cardIndex 기준으로 카드 계산
+  const baseIndex = isDragging ? Math.floor(rotationOffset) : cardIndex;
+  const offset = isDragging ? rotationOffset - Math.floor(rotationOffset) : 0;
 
-  // 중앙에 가까울수록 크고, 멀수록 작게
-  const scale = Math.max(0.6, 1 - Math.abs(actualPosition) * 0.15);
+  // 표시할 카드들 계산
+  const visibleCards = useMemo(() => {
+    const cards: Array<{
+      webtoon: Webtoon;
+      position: number;
+      key: string;
+    }> = [];
 
-  // Z축: 중앙이 가장 앞으로
-  const translateZ = -Math.abs(actualPosition) * 150;
+    // 더 많은 카드를 렌더링하여 회전 시 자연스럽게 보이도록
+    const renderRange = halfVisible + 2;
 
-  // Y축: 양쪽으로 갈수록 아래로
-  const translateY = Math.abs(actualPosition) * -20;
+    for (let i = -renderRange; i <= renderRange; i++) {
+      const index = (baseIndex + i + webtoons.length * 100) % webtoons.length;
+      const webtoon = webtoons[index];
+      if (!webtoon) continue;
 
-  // 회전: 양쪽으로 갈수록 살짝 회전
-  const rotateY = actualPosition * -15;
-
-  // 투명도: 양쪽 끝은 희미하게
-  const opacity = Math.max(0, 1 - Math.abs(actualPosition) * 0.3);
-
-  console.log({
-    relativePosition,
-    xDistance,
-    offset,
-    actualPosition,
-    translateX,
-    translateY,
-    translateZ
-  });
-
-  return {
-    transform: `
-      translateX(${translateX}px) 
-      translateY(${translateY}px) 
-      translateZ(${translateZ}px) 
-      rotateY(${rotateY}deg) 
-      scale(${scale})
-    `,
-    opacity,
-    zIndex: Math.round(100 - Math.abs(actualPosition) * 10),
-    // 드래그 중이 아닐 때만 transition 적용
-    transition: isDragging
-      ? 'none'
-      : 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease-out'
-  };
-};
-
-// 항상 고정된 7개의 카드 (좌 3개, 중앙 1개, 우 3개)
-const POSITIONS = [-3, -2, -1, 0, 1, 2, 3] as const;
-
-const useCoverFlow = ({ webtoons }: { webtoons: Webtoon[] }) => {
-  const { cardIndex, xDistance, isDragging } = useWheelContext();
-  const centerWebtoon = webtoons[cardIndex];
-
-  const activeItems = useMemo(() => {
-    // xDistance를 45로 나눈 몫이 실제 이동한 칸 수
-    const movedSteps = Math.floor(xDistance / 45);
-    const baseIndex = cardIndex;
-
-    return POSITIONS.map((relativePosition) => {
-      // 순환 인덱스 계산
-      let dataIndex = (baseIndex + relativePosition + movedSteps) % webtoons.length;
-      if (dataIndex < 0) dataIndex += webtoons.length;
-
-      const webtoon = webtoons[dataIndex];
-      if (!webtoon) {
-        throw new Error(`Webtoon at index ${dataIndex} not found`);
-      }
-
-      return {
+      cards.push({
         webtoon,
-        relativePosition,
-        // key는 고정된 위치 기반 (DOM 재사용)
-        key: `card-${relativePosition}`,
-        style: getCardStyle(relativePosition, xDistance, isDragging)
-      };
-    });
-  }, [webtoons, cardIndex, xDistance, isDragging]);
+        position: i - offset, // offset을 빼서 부드러운 회전 구현
+        key: `${webtoon.id}-${index}-${i}`
+      });
+    }
 
-  return { activeItems, isDragging, centerWebtoon };
-};
+    return cards;
+  }, [baseIndex, offset, webtoons, halfVisible]);
 
-export function WebtoonCoverFlow({ webtoons }: { webtoons: Array<Webtoon> }) {
-  const { activeItems, isDragging, centerWebtoon } = useCoverFlow({ webtoons });
+  // 3D 변환 계산
+  const getCardStyle = (position: number) => {
+    const distance = Math.abs(position);
 
-  if (!activeItems?.length) {
-    return null;
-  }
+    // 중앙(position=0)일수록 scale 1, 멀어질수록 작아짐
+    const scale = Math.max(0.5, 1 - distance * 0.15);
+
+    // X축 위치: position에 따라 좌우로 배치
+    const translateX = position * 280; // 카드 너비 + 간격
+
+    // Z축: 중앙에서 멀어질수록 뒤로
+    const translateZ = -distance * 100;
+
+    // Y축 회전: 양옆 카드는 안쪽으로 회전
+    const rotateY = position * -15;
+
+    // 가시성: 범위를 벗어난 카드는 숨김
+    const isVisible = distance <= halfVisible + 1;
+
+    return {
+      transform: `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`,
+      transition: isDragging ? 'none' : 'transform 0.3s ease-out',
+      zIndex: Math.round(100 - distance * 10),
+      opacity: isVisible ? 1 : 0,
+      pointerEvents: isVisible ? ('auto' as const) : ('none' as const)
+    };
+  };
+
+  // 화면 크기에 따라 표시할 카드 개수 결정
+  useEffect(() => {
+    const handleResize = () => {
+      setVisibleCount(window.innerWidth < 768 ? 3 : 5);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
-    <div className="relative flex h-[500px] w-full items-center justify-center perspective-distant">
-      <ul className="relative flex h-full w-full items-center justify-center transform-3d">
-        {activeItems.map((item) => {
-          const isActive = item.webtoon.id === centerWebtoon?.id;
-
-          return (
-            <li key={item.key} className="absolute" style={item.style as CSSProperties}>
-              <WebtoonCard webtoon={item.webtoon} isActive={!isDragging && isActive} />
-            </li>
-          );
-        })}
-      </ul>
+    <div className="relative h-[400px] w-full perspective-distant">
+      <div className="absolute top-0 left-1/2 h-full w-full -translate-x-1/2 transform-3d">
+        {visibleCards.map(({ webtoon, position, key }) => (
+          <div
+            key={key}
+            className="absolute top-0 left-1/2 -translate-x-1/2"
+            style={getCardStyle(position)}
+          >
+            <WebtoonCard
+              webtoon={webtoon}
+              isActive={position === 0 && !isDragging}
+              isShuffling={isShuffling}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

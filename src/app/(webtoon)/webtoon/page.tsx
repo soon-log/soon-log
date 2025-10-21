@@ -1,17 +1,20 @@
+import { Suspense } from 'react';
+
 import { WheelProvider } from '@/app/(webtoon)/_components/wheel/wheel-provider';
-import { fetchWebtoons } from '@/app/(webtoon)/_service/webtoons';
+import { LoadingPage } from '@/components/loading-page';
 
 import { WebtoonCoverFlow } from '../_components/webtoon-cover-flow';
 
-export default async function WebtoonPage() {
-  const { webtoons } = await fetchWebtoons();
+export default function WebtoonPage() {
   return (
     <div className="relative h-full overflow-hidden">
-      <WheelProvider webtoonsLength={webtoons.length}>
-        <div className="absolute top-[10%] left-1/2 -translate-x-1/2">
-          <WebtoonCoverFlow webtoons={webtoons} />
-        </div>
-      </WheelProvider>
+      <Suspense fallback={<LoadingPage />}>
+        <WheelProvider>
+          <div className="absolute top-[10%] left-1/2 -translate-x-1/2">
+            <WebtoonCoverFlow />
+          </div>
+        </WheelProvider>
+      </Suspense>
     </div>
   );
 }

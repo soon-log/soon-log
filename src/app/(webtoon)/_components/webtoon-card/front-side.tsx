@@ -6,6 +6,7 @@ type FrontSideProps = {
   title: string;
   thumbnail: string;
   isActive?: boolean;
+  isDragging?: boolean;
 };
 
 export function FrontSide({ title, thumbnail, isActive }: FrontSideProps) {

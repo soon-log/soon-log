@@ -1,6 +1,7 @@
-import { DayOfWeekType, Webtoon } from '@/app/(webtoon)/_types/webtoon';
-import { ResponseKakaoWeekdayWebtoons, ResponseNaverWeekdayWebtoons } from './types';
 import { PLATFORM } from '@/app/(webtoon)/_constants/platform';
+import { DayOfWeekType, Webtoon } from '@/app/(webtoon)/_types/webtoon';
+
+import { ResponseKakaoWeekdayWebtoons, ResponseNaverWeekdayWebtoons } from './types';
 
 export const transformNaverWeekdayWebtoons = (
   webtoons: ResponseNaverWeekdayWebtoons
