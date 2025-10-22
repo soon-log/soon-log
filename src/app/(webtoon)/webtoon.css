@@ -45,6 +45,7 @@
 
 .flip-card {
   transform: rotateY(180deg);
+  transition: transform 0.3s ease;
 }
 
 .webtoon-active-card {
