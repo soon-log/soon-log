@@ -10,7 +10,7 @@ export default function WebtoonPage() {
     <div className="relative h-full overflow-hidden">
       <Suspense fallback={<LoadingPage />}>
         <WheelProvider>
-          <div className="absolute top-[10%] left-1/2 -translate-x-1/2">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 md:top-[5%]">
             <WebtoonCoverFlow />
           </div>
         </WheelProvider>
