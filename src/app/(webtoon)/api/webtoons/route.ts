@@ -8,6 +8,44 @@ import { FilterType } from '@/app/(webtoon)/_components/webtoon-filter-group/con
 
 import type { Favorites, ResponseWebtoons, Webtoon } from '../../_types/webtoon';
 
+type JsonCacheEntry<T> = {
+  value: T;
+  mtimeMs: number | null;
+};
+
+const jsonCache = new Map<string, JsonCacheEntry<unknown>>();
+const isDev = process.env.NODE_ENV !== 'production';
+
+const WEBTOONS_FILE_PATH = path.join(process.cwd(), 'webtoon', 'webtoons.json');
+const FAVORITES_FILE_PATH = path.join(process.cwd(), 'webtoon', 'favorites.json');
+
+async function readCachedJson<T>(filePath: string): Promise<T> {
+  const cached = jsonCache.get(filePath) as JsonCacheEntry<T> | undefined;
+
+  if (!isDev && cached) {
+    return cached.value;
+  }
+
+  let currentMtime: number | null = null;
+
+  if (isDev) {
+    const stat = await fs.stat(filePath);
+    currentMtime = stat.mtimeMs;
+    if (cached && cached.mtimeMs === currentMtime) {
+      return cached.value;
+    }
+  } else if (cached) {
+    return cached.value;
+  }
+
+  const fileContent = await fs.readFile(filePath, 'utf-8');
+  const parsed = JSON.parse(fileContent) as T;
+
+  jsonCache.set(filePath, { value: parsed, mtimeMs: currentMtime });
+
+  return parsed;
+}
+
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
@@ -19,9 +57,8 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ message: '[API 오류] 잘못된 타입입니다.' }, { status: 400 });
     }
 
-    const webtoonsFilePath = path.join(process.cwd(), 'webtoon', 'webtoons.json');
-    const webtoonsFileContent = await fs.readFile(webtoonsFilePath, 'utf-8');
-    const { webtoons: originalWebtoons }: ResponseWebtoons = JSON.parse(webtoonsFileContent);
+    const { webtoons: originalWebtoons } =
+      await readCachedJson<ResponseWebtoons>(WEBTOONS_FILE_PATH);
 
     let filteredWebtoons: Array<Webtoon> = [];
 
@@ -33,9 +70,7 @@ export async function GET(request: NextRequest) {
         filteredWebtoons = originalWebtoons.filter((webtoon) => webtoon.platform === 'naver');
         break;
       case 'soon':
-        const favoritesFilePath = path.join(process.cwd(), 'webtoon', 'favorites.json');
-        const favoritesFileContent = await fs.readFile(favoritesFilePath, 'utf-8');
-        const favoritesData: Favorites = JSON.parse(favoritesFileContent);
+        const favoritesData = await readCachedJson<Favorites>(FAVORITES_FILE_PATH);
 
         const favoritesMap = new Map(favoritesData.favorites.map((fav) => [fav.title, fav.level]));
 
