@@ -65,7 +65,12 @@ export function WebtoonCard({ className, webtoon, isActive, isShuffling }: Webto
             : undefined
         }
       >
-        <FrontSide title={webtoon.title} thumbnail={webtoon.thumbnail} isActive={isActive} />
+        <FrontSide
+          title={webtoon.title}
+          thumbnail={webtoon.thumbnail}
+          isActive={isActive}
+          recommendLevel={webtoon.recommendLevel}
+        />
         <BackSide webtoon={webtoon} />
       </div>
     </div>

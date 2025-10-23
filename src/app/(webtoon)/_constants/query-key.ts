@@ -1,3 +1,3 @@
 export const QUERY_KEY = {
-  WEBTOONS: ['webtoons']
+  WEBTOONS: (type: string | null) => (type ? ['webtoons', type] : ['webtoons'])
 };

@@ -4,16 +4,18 @@ import { WheelProvider } from '@/app/(webtoon)/_components/wheel/wheel-provider'
 import { LoadingPage } from '@/components/loading-page';
 
 import { WebtoonCoverFlow } from '../_components/webtoon-cover-flow';
+import { WebtoonFilterGroup } from '../_components/webtoon-filter-group';
 
 export default function WebtoonPage() {
   return (
     <div className="relative h-full overflow-hidden">
       <Suspense fallback={<LoadingPage />}>
         <WheelProvider>
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 md:top-[5%]">
+          <div className="my-8">
             <WebtoonCoverFlow />
           </div>
         </WheelProvider>
+        <WebtoonFilterGroup />
       </Suspense>
     </div>
   );

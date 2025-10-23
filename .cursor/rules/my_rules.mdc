@@ -10,3 +10,4 @@ For development requirements, write pseudocode first. Then write test code based
 When writing test code, use test instead of it.
 When modifying prd.txt, do not use **emphasis** formatting.
 When using array types, use Array<Type> syntax.
+When adding UI components, prioritize shadcn over direct package installation. Use pnpm dlx shadcn@latest add [component-name] instead of installing @radix-ui or similar libraries directly. This ensures consistent component styling and configuration across the project.

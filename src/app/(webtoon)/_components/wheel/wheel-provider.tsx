@@ -1,6 +1,7 @@
 'use client';
 
 import { useSuspenseQuery } from '@tanstack/react-query';
+import { useSearchParams } from 'next/navigation';
 import {
   createContext,
   useContext,
@@ -44,12 +45,15 @@ type WheelProviderProps = {
 };
 
 export function WheelProvider({ children }: WheelProviderProps) {
+  const searchParams = useSearchParams();
+  const type = searchParams.get('type');
+
   const {
     data: { webtoons },
     refetch
   } = useSuspenseQuery<ResponseWebtoons>({
-    queryKey: QUERY_KEY.WEBTOONS,
-    queryFn: fetchWebtoons,
+    queryKey: QUERY_KEY.WEBTOONS(type),
+    queryFn: () => fetchWebtoons(type),
     refetchOnWindowFocus: false
   });
   const [isMounted, setIsMounted] = useState(false);
@@ -263,7 +267,14 @@ export function WheelProvider({ children }: WheelProviderProps) {
   return (
     <>
       <WheelContext.Provider
-        value={{ isDragging, xDistance, cardIndex, rotationOffset, isShuffling, webtoons }}
+        value={{
+          isDragging,
+          xDistance,
+          cardIndex,
+          rotationOffset,
+          isShuffling,
+          webtoons
+        }}
       >
         {children}
       </WheelContext.Provider>

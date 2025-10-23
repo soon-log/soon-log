@@ -82,7 +82,7 @@ export function WebtoonCoverFlow() {
   }, []);
 
   return (
-    <div className="relative h-[400px] w-full perspective-distant">
+    <div className="relative h-[300px] w-full perspective-distant">
       <div className="absolute top-0 left-1/2 h-full w-full -translate-x-1/2 transform-3d">
         {visibleCards.map(({ webtoon, position, key }) => (
           <div

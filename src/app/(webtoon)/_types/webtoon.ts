@@ -22,4 +22,15 @@ export interface Webtoon {
   dayOfWeek: DayOfWeekType | null;
   thumbnail: string;
   platform: PlatformType;
+  recommendLevel?: 1 | 2 | 3;
+}
+
+export interface FavoriteWebtoon {
+  title: string;
+  level: 1 | 2 | 3;
+}
+
+export interface Favorites {
+  lastUpdated: string;
+  favorites: Array<FavoriteWebtoon>;
 }

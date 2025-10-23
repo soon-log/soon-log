@@ -1,3 +1,4 @@
+import { Star } from 'lucide-react';
 import Image from 'next/image';
 
 import { cn } from '@/lib/utils';
@@ -7,9 +8,10 @@ type FrontSideProps = {
   thumbnail: string;
   isActive?: boolean;
   isDragging?: boolean;
+  recommendLevel?: 1 | 2 | 3;
 };
 
-export function FrontSide({ title, thumbnail, isActive }: FrontSideProps) {
+export function FrontSide({ title, thumbnail, isActive, recommendLevel }: FrontSideProps) {
   return (
     <div className="bg-foreground absolute flex h-full w-full items-center justify-center overflow-hidden rounded-[5px] backface-hidden">
       <div
@@ -37,6 +39,18 @@ export function FrontSide({ title, thumbnail, isActive }: FrontSideProps) {
             className="rounded-[5px] object-cover"
             draggable={false}
           />
+          {recommendLevel && recommendLevel >= 2 && (
+            <div className="absolute right-2 bottom-2 flex gap-1">
+              {Array.from({ length: recommendLevel - 1 }).map((_, index) => (
+                <Star
+                  key={index}
+                  className="h-4 w-4 text-yellow-400"
+                  fill="currentColor"
+                  strokeWidth={0}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
