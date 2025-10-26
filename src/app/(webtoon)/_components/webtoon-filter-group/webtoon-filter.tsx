@@ -4,7 +4,9 @@ import { useToggleFilter } from '@/app/(webtoon)/_components/webtoon-filter-grou
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
 
-import { FILTER_CONFIG, FilterType } from './constants';
+import type { FilterType } from '../../_types/webtoon';
+
+import { FILTER_CONFIG } from './constants';
 
 export function WebtoonFilter({ type }: { type: FilterType }) {
   const { isChecked, onToggle } = useToggleFilter({ type });

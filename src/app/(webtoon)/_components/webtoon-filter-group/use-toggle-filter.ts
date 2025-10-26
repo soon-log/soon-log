@@ -1,7 +1,7 @@
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback } from 'react';
 
-import { FilterType } from './constants';
+import type { FilterType } from '../../_types/webtoon';
 
 type UseToggleFilterProps = {
   type: FilterType;

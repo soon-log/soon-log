@@ -1,3 +1,5 @@
+import { FilterType } from '../_constants/webtoon-filter';
+
 export type DayOfWeekType =
   | 'monday'
   | 'tuesday'
@@ -34,3 +36,5 @@ export interface Favorites {
   lastUpdated: string;
   favorites: Array<FavoriteWebtoon>;
 }
+
+export type FilterType = (typeof FilterType)[keyof typeof FilterType];
