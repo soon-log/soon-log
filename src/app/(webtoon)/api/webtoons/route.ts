@@ -22,21 +22,6 @@ const favoritesCache: {
   map: null
 };
 
-function getFavoritesMap(favoritesData: Favorites) {
-  if (favoritesCache.data === favoritesData && favoritesCache.map) {
-    return favoritesCache.map;
-  }
-
-  const map = new Map<string, FavoriteLevel>(
-    favoritesData.favorites.map((favorite) => [favorite.title, favorite.level])
-  );
-
-  favoritesCache.data = favoritesData;
-  favoritesCache.map = map;
-
-  return map;
-}
-
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
@@ -62,20 +47,9 @@ export async function GET(request: NextRequest) {
         const favoritesData = await readCachedJson<Favorites>(FAVORITES_FILE_PATH);
         const favoritesMap = getFavoritesMap(favoritesData);
 
-        filteredWebtoons = originalWebtoons.reduce<Array<Webtoon>>((acc, webtoon) => {
-          const recommendLevel = favoritesMap.get(webtoon.title);
-
-          if (recommendLevel == null) {
-            return acc;
-          }
-
-          acc.push({
-            ...webtoon,
-            recommendLevel
-          });
-
-          return acc;
-        }, []);
+        filteredWebtoons = originalWebtoons
+          .filter(({ title }) => favoritesMap.has(title))
+          .map((webtoon) => ({ ...webtoon, recommendLevel: favoritesMap.get(webtoon.title)! }));
         break;
       default:
         filteredWebtoons = originalWebtoons;
@@ -88,4 +62,23 @@ export async function GET(request: NextRequest) {
     console.error('[API 오류] webtoons.json 읽기 실패:', error);
     return NextResponse.json({ message: '[API 오류] webtoons.json 읽기 실패' }, { status: 500 });
   }
+}
+
+function getFavoritesMap(favoritesData: Favorites) {
+  if (
+    favoritesCache.data &&
+    favoritesCache.data.lastUpdated === favoritesData.lastUpdated &&
+    favoritesCache.map
+  ) {
+    return favoritesCache.map;
+  }
+
+  const map = new Map<string, FavoriteLevel>(
+    favoritesData.favorites.map((favorite) => [favorite.title, favorite.level])
+  );
+
+  favoritesCache.data = favoritesData;
+  favoritesCache.map = map;
+
+  return map;
 }
