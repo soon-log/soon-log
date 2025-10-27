@@ -35,7 +35,7 @@ export function WebtoonCard({ className, webtoon, isActive, isShuffling }: Webto
 
   // 셔플 중이면 스켈레톤 표시
   if (isShuffling) {
-    return <Skeleton width={240} height={300} borderRadius={5} />;
+    return <Skeleton width={isMobile ? 200 : 240} height={isMobile ? 260 : 300} borderRadius={5} />;
   }
 
   // 모바일에서 중앙 카드 클릭 시 180도씩 회전
@@ -47,7 +47,11 @@ export function WebtoonCard({ className, webtoon, isActive, isShuffling }: Webto
 
   return (
     <div
-      className={cn('group h-[300px] w-[240px]', isActive && 'hover:cursor-pointer', className)}
+      className={cn(
+        'group h-[260px] w-[200px] md:h-[300px] md:w-[240px]',
+        isActive && 'hover:cursor-pointer',
+        className
+      )}
       onClick={handleCardClick}
     >
       <div

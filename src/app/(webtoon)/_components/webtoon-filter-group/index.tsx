@@ -7,7 +7,7 @@ import { WebtoonFilter } from './webtoon-filter';
 
 export function WebtoonFilterGroup() {
   return (
-    <div className="group fixed right-4 bottom-40 md:right-6 md:bottom-6">
+    <div className="group fixed top-110 right-4 md:top-auto md:right-6 md:bottom-6">
       <button className="text-foreground h-12 w-12 rounded-full bg-[#3d383c]">+</button>
       <ul
         className={cn(
