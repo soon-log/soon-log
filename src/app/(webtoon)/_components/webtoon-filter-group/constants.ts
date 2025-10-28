@@ -1,4 +1,4 @@
-import { FilterType as FilterTypeConstant } from '../../_constants/webtoon-filter';
+import { WEBTOON_FILTER } from '../../_constants/webtoon-filter';
 import type { FilterType } from '../../_types/webtoon';
 
 type FilterConfig = {
@@ -9,19 +9,19 @@ type FilterConfig = {
 };
 
 export const FILTER_CONFIG: Record<FilterType, FilterConfig> = {
-  [FilterTypeConstant.KAKAO]: {
+  [WEBTOON_FILTER.KAKAO]: {
     src: '/images/kakao-logo.png',
     fallback: 'K',
     shadowColor: 'shadow-[0_0_10px_#FFE600]',
     bgColor: 'bg-yellow-400'
   },
-  [FilterTypeConstant.NAVER]: {
+  [WEBTOON_FILTER.NAVER]: {
     src: '/images/naver-logo.png',
     fallback: 'N',
     shadowColor: 'shadow-[0_0_10px_#03C75A]',
     bgColor: 'bg-green-500'
   },
-  [FilterTypeConstant.SOON]: {
+  [WEBTOON_FILTER.SOON]: {
     src: '/images/profile.png',
     fallback: 'S',
     shadowColor: 'shadow-[0_0_10px_#007AFF]',

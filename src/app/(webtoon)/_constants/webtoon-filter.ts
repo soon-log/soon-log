@@ -1,4 +1,4 @@
-export const FilterType = {
+export const WEBTOON_FILTER = {
   SOON: 'soon',
   KAKAO: 'kakao',
   NAVER: 'naver'

@@ -1,26 +1,17 @@
 import path from 'path';
 
-import { shuffle } from 'es-toolkit';
 import { NextRequest, NextResponse } from 'next/server';
 
+import { filterWebtoons, shuffleWebtoons } from '@/app/(webtoon)/_server/service';
 import { readCachedJson } from '@/utils/readCachedJson';
 
-import { FilterType as FilterTypeConstant } from '../../_constants/webtoon-filter';
-import type { Favorites, FilterType, ResponseWebtoons, Webtoon } from '../../_types/webtoon';
+import { WEBTOON_FILTER } from '../../_constants/webtoon-filter';
+import type { Favorites, FilterType, ResponseWebtoons } from '../../_types/webtoon';
 
 const WEBTOONS_FILE_PATH = path.join(process.cwd(), 'webtoon', 'webtoons.json');
 const FAVORITES_FILE_PATH = path.join(process.cwd(), 'webtoon', 'favorites.json');
 
-const ALLOWED_TYPES = new Set(Object.values(FilterTypeConstant));
-type FavoriteLevel = Favorites['favorites'][number]['level'];
-
-const favoritesCache: {
-  data: Favorites | null;
-  map: Map<string, FavoriteLevel> | null;
-} = {
-  data: null,
-  map: null
-};
+const ALLOWED_TYPES = new Set(Object.values(WEBTOON_FILTER));
 
 export async function GET(request: NextRequest) {
   try {
@@ -34,51 +25,19 @@ export async function GET(request: NextRequest) {
     const { webtoons: originalWebtoons } =
       await readCachedJson<ResponseWebtoons>(WEBTOONS_FILE_PATH);
 
-    let filteredWebtoons: Array<Webtoon> = [];
+    const favoritesData =
+      type === WEBTOON_FILTER.SOON
+        ? await readCachedJson<Favorites>(FAVORITES_FILE_PATH)
+        : undefined;
 
-    switch (type) {
-      case FilterTypeConstant.KAKAO:
-        filteredWebtoons = originalWebtoons.filter((webtoon) => webtoon.platform === 'kakao');
-        break;
-      case FilterTypeConstant.NAVER:
-        filteredWebtoons = originalWebtoons.filter((webtoon) => webtoon.platform === 'naver');
-        break;
-      case FilterTypeConstant.SOON:
-        const favoritesData = await readCachedJson<Favorites>(FAVORITES_FILE_PATH);
-        const favoritesMap = getFavoritesMap(favoritesData);
-
-        filteredWebtoons = originalWebtoons
-          .filter(({ title }) => favoritesMap.has(title))
-          .map((webtoon) => ({ ...webtoon, recommendLevel: favoritesMap.get(webtoon.title)! }));
-        break;
-      default:
-        filteredWebtoons = originalWebtoons;
-        break;
-    }
-    return NextResponse.json({
-      webtoons: shuffle([...filteredWebtoons])
+    const filtered = filterWebtoons({
+      type,
+      originals: originalWebtoons,
+      favorites: favoritesData
     });
+    return NextResponse.json({ webtoons: shuffleWebtoons(filtered) });
   } catch (error) {
     console.error('[API 오류] webtoons.json 읽기 실패:', error);
     return NextResponse.json({ message: '[API 오류] webtoons.json 읽기 실패' }, { status: 500 });
   }
-}
-
-function getFavoritesMap(favoritesData: Favorites) {
-  if (
-    favoritesCache.data &&
-    favoritesCache.data.lastUpdated === favoritesData.lastUpdated &&
-    favoritesCache.map
-  ) {
-    return favoritesCache.map;
-  }
-
-  const map = new Map<string, FavoriteLevel>(
-    favoritesData.favorites.map((favorite) => [favorite.title, favorite.level])
-  );
-
-  favoritesCache.data = favoritesData;
-  favoritesCache.map = map;
-
-  return map;
 }

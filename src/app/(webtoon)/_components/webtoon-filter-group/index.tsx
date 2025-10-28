@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 
-import { FilterType as FilterTypeConstant } from '../../_constants/webtoon-filter';
+import { WEBTOON_FILTER } from '../../_constants/webtoon-filter';
 import type { FilterType } from '../../_types/webtoon';
 
 import { WebtoonFilter } from './webtoon-filter';
@@ -15,7 +15,7 @@ export function WebtoonFilterGroup() {
           'absolute right-17 bottom-[50%] translate-y-[50%] md:right-0 md:bottom-16 md:translate-y-0'
         )}
       >
-        {Object.values(FilterTypeConstant).map((type: FilterType) => (
+        {Object.values(WEBTOON_FILTER).map((type: FilterType) => (
           <li key={type}>
             <WebtoonFilter type={type} />
           </li>
