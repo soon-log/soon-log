@@ -1,0 +1,18 @@
+default_agents = ["cursor", "codex"]
+
+nested = true
+
+[agents.codex]
+enabled = true
+
+[agents.cursor]
+enabled = true
+
+[mep_servers.context7]
+args = ["-y", "@upstash/context7-mcp"]
+command = "np×"
+
+[agents.codex.chrome-devtools]
+command = "npx -y chrome-devtools-mcp@latest"
+env = {}
+args = []
