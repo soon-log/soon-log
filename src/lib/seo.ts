@@ -1,5 +1,6 @@
-import { PostMetadata } from '@/app/(blog)/_types/mdx';
 import { SEOMetadata } from '@/types/seo';
+
+import { PostMetadata } from '@/app/(blog)/_types/mdx';
 
 const SITE_NAME = 'Soon Log';
 const DEFAULT_DESCRIPTION = 'Soon Log에서 개발 지식과 경험을 공유합니다.';

@@ -20,8 +20,7 @@ import typescript from 'react-syntax-highlighter/dist/cjs/languages/prism/typesc
 import yaml from 'react-syntax-highlighter/dist/cjs/languages/prism/yaml';
 import { vscDarkPlus, oneLight } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 
-import { useTheme } from '@/components/theme/theme-provider';
-import { Theme } from '@/constants/theme';
+import { THEME_TYPE, useTheme } from '@/entities/theme';
 
 (function registerSupportedLanguages() {
   const languages = {
@@ -98,7 +97,7 @@ export function CodeBlock({
 }: CodeBlockProps) {
   const [isMounted, setIsMounted] = useState(false);
   const { resolvedTheme } = useTheme();
-  const isDarkMode = resolvedTheme === Theme.DARK;
+  const isDarkMode = resolvedTheme === THEME_TYPE.DARK;
 
   useEffect(() => {
     setIsMounted(true);

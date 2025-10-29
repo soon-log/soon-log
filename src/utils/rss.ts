@@ -1,4 +1,4 @@
-import { PostMetadata } from '@/app/(blog)/_types/mdx';
+import { PostMetadata } from '@/entities/post';
 
 // XML 특수 문자 이스케이프 함수
 function escapeXml(text: string): string {
