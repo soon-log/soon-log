@@ -8,11 +8,10 @@ enabled = true
 [agents.cursor]
 enabled = true
 
-[mep_servers.context7]
+[mcp_servers.context7]
 args = ["-y", "@upstash/context7-mcp"]
-command = "np×"
+command = "npx"
 
-[agents.codex.chrome-devtools]
-command = "npx -y chrome-devtools-mcp@latest"
-env = {}
-args = []
+[mcp_servers.chrome-devtools]
+command = "npx"
+args = ["-y", "chrome-devtools-mcp@latest"]

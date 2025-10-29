@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 
-import { PostMetadata } from '@/app/(blog)/_types/mdx';
+import { PostMetadata } from '@/entities/post';
 
 /**
  * meta.ts 파일에서 메타데이터를 추출합니다.
@@ -182,7 +182,7 @@ export async function main() {
     await fs.mkdir(outputDir, { recursive: true });
 
     // 5. posts.json 파일 생성
-    const outputPath = path.join(outputDir, 'posts.json');
+    const outputPath = path.join(process.cwd(), 'src', 'entities', 'post', 'data', 'posts.json');
     await fs.writeFile(outputPath, JSON.stringify(postsJson, null, 2));
 
     console.log(

@@ -3,7 +3,8 @@ import path from 'path';
 
 import lunr from 'lunr';
 
-import { PostMetadata, SearchablePost, SearchIndexData } from '@/app/(blog)/_types/mdx';
+import { PostMetadata } from '@/entities/post';
+import { SearchablePost, SearchIndexData } from '@/features/search-posts';
 
 import { extractMetadataFromFile } from './generate-posts-data';
 

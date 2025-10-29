@@ -1,5 +1,5 @@
-import { PLATFORM } from '@/app/(webtoon)/_constants/platform';
-import { DayOfWeekType, Webtoon } from '@/app/(webtoon)/_types/webtoon';
+import { PLATFORM } from '../../app/(webtoon)/_constants/platform';
+import { DayOfWeekType, Webtoon } from '../../app/(webtoon)/_types/webtoon';
 
 import { ResponseKakaoWeekdayWebtoons, ResponseNaverWeekdayWebtoons } from './types';
 

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-import { DAY_OF_WEEK } from '@/app/(webtoon)/_constants/day-of-week';
-import { type Webtoon, type DayOfWeekType } from '@/app/(webtoon)/_types/webtoon';
+import { DAY_OF_WEEK } from '../../app/(webtoon)/_constants/day-of-week';
+import { DayOfWeekType, Webtoon } from '../../app/(webtoon)/_types/webtoon';
 
 import { ResponseKakaoWeekdayWebtoons, ResponseNaverWeekdayWebtoons } from './types';
 import { transformKakaoWebtoons, transformNaverWeekdayWebtoons } from './utils';
