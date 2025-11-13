@@ -31,6 +31,22 @@
       "thumbnail": "/posts/color-model/thumbnail.png"
     }
   ],
+  "홈서버": [
+    {
+      "key": "home-server-intro",
+      "title": "홈서버 구축기 01 - 홈서버 장비",
+      "date": "2025-11-13",
+      "tags": [
+        "홈서버",
+        "네트워크",
+        "서버",
+        "인프라"
+      ],
+      "category": "홈서버",
+      "summary": "홈서버 구축기 01 - 홈서버 장비를 소개합니다.",
+      "thumbnail": "/posts/home-server-intro/thumbnail.png"
+    }
+  ],
   "React": [
     {
       "key": "react-architecture",
